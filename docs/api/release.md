@@ -92,14 +92,14 @@ Synthesizes files to the project output directory.
 ##### `addGitHubPostPublishingSteps` <a name="addGitHubPostPublishingSteps" id="projen.release.Publisher.addGitHubPostPublishingSteps"></a>
 
 ```typescript
-public addGitHubPostPublishingSteps(steps: JobStep): void
+public addGitHubPostPublishingSteps(steps: ...JobStep[]): void
 ```
 
 Adds post publishing steps for the GitHub release job.
 
 ###### `steps`<sup>Required</sup> <a name="steps" id="projen.release.Publisher.addGitHubPostPublishingSteps.parameter.steps"></a>
 
-- *Type:* projen.github.workflows.JobStep
+- *Type:* ...projen.github.workflows.JobStep[]
 
 The steps.
 
@@ -108,14 +108,14 @@ The steps.
 ##### `addGitHubPrePublishingSteps` <a name="addGitHubPrePublishingSteps" id="projen.release.Publisher.addGitHubPrePublishingSteps"></a>
 
 ```typescript
-public addGitHubPrePublishingSteps(steps: JobStep): void
+public addGitHubPrePublishingSteps(steps: ...JobStep[]): void
 ```
 
 Adds pre publishing steps for the GitHub release job.
 
 ###### `steps`<sup>Required</sup> <a name="steps" id="projen.release.Publisher.addGitHubPrePublishingSteps.parameter.steps"></a>
 
-- *Type:* projen.github.workflows.JobStep
+- *Type:* ...projen.github.workflows.JobStep[]
 
 The steps.
 
@@ -907,7 +907,7 @@ const commonPublishOptions: release.CommonPublishOptions = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.CommonPublishOptions.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.CommonPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.CommonPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.CommonPublishOptions.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
 
 ---
@@ -938,7 +938,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -960,6 +960,36 @@ Additional tools to install in the publishing job.
 
 ---
 
+### ContinuousReleaseOptions <a name="ContinuousReleaseOptions" id="projen.release.ContinuousReleaseOptions"></a>
+
+#### Initializer <a name="Initializer" id="projen.release.ContinuousReleaseOptions.Initializer"></a>
+
+```typescript
+import { release } from 'projen'
+
+const continuousReleaseOptions: release.ContinuousReleaseOptions = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#projen.release.ContinuousReleaseOptions.property.paths">paths</a></code> | <code>string[]</code> | Paths for which pushes should trigger a release. |
+
+---
+
+##### `paths`<sup>Optional</sup> <a name="paths" id="projen.release.ContinuousReleaseOptions.property.paths"></a>
+
+```typescript
+public readonly paths: string[];
+```
+
+- *Type:* string[]
+
+Paths for which pushes should trigger a release.
+
+---
+
 ### GitHubReleasesPublishOptions <a name="GitHubReleasesPublishOptions" id="projen.release.GitHubReleasesPublishOptions"></a>
 
 Publishing options for GitHub releases.
@@ -977,7 +1007,7 @@ const gitHubReleasesPublishOptions: release.GitHubReleasesPublishOptions = { ...
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.GitHubReleasesPublishOptions.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.GitHubReleasesPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.GitHubReleasesPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.GitHubReleasesPublishOptions.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
 | <code><a href="#projen.release.GitHubReleasesPublishOptions.property.changelogFile">changelogFile</a></code> | <code>string</code> | The location of an .md file (relative to `dist/`) that includes the changelog for the release. |
 | <code><a href="#projen.release.GitHubReleasesPublishOptions.property.releaseTagFile">releaseTagFile</a></code> | <code>string</code> | The location of a text file (relative to `dist/`) that contains the release tag. |
@@ -1011,7 +1041,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -1228,12 +1258,11 @@ const goPublishOptions: release.GoPublishOptions = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.GoPublishOptions.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.GoPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.GoPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.GoPublishOptions.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
 | <code><a href="#projen.release.GoPublishOptions.property.gitBranch">gitBranch</a></code> | <code>string</code> | Branch to push to. |
 | <code><a href="#projen.release.GoPublishOptions.property.gitCommitMessage">gitCommitMessage</a></code> | <code>string</code> | The commit message. |
 | <code><a href="#projen.release.GoPublishOptions.property.githubDeployKeySecret">githubDeployKeySecret</a></code> | <code>string</code> | The name of the secret that includes a GitHub deploy key used to push to the GitHub repository. |
-| <code><a href="#projen.release.GoPublishOptions.property.githubRepo">githubRepo</a></code> | <code>string</code> | GitHub repository to push to. |
 | <code><a href="#projen.release.GoPublishOptions.property.githubTokenSecret">githubTokenSecret</a></code> | <code>string</code> | The name of the secret that includes a personal GitHub access token used to push to the GitHub repository. |
 | <code><a href="#projen.release.GoPublishOptions.property.githubUseSsh">githubUseSsh</a></code> | <code>boolean</code> | Use SSH to push to GitHub instead of a personal accses token. |
 | <code><a href="#projen.release.GoPublishOptions.property.gitUserEmail">gitUserEmail</a></code> | <code>string</code> | The email to use in the release git commit. |
@@ -1267,7 +1296,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -1327,19 +1356,6 @@ public readonly githubDeployKeySecret: string;
 The name of the secret that includes a GitHub deploy key used to push to the GitHub repository.
 
 Ignored if `githubUseSsh` is `false`.
-
----
-
-##### `githubRepo`<sup>Optional</sup> <a name="githubRepo" id="projen.release.GoPublishOptions.property.githubRepo"></a>
-
-```typescript
-public readonly githubRepo: string;
-```
-
-- *Type:* string
-- *Default:* derived from `moduleName`
-
-GitHub repository to push to.
 
 ---
 
@@ -1412,12 +1428,11 @@ const jsiiReleaseGo: release.JsiiReleaseGo = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.JsiiReleaseGo.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.JsiiReleaseGo.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.JsiiReleaseGo.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.JsiiReleaseGo.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
 | <code><a href="#projen.release.JsiiReleaseGo.property.gitBranch">gitBranch</a></code> | <code>string</code> | Branch to push to. |
 | <code><a href="#projen.release.JsiiReleaseGo.property.gitCommitMessage">gitCommitMessage</a></code> | <code>string</code> | The commit message. |
 | <code><a href="#projen.release.JsiiReleaseGo.property.githubDeployKeySecret">githubDeployKeySecret</a></code> | <code>string</code> | The name of the secret that includes a GitHub deploy key used to push to the GitHub repository. |
-| <code><a href="#projen.release.JsiiReleaseGo.property.githubRepo">githubRepo</a></code> | <code>string</code> | GitHub repository to push to. |
 | <code><a href="#projen.release.JsiiReleaseGo.property.githubTokenSecret">githubTokenSecret</a></code> | <code>string</code> | The name of the secret that includes a personal GitHub access token used to push to the GitHub repository. |
 | <code><a href="#projen.release.JsiiReleaseGo.property.githubUseSsh">githubUseSsh</a></code> | <code>boolean</code> | Use SSH to push to GitHub instead of a personal accses token. |
 | <code><a href="#projen.release.JsiiReleaseGo.property.gitUserEmail">gitUserEmail</a></code> | <code>string</code> | The email to use in the release git commit. |
@@ -1455,7 +1470,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -1523,21 +1538,6 @@ public readonly githubDeployKeySecret: string;
 The name of the secret that includes a GitHub deploy key used to push to the GitHub repository.
 
 Ignored if `githubUseSsh` is `false`.
-
----
-
-##### ~~`githubRepo`~~<sup>Optional</sup> <a name="githubRepo" id="projen.release.JsiiReleaseGo.property.githubRepo"></a>
-
-- *Deprecated:* Use `GoPublishOptions` instead.
-
-```typescript
-public readonly githubRepo: string;
-```
-
-- *Type:* string
-- *Default:* derived from `moduleName`
-
-GitHub repository to push to.
 
 ---
 
@@ -1618,7 +1618,7 @@ const jsiiReleaseMaven: release.JsiiReleaseMaven = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.JsiiReleaseMaven.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.JsiiReleaseMaven.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.JsiiReleaseMaven.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.JsiiReleaseMaven.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
 | <code><a href="#projen.release.JsiiReleaseMaven.property.mavenEndpoint">mavenEndpoint</a></code> | <code>string</code> | URL of Nexus repository. |
 | <code><a href="#projen.release.JsiiReleaseMaven.property.mavenGpgPrivateKeyPassphrase">mavenGpgPrivateKeyPassphrase</a></code> | <code>string</code> | GitHub secret name which contains the GPG private key or file that includes it. |
@@ -1661,7 +1661,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -1841,7 +1841,7 @@ const jsiiReleaseNpm: release.JsiiReleaseNpm = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.JsiiReleaseNpm.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.JsiiReleaseNpm.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.JsiiReleaseNpm.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.JsiiReleaseNpm.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
 | <code><a href="#projen.release.JsiiReleaseNpm.property.codeArtifactOptions">codeArtifactOptions</a></code> | <code><a href="#projen.release.CodeArtifactOptions">CodeArtifactOptions</a></code> | Options for publishing npm package to AWS CodeArtifact. |
 | <code><a href="#projen.release.JsiiReleaseNpm.property.distTag">distTag</a></code> | <code>string</code> | Tags can be used to provide an alias instead of version numbers. |
@@ -1881,7 +1881,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -2024,7 +2024,7 @@ const jsiiReleaseNuget: release.JsiiReleaseNuget = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.JsiiReleaseNuget.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.JsiiReleaseNuget.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.JsiiReleaseNuget.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.JsiiReleaseNuget.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
 | <code><a href="#projen.release.JsiiReleaseNuget.property.nugetApiKeySecret">nugetApiKeySecret</a></code> | <code>string</code> | GitHub secret which contains the API key for NuGet. |
 | <code><a href="#projen.release.JsiiReleaseNuget.property.nugetServer">nugetServer</a></code> | <code>string</code> | NuGet Server URL (defaults to nuget.org). |
@@ -2061,7 +2061,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -2129,8 +2129,9 @@ const jsiiReleasePyPi: release.JsiiReleasePyPi = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.JsiiReleasePyPi.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.JsiiReleasePyPi.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.JsiiReleasePyPi.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.JsiiReleasePyPi.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
+| <code><a href="#projen.release.JsiiReleasePyPi.property.codeArtifactOptions">codeArtifactOptions</a></code> | <code><a href="#projen.release.CodeArtifactOptions">CodeArtifactOptions</a></code> | Options for publishing to AWS CodeArtifact. |
 | <code><a href="#projen.release.JsiiReleasePyPi.property.twinePasswordSecret">twinePasswordSecret</a></code> | <code>string</code> | The GitHub secret which contains PyPI password. |
 | <code><a href="#projen.release.JsiiReleasePyPi.property.twineRegistryUrl">twineRegistryUrl</a></code> | <code>string</code> | The registry url to use when releasing packages. |
 | <code><a href="#projen.release.JsiiReleasePyPi.property.twineUsernameSecret">twineUsernameSecret</a></code> | <code>string</code> | The GitHub secret which contains PyPI user name. |
@@ -2167,7 +2168,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -2188,6 +2189,21 @@ public readonly publishTools: Tools;
 - *Default:* no additional tools are installed
 
 Additional tools to install in the publishing job.
+
+---
+
+##### ~~`codeArtifactOptions`~~<sup>Optional</sup> <a name="codeArtifactOptions" id="projen.release.JsiiReleasePyPi.property.codeArtifactOptions"></a>
+
+- *Deprecated:* Use `PyPiPublishOptions` instead.
+
+```typescript
+public readonly codeArtifactOptions: CodeArtifactOptions;
+```
+
+- *Type:* <a href="#projen.release.CodeArtifactOptions">CodeArtifactOptions</a>
+- *Default:* undefined
+
+Options for publishing to AWS CodeArtifact.
 
 ---
 
@@ -2315,7 +2331,7 @@ const mavenPublishOptions: release.MavenPublishOptions = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.MavenPublishOptions.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.MavenPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.MavenPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.MavenPublishOptions.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
 | <code><a href="#projen.release.MavenPublishOptions.property.mavenEndpoint">mavenEndpoint</a></code> | <code>string</code> | URL of Nexus repository. |
 | <code><a href="#projen.release.MavenPublishOptions.property.mavenGpgPrivateKeyPassphrase">mavenGpgPrivateKeyPassphrase</a></code> | <code>string</code> | GitHub secret name which contains the GPG private key or file that includes it. |
@@ -2354,7 +2370,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -2518,7 +2534,7 @@ const npmPublishOptions: release.NpmPublishOptions = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.NpmPublishOptions.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.NpmPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.NpmPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.NpmPublishOptions.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
 | <code><a href="#projen.release.NpmPublishOptions.property.codeArtifactOptions">codeArtifactOptions</a></code> | <code><a href="#projen.release.CodeArtifactOptions">CodeArtifactOptions</a></code> | Options for publishing npm package to AWS CodeArtifact. |
 | <code><a href="#projen.release.NpmPublishOptions.property.distTag">distTag</a></code> | <code>string</code> | Tags can be used to provide an alias instead of version numbers. |
@@ -2554,7 +2570,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -2689,7 +2705,7 @@ const nugetPublishOptions: release.NugetPublishOptions = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.NugetPublishOptions.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.NugetPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.NugetPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.NugetPublishOptions.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
 | <code><a href="#projen.release.NugetPublishOptions.property.nugetApiKeySecret">nugetApiKeySecret</a></code> | <code>string</code> | GitHub secret which contains the API key for NuGet. |
 | <code><a href="#projen.release.NugetPublishOptions.property.nugetServer">nugetServer</a></code> | <code>string</code> | NuGet Server URL (defaults to nuget.org). |
@@ -2722,7 +2738,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -2949,7 +2965,7 @@ public readonly workflowNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* 18.x
+- *Default:* lts/*
 
 Node version to setup in GitHub workflows if any node-based CLI utilities are needed.
 
@@ -3000,8 +3016,9 @@ const pyPiPublishOptions: release.PyPiPublishOptions = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#projen.release.PyPiPublishOptions.property.postPublishSteps">postPublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after executing the publishing command. |
-| <code><a href="#projen.release.PyPiPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede. |
+| <code><a href="#projen.release.PyPiPublishOptions.property.prePublishSteps">prePublishSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed. |
 | <code><a href="#projen.release.PyPiPublishOptions.property.publishTools">publishTools</a></code> | <code>projen.github.workflows.Tools</code> | Additional tools to install in the publishing job. |
+| <code><a href="#projen.release.PyPiPublishOptions.property.codeArtifactOptions">codeArtifactOptions</a></code> | <code><a href="#projen.release.CodeArtifactOptions">CodeArtifactOptions</a></code> | Options for publishing to AWS CodeArtifact. |
 | <code><a href="#projen.release.PyPiPublishOptions.property.twinePasswordSecret">twinePasswordSecret</a></code> | <code>string</code> | The GitHub secret which contains PyPI password. |
 | <code><a href="#projen.release.PyPiPublishOptions.property.twineRegistryUrl">twineRegistryUrl</a></code> | <code>string</code> | The registry url to use when releasing packages. |
 | <code><a href="#projen.release.PyPiPublishOptions.property.twineUsernameSecret">twineUsernameSecret</a></code> | <code>string</code> | The GitHub secret which contains PyPI user name. |
@@ -3034,7 +3051,7 @@ public readonly prePublishSteps: JobStep[];
 
 - *Type:* projen.github.workflows.JobStep[]
 
-Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if neede.
+Steps to execute before executing the publishing command. These can be used to prepare the artifact for publishing if needed.
 
 These steps are executed after `dist/` has been populated with the build
 output.
@@ -3053,6 +3070,19 @@ public readonly publishTools: Tools;
 - *Default:* no additional tools are installed
 
 Additional tools to install in the publishing job.
+
+---
+
+##### `codeArtifactOptions`<sup>Optional</sup> <a name="codeArtifactOptions" id="projen.release.PyPiPublishOptions.property.codeArtifactOptions"></a>
+
+```typescript
+public readonly codeArtifactOptions: CodeArtifactOptions;
+```
+
+- *Type:* <a href="#projen.release.CodeArtifactOptions">CodeArtifactOptions</a>
+- *Default:* undefined
+
+Options for publishing to AWS CodeArtifact.
 
 ---
 
@@ -3111,9 +3141,11 @@ const releaseOptions: release.ReleaseOptions = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#projen.release.ReleaseOptions.property.bumpPackage">bumpPackage</a></code> | <code>string</code> | The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string. |
 | <code><a href="#projen.release.ReleaseOptions.property.jsiiReleaseVersion">jsiiReleaseVersion</a></code> | <code>string</code> | Version requirement of `publib` which is used to publish modules to npm. |
 | <code><a href="#projen.release.ReleaseOptions.property.majorVersion">majorVersion</a></code> | <code>number</code> | Major version to release from the default branch. |
 | <code><a href="#projen.release.ReleaseOptions.property.minMajorVersion">minMajorVersion</a></code> | <code>number</code> | Minimal Major version to release. |
+| <code><a href="#projen.release.ReleaseOptions.property.nextVersionCommand">nextVersionCommand</a></code> | <code>string</code> | A shell command to control the next version to release. |
 | <code><a href="#projen.release.ReleaseOptions.property.npmDistTag">npmDistTag</a></code> | <code>string</code> | The npmDistTag to use when publishing from the default branch. |
 | <code><a href="#projen.release.ReleaseOptions.property.postBuildSteps">postBuildSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after build as part of the release workflow. |
 | <code><a href="#projen.release.ReleaseOptions.property.prerelease">prerelease</a></code> | <code>string</code> | Bump versions from the default branch as pre-releases (e.g. "beta", "alpha", "pre"). |
@@ -3129,7 +3161,7 @@ const releaseOptions: release.ReleaseOptions = { ... }
 | <code><a href="#projen.release.ReleaseOptions.property.releaseTrigger">releaseTrigger</a></code> | <code><a href="#projen.release.ReleaseTrigger">ReleaseTrigger</a></code> | The release trigger to use. |
 | <code><a href="#projen.release.ReleaseOptions.property.releaseWorkflowName">releaseWorkflowName</a></code> | <code>string</code> | The name of the default release workflow. |
 | <code><a href="#projen.release.ReleaseOptions.property.releaseWorkflowSetupSteps">releaseWorkflowSetupSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | A set of workflow steps to execute in order to setup the workflow container. |
-| <code><a href="#projen.release.ReleaseOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with standard-version package. |
+| <code><a href="#projen.release.ReleaseOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with commit-and-tag-version package. |
 | <code><a href="#projen.release.ReleaseOptions.property.workflowContainerImage">workflowContainerImage</a></code> | <code>string</code> | Container image to use for GitHub workflows. |
 | <code><a href="#projen.release.ReleaseOptions.property.workflowRunsOn">workflowRunsOn</a></code> | <code>string[]</code> | Github Runner selection labels. |
 | <code><a href="#projen.release.ReleaseOptions.property.workflowRunsOnGroup">workflowRunsOnGroup</a></code> | <code>projen.GroupRunnerOptions</code> | Github Runner Group selection options. |
@@ -3140,6 +3172,21 @@ const releaseOptions: release.ReleaseOptions = { ... }
 | <code><a href="#projen.release.ReleaseOptions.property.githubRelease">githubRelease</a></code> | <code>boolean</code> | Create a GitHub release for each release. |
 | <code><a href="#projen.release.ReleaseOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | Node version to setup in GitHub workflows if any node-based CLI utilities are needed. |
 | <code><a href="#projen.release.ReleaseOptions.property.workflowPermissions">workflowPermissions</a></code> | <code>projen.github.workflows.JobPermissions</code> | Permissions granted to the release workflow job. |
+
+---
+
+##### `bumpPackage`<sup>Optional</sup> <a name="bumpPackage" id="projen.release.ReleaseOptions.property.bumpPackage"></a>
+
+```typescript
+public readonly bumpPackage: string;
+```
+
+- *Type:* string
+- *Default:* A recent version of "commit-and-tag-version"
+
+The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string.
+
+This can be any compatible package version, including the deprecated `standard-version@9`.
 
 ---
 
@@ -3187,6 +3234,37 @@ This can be useful to set to 1, as breaking changes before the 1.x major
 release are not incrementing the major version number.
 
 Can not be set together with `majorVersion`.
+
+---
+
+##### `nextVersionCommand`<sup>Optional</sup> <a name="nextVersionCommand" id="projen.release.ReleaseOptions.property.nextVersionCommand"></a>
+
+```typescript
+public readonly nextVersionCommand: string;
+```
+
+- *Type:* string
+- *Default:* The next version will be determined based on the commit history and project settings.
+
+A shell command to control the next version to release.
+
+If present, this shell command will be run before the bump is executed, and
+it determines what version to release. It will be executed in the following
+environment:
+
+- Working directory: the project directory.
+- `$VERSION`: the current version. Looks like `1.2.3`.
+- `$LATEST_TAG`: the most recent tag. Looks like `prefix-v1.2.3`, or may be unset.
+
+The command should print one of the following to `stdout`:
+
+- Nothing: the next version number will be determined based on commit history.
+- `x.y.z`: the next version number will be `x.y.z`.
+- `major|minor|patch`: the next version number will be the current version number
+  with the indicated component bumped.
+
+This setting cannot be specified together with `minMajorVersion`; the invoked
+script can be used to achieve the effects of `minMajorVersion`.
 
 ---
 
@@ -3417,7 +3495,7 @@ public readonly versionrcOptions: {[ key: string ]: any};
 - *Type:* {[ key: string ]: any}
 - *Default:* standard configuration applicable for GitHub repositories
 
-Custom configuration used when creating changelog with standard-version package.
+Custom configuration used when creating changelog with commit-and-tag-version package.
 
 Given values either append to default configuration or overwrite values in it.
 
@@ -3546,7 +3624,7 @@ public readonly workflowNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* 18.x
+- *Default:* "lts/*""
 
 Node version to setup in GitHub workflows if any node-based CLI utilities are needed.
 
@@ -3584,9 +3662,11 @@ const releaseProjectOptions: release.ReleaseProjectOptions = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
+| <code><a href="#projen.release.ReleaseProjectOptions.property.bumpPackage">bumpPackage</a></code> | <code>string</code> | The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string. |
 | <code><a href="#projen.release.ReleaseProjectOptions.property.jsiiReleaseVersion">jsiiReleaseVersion</a></code> | <code>string</code> | Version requirement of `publib` which is used to publish modules to npm. |
 | <code><a href="#projen.release.ReleaseProjectOptions.property.majorVersion">majorVersion</a></code> | <code>number</code> | Major version to release from the default branch. |
 | <code><a href="#projen.release.ReleaseProjectOptions.property.minMajorVersion">minMajorVersion</a></code> | <code>number</code> | Minimal Major version to release. |
+| <code><a href="#projen.release.ReleaseProjectOptions.property.nextVersionCommand">nextVersionCommand</a></code> | <code>string</code> | A shell command to control the next version to release. |
 | <code><a href="#projen.release.ReleaseProjectOptions.property.npmDistTag">npmDistTag</a></code> | <code>string</code> | The npmDistTag to use when publishing from the default branch. |
 | <code><a href="#projen.release.ReleaseProjectOptions.property.postBuildSteps">postBuildSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after build as part of the release workflow. |
 | <code><a href="#projen.release.ReleaseProjectOptions.property.prerelease">prerelease</a></code> | <code>string</code> | Bump versions from the default branch as pre-releases (e.g. "beta", "alpha", "pre"). |
@@ -3602,10 +3682,25 @@ const releaseProjectOptions: release.ReleaseProjectOptions = { ... }
 | <code><a href="#projen.release.ReleaseProjectOptions.property.releaseTrigger">releaseTrigger</a></code> | <code><a href="#projen.release.ReleaseTrigger">ReleaseTrigger</a></code> | The release trigger to use. |
 | <code><a href="#projen.release.ReleaseProjectOptions.property.releaseWorkflowName">releaseWorkflowName</a></code> | <code>string</code> | The name of the default release workflow. |
 | <code><a href="#projen.release.ReleaseProjectOptions.property.releaseWorkflowSetupSteps">releaseWorkflowSetupSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | A set of workflow steps to execute in order to setup the workflow container. |
-| <code><a href="#projen.release.ReleaseProjectOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with standard-version package. |
+| <code><a href="#projen.release.ReleaseProjectOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with commit-and-tag-version package. |
 | <code><a href="#projen.release.ReleaseProjectOptions.property.workflowContainerImage">workflowContainerImage</a></code> | <code>string</code> | Container image to use for GitHub workflows. |
 | <code><a href="#projen.release.ReleaseProjectOptions.property.workflowRunsOn">workflowRunsOn</a></code> | <code>string[]</code> | Github Runner selection labels. |
 | <code><a href="#projen.release.ReleaseProjectOptions.property.workflowRunsOnGroup">workflowRunsOnGroup</a></code> | <code>projen.GroupRunnerOptions</code> | Github Runner Group selection options. |
+
+---
+
+##### `bumpPackage`<sup>Optional</sup> <a name="bumpPackage" id="projen.release.ReleaseProjectOptions.property.bumpPackage"></a>
+
+```typescript
+public readonly bumpPackage: string;
+```
+
+- *Type:* string
+- *Default:* A recent version of "commit-and-tag-version"
+
+The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string.
+
+This can be any compatible package version, including the deprecated `standard-version@9`.
 
 ---
 
@@ -3653,6 +3748,37 @@ This can be useful to set to 1, as breaking changes before the 1.x major
 release are not incrementing the major version number.
 
 Can not be set together with `majorVersion`.
+
+---
+
+##### `nextVersionCommand`<sup>Optional</sup> <a name="nextVersionCommand" id="projen.release.ReleaseProjectOptions.property.nextVersionCommand"></a>
+
+```typescript
+public readonly nextVersionCommand: string;
+```
+
+- *Type:* string
+- *Default:* The next version will be determined based on the commit history and project settings.
+
+A shell command to control the next version to release.
+
+If present, this shell command will be run before the bump is executed, and
+it determines what version to release. It will be executed in the following
+environment:
+
+- Working directory: the project directory.
+- `$VERSION`: the current version. Looks like `1.2.3`.
+- `$LATEST_TAG`: the most recent tag. Looks like `prefix-v1.2.3`, or may be unset.
+
+The command should print one of the following to `stdout`:
+
+- Nothing: the next version number will be determined based on commit history.
+- `x.y.z`: the next version number will be `x.y.z`.
+- `major|minor|patch`: the next version number will be the current version number
+  with the indicated component bumped.
+
+This setting cannot be specified together with `minMajorVersion`; the invoked
+script can be used to achieve the effects of `minMajorVersion`.
 
 ---
 
@@ -3883,7 +4009,7 @@ public readonly versionrcOptions: {[ key: string ]: any};
 - *Type:* {[ key: string ]: any}
 - *Default:* standard configuration applicable for GitHub repositories
 
-Custom configuration used when creating changelog with standard-version package.
+Custom configuration used when creating changelog with commit-and-tag-version package.
 
 Given values either append to default configuration or overwrite values in it.
 
@@ -3991,12 +4117,18 @@ and release artifact automation
 ```typescript
 import { release } from 'projen'
 
-release.ReleaseTrigger.continuous()
+release.ReleaseTrigger.continuous(options?: ContinuousReleaseOptions)
 ```
 
 Creates a continuous release trigger.
 
 Automated releases will occur on every commit.
+
+###### `options`<sup>Optional</sup> <a name="options" id="projen.release.ReleaseTrigger.continuous.parameter.options"></a>
+
+- *Type:* <a href="#projen.release.ContinuousReleaseOptions">ContinuousReleaseOptions</a>
+
+---
 
 ##### `manual` <a name="manual" id="projen.release.ReleaseTrigger.manual"></a>
 
@@ -4056,6 +4188,7 @@ release options.
 | <code><a href="#projen.release.ReleaseTrigger.property.isManual">isManual</a></code> | <code>boolean</code> | Whether or not this is a manual release trigger. |
 | <code><a href="#projen.release.ReleaseTrigger.property.changelogPath">changelogPath</a></code> | <code>string</code> | Project-level changelog file path. |
 | <code><a href="#projen.release.ReleaseTrigger.property.gitPushCommand">gitPushCommand</a></code> | <code>string</code> | Override git-push command used when releasing manually. |
+| <code><a href="#projen.release.ReleaseTrigger.property.paths">paths</a></code> | <code>string[]</code> | Paths for which pushes will trigger a release when `isContinuous` is `true`. |
 | <code><a href="#projen.release.ReleaseTrigger.property.schedule">schedule</a></code> | <code>string</code> | Cron schedule for releases. |
 
 ---
@@ -4107,6 +4240,18 @@ public readonly gitPushCommand: string;
 Override git-push command used when releasing manually.
 
 Set to an empty string to disable pushing.
+
+---
+
+##### `paths`<sup>Optional</sup> <a name="paths" id="projen.release.ReleaseTrigger.property.paths"></a>
+
+```typescript
+public readonly paths: string[];
+```
+
+- *Type:* string[]
+
+Paths for which pushes will trigger a release when `isContinuous` is `true`.
 
 ---
 

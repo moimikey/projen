@@ -3,7 +3,11 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 import { Project } from "../src";
-import { GitHubProject, GitHubProjectOptions } from "../src/github";
+import { installPackage } from "../src/cli/util";
+import {
+  GitHubProject,
+  GitHubProjectOptions,
+} from "../src/github/github-project";
 import * as logging from "../src/logging";
 import { Task } from "../src/task";
 import { exec } from "../src/util";
@@ -33,12 +37,28 @@ export class TestProject extends GitHubProject {
   }
 }
 
+interface ProjenCLIExecOptions {
+  preInstallProjen?: boolean;
+}
+
 export function execProjenCLI(
   workdir: string,
   args: string[] = [],
-  env?: Record<string, string>
+  env?: Record<string, string>,
+  { preInstallProjen = true }: ProjenCLIExecOptions = {}
 ) {
   const command = [process.execPath, PROJEN_CLI, ...args];
+
+  // For "projen new" commands we need to pre-install the current library,
+  // to ensure the latest code is used in test cases
+  // https://github.com/projen/projen/issues/3410
+  if (preInstallProjen && args.includes("new")) {
+    installPackage(
+      workdir,
+      `file:${path.normalize(path.join(__dirname, ".."))}`,
+      true
+    );
+  }
 
   return exec(command.map((x) => `"${x}"`).join(" "), { cwd: workdir, env });
 }
@@ -152,8 +172,8 @@ export function sanitizeOutput(dir: string) {
 }
 
 export {
-  synthSnapshot,
-  directorySnapshot,
-  SynthOutput,
   DirectorySnapshotOptions,
+  SynthOutput,
+  directorySnapshot,
+  synthSnapshot,
 } from "../src/util/synth";

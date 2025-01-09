@@ -15,6 +15,7 @@ import {
 import { defaultNpmToken } from "../javascript/node-package";
 import { Project } from "../project";
 import { GroupRunnerOptions, filteredRunsOnOptions } from "../runner-options";
+import { CHANGES_SINCE_LAST_RELEASE } from "../version";
 
 const PUBLIB_VERSION = "latest";
 const GITHUB_PACKAGES_REGISTRY = "npm.pkg.github.com";
@@ -24,11 +25,12 @@ const GITHUB_PACKAGES_NUGET_REPOSITORY = "https://nuget.pkg.github.com";
 const AWS_CODEARTIFACT_REGISTRY_REGEX = /.codeartifact.*.amazonaws.com/;
 const PUBLIB_TOOLCHAIN = {
   js: {},
-  java: { java: { version: "11.x" } },
+  java: { java: { version: "11" } },
   python: { python: { version: "3.x" } },
-  go: { go: { version: "^1.16.0" } },
-  dotnet: { dotnet: { version: "3.x" } },
+  go: { go: { version: "^1.18.0" } },
+  dotnet: { dotnet: { version: "6.x" } },
 };
+const PUBLISH_JOB_PREFIX = "release_";
 
 /**
  * Options for `Publisher`.
@@ -67,7 +69,7 @@ export interface PublisherOptions {
    * are needed. For example `publib`, the CLI projen uses to publish releases,
    * is an npm library.
    *
-   * @default 18.x
+   * @default lts/*
    */
   readonly workflowNodeVersion?: string;
 
@@ -166,6 +168,10 @@ export class Publisher extends Component {
   private readonly workflowNodeVersion: string;
   private readonly workflowContainerImage?: string;
 
+  // List of publish jobs added to the publisher
+  // Maps between the basename and the jobname
+  private readonly publishJobs: Record<string, string> = {};
+
   constructor(project: Project, options: PublisherOptions) {
     super(project);
 
@@ -176,7 +182,7 @@ export class Publisher extends Component {
     this.jsiiReleaseVersion = this.publibVersion;
     this.condition = options.condition;
     this.dryRun = options.dryRun ?? false;
-    this.workflowNodeVersion = options.workflowNodeVersion ?? "18.x";
+    this.workflowNodeVersion = options.workflowNodeVersion ?? "lts/*";
     this.workflowContainerImage = options.workflowContainerImage;
 
     this.failureIssue = options.failureIssue ?? false;
@@ -256,7 +262,7 @@ export class Publisher extends Component {
         PROJECT_CHANGELOG_FILE: projectChangelogFile ?? "",
         VERSION_FILE: versionFile,
       },
-      condition: '! git log --oneline -1 | grep -q "chore(release):"',
+      condition: CHANGES_SINCE_LAST_RELEASE,
     });
     if (projectChangelogFile) {
       publishTask.builtin("release/update-changelog");
@@ -277,9 +283,9 @@ export class Publisher extends Component {
    * @param options Options
    */
   public publishToGitHubReleases(options: GitHubReleasesPublishOptions) {
-    this.addPublishJob((_branch, branchOptions): PublishJobOptions => {
+    const jobName = "github";
+    this.addPublishJob(jobName, (_branch, branchOptions): PublishJobOptions => {
       return {
-        name: "github",
         registryName: "GitHub Releases",
         prePublishSteps: options.prePublishSteps ?? this._gitHubPrePublishing,
         postPublishSteps:
@@ -288,10 +294,13 @@ export class Publisher extends Component {
         permissions: {
           contents: JobPermission.WRITE,
         },
+        needs: Object.entries(this.publishJobs)
+          .filter(([name, _]) => name != jobName)
+          .map(([_, job]) => job),
         workflowEnv: {
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
           GITHUB_REPOSITORY: "${{ github.repository }}",
-          GITHUB_REF: "${{ github.ref }}",
+          GITHUB_REF: "${{ github.sha }}",
         },
         run: this.githubReleaseCommand(options, branchOptions),
       };
@@ -346,7 +355,7 @@ export class Publisher extends Component {
       });
     }
 
-    this.addPublishJob((_branch, branchOptions): PublishJobOptions => {
+    this.addPublishJob("npm", (_branch, branchOptions): PublishJobOptions => {
       if (branchOptions.npmDistTag && options.distTag) {
         throw new Error(
           "cannot set branch-level npmDistTag and npmDistTag in publishToNpm()"
@@ -355,9 +364,7 @@ export class Publisher extends Component {
 
       const npmProvenance = options.npmProvenance ? "true" : undefined;
       const needsIdTokenWrite = isAwsCodeArtifactWithOidc || npmProvenance;
-
       return {
-        name: "npm",
         publishTools: PUBLIB_TOOLCHAIN.js,
         prePublishSteps,
         postPublishSteps: options.postPublishSteps ?? [],
@@ -407,9 +414,10 @@ export class Publisher extends Component {
     const isGitHubPackages = options.nugetServer?.startsWith(
       GITHUB_PACKAGES_NUGET_REPOSITORY
     );
+
     this.addPublishJob(
+      "nuget",
       (_branch, _branchOptions): PublishJobOptions => ({
-        name: "nuget",
         publishTools: PUBLIB_TOOLCHAIN.dotnet,
         prePublishSteps: options.prePublishSteps ?? [],
         postPublishSteps: options.postPublishSteps ?? [],
@@ -451,8 +459,8 @@ export class Publisher extends Component {
     }
 
     this.addPublishJob(
+      "maven",
       (_branch, _branchOptions): PublishJobOptions => ({
-        name: "maven",
         registryName: "Maven Central",
         publishTools: PUBLIB_TOOLCHAIN.java,
         prePublishSteps: options.prePublishSteps ?? [],
@@ -501,25 +509,74 @@ export class Publisher extends Component {
    * @param options Options
    */
   public publishToPyPi(options: PyPiPublishOptions = {}) {
+    let permissions: JobPermissions = { contents: JobPermission.READ };
+    const prePublishSteps = options.prePublishSteps ?? [];
+    let workflowEnv: Record<string, string | undefined> = {};
+    const isAwsCodeArtifact = isAwsCodeArtifactRegistry(
+      options.twineRegistryUrl
+    );
+    if (isAwsCodeArtifact) {
+      const { domain, account, region } = awsCodeArtifactInfoFromUrl(
+        options.twineRegistryUrl
+      );
+      const {
+        authProvider,
+        roleToAssume,
+        accessKeyIdSecret,
+        secretAccessKeySecret,
+      } = options.codeArtifactOptions ?? {};
+      const useOidcAuth = authProvider === CodeArtifactAuthProvider.GITHUB_OIDC;
+      if (useOidcAuth) {
+        if (!roleToAssume) {
+          throw new Error(
+            '"roleToAssume" property is required when using GITHUB_OIDC for AWS CodeArtifact options'
+          );
+        }
+        permissions = { ...permissions, idToken: JobPermission.WRITE };
+        prePublishSteps.push({
+          name: "Configure AWS Credentials via GitHub OIDC Provider",
+          uses: "aws-actions/configure-aws-credentials@v4",
+          with: {
+            "role-to-assume": roleToAssume,
+            "aws-region": region,
+          },
+        });
+      }
+      prePublishSteps.push({
+        name: "Generate CodeArtifact Token",
+        run: `echo "TWINE_PASSWORD=$(aws codeartifact get-authorization-token --domain ${domain} --domain-owner ${account} --region ${region} --query authorizationToken --output text)" >> $GITHUB_ENV`,
+        env: useOidcAuth
+          ? undefined
+          : {
+              AWS_ACCESS_KEY_ID: secret(
+                accessKeyIdSecret ?? "AWS_ACCESS_KEY_ID"
+              ),
+              AWS_SECRET_ACCESS_KEY: secret(
+                secretAccessKeySecret ?? "AWS_SECRET_ACCESS_KEY"
+              ),
+            },
+      });
+      workflowEnv = { TWINE_USERNAME: "aws" };
+    } else {
+      workflowEnv = {
+        TWINE_USERNAME: secret(options.twineUsernameSecret ?? "TWINE_USERNAME"),
+        TWINE_PASSWORD: secret(options.twinePasswordSecret ?? "TWINE_PASSWORD"),
+      };
+    }
+
     this.addPublishJob(
+      "pypi",
       (_branch, _branchOptions): PublishJobOptions => ({
-        name: "pypi",
         registryName: "PyPI",
         publishTools: PUBLIB_TOOLCHAIN.python,
-        prePublishSteps: options.prePublishSteps ?? [],
+        permissions,
+        prePublishSteps,
         postPublishSteps: options.postPublishSteps ?? [],
         run: this.publibCommand("publib-pypi"),
         env: {
           TWINE_REPOSITORY_URL: options.twineRegistryUrl,
         },
-        workflowEnv: {
-          TWINE_USERNAME: secret(
-            options.twineUsernameSecret ?? "TWINE_USERNAME"
-          ),
-          TWINE_PASSWORD: secret(
-            options.twinePasswordSecret ?? "TWINE_PASSWORD"
-          ),
-        },
+        workflowEnv,
       })
     );
   }
@@ -551,15 +608,14 @@ export class Publisher extends Component {
     }
 
     this.addPublishJob(
+      "golang",
       (_branch, _branchOptions): PublishJobOptions => ({
-        name: "golang",
         publishTools: PUBLIB_TOOLCHAIN.go,
         prePublishSteps: prePublishSteps,
         postPublishSteps: options.postPublishSteps ?? [],
         run: this.publibCommand("publib-golang"),
         registryName: "GitHub Go Module Repository",
         env: {
-          GITHUB_REPO: options.githubRepo,
           GIT_BRANCH: options.gitBranch,
           GIT_USER_NAME:
             options.gitUserName ?? DEFAULT_GITHUB_ACTIONS_USER.name,
@@ -573,14 +629,21 @@ export class Publisher extends Component {
   }
 
   private addPublishJob(
+    /**
+     * The basename of the publish job (should be lowercase).
+     * Will be extended with a prefix.
+     */
+    basename: string,
     factory: (
       branch: string,
       branchOptions: Partial<BranchOptions>
     ) => PublishJobOptions
   ) {
+    const jobname = `${PUBLISH_JOB_PREFIX}${basename}`;
+    this.publishJobs[basename] = jobname;
+
     this._jobFactories.push((branch, branchOptions) => {
       const opts = factory(branch, branchOptions);
-      const jobname = `release_${opts.name}`;
       if (jobname in this._jobFactories) {
         throw new Error(`Duplicate job with name "${jobname}"`);
       }
@@ -595,9 +658,9 @@ export class Publisher extends Component {
       const workflowEnvEntries = Object.entries(opts.workflowEnv ?? {}).filter(
         ([_, value]) => value != undefined
       ) as string[][];
-      for (const [name, expression] of workflowEnvEntries) {
-        requiredEnv.push(name);
-        jobEnv[name] = expression;
+      for (const [env, expression] of workflowEnvEntries) {
+        requiredEnv.push(env);
+        jobEnv[env] = expression;
       }
 
       if (this.publishTasks) {
@@ -606,7 +669,7 @@ export class Publisher extends Component {
 
         // define a task which can be used through `projen publish:xxx`.
         const task = this.project.addTask(
-          `publish:${opts.name.toLocaleLowerCase()}${branchSuffix}`,
+          `publish:${basename.toLocaleLowerCase()}${branchSuffix}`,
           {
             description: `Publish this package to ${opts.registryName}`,
             env: opts.env,
@@ -690,7 +753,7 @@ export class Publisher extends Component {
           name: `Publish to ${opts.registryName}`,
           permissions: perms,
           if: this.condition,
-          needs: [this.buildJobId],
+          needs: [this.buildJobId, ...(opts.needs ?? [])],
           ...filteredRunsOnOptions(this.runsOn, this.runsOnGroup),
           container,
           steps,
@@ -766,11 +829,6 @@ interface PublishJobOptions {
   readonly permissions?: JobPermissions;
 
   /**
-   * The name of the publish job (should be lowercase).
-   */
-  readonly name: string;
-
-  /**
    * Environment to include only in the workflow (and not tasks).
    */
   readonly workflowEnv?: { [name: string]: string | undefined };
@@ -790,6 +848,11 @@ interface PublishJobOptions {
    * @default - no tools are installed
    */
   readonly publishTools?: Tools;
+
+  /**
+   * Additional jobs the publish jobs depends on.
+   */
+  readonly needs?: string[];
 }
 
 /**
@@ -798,7 +861,7 @@ interface PublishJobOptions {
 export interface CommonPublishOptions {
   /**
    * Steps to execute before executing the publishing command. These can be used
-   * to prepare the artifact for publishing if neede.
+   * to prepare the artifact for publishing if needed.
    *
    * These steps are executed after `dist/` has been populated with the build
    * output.
@@ -977,6 +1040,13 @@ export interface PyPiPublishOptions extends CommonPublishOptions {
    * @default "TWINE_PASSWORD"
    */
   readonly twinePasswordSecret?: string;
+
+  /**
+   * Options for publishing to AWS CodeArtifact.
+   *
+   * @default - undefined
+   */
+  readonly codeArtifactOptions?: CodeArtifactOptions;
 }
 
 /**
@@ -1125,13 +1195,6 @@ export interface GoPublishOptions extends CommonPublishOptions {
   readonly githubUseSsh?: boolean;
 
   /**
-   * GitHub repository to push to.
-   *
-   * @default - derived from `moduleName`
-   */
-  readonly githubRepo?: string;
-
-  /**
    * Branch to push to.
    *
    * @default "main"
@@ -1188,6 +1251,28 @@ interface VersionArtifactOptions {
  */
 export function isAwsCodeArtifactRegistry(registryUrl: string | undefined) {
   return registryUrl && AWS_CODEARTIFACT_REGISTRY_REGEX.test(registryUrl);
+}
+
+/**
+ * Info extracted from AWS CodeArtifact URL
+ */
+interface AwsCodeArtifactInfo {
+  readonly domain?: string;
+  readonly account?: string;
+  readonly region?: string;
+}
+
+/**
+ * Parses info about code artifact domain from given AWS code artifact url
+ * @param url Of code artifact domain
+ * @returns domain, account, and region of code artifact domain
+ */
+function awsCodeArtifactInfoFromUrl(url?: string): AwsCodeArtifactInfo {
+  const captureRegex =
+    /([a-z0-9-]+)-(.+)\.d\.codeartifact\.(.+)\.amazonaws\.com/;
+  const matches = url?.match(captureRegex) ?? [];
+  const [_, domain, account, region] = matches;
+  return { domain, account, region };
 }
 
 /**

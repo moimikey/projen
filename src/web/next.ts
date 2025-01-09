@@ -79,7 +79,7 @@ export class NextJsProject extends NodeProject {
     super({
       jest: false,
       minNodeVersion: MINIMUM_NEXT_JS_NODE_VERSION,
-      workflowNodeVersion: "18.x",
+      workflowNodeVersion: "lts/*",
       ...options,
     });
 
@@ -130,7 +130,7 @@ export class NextJsTypeScriptProject extends TypeScriptAppProject {
       eslint: false,
       minNodeVersion: MINIMUM_NEXT_JS_NODE_VERSION,
       jest: false,
-      workflowNodeVersion: "18.x",
+      workflowNodeVersion: "lts/*",
       tsconfig: {
         include: [
           "**/*.ts",
@@ -164,6 +164,13 @@ export class NextJsTypeScriptProject extends TypeScriptAppProject {
           paths: {
             "@/*": ["./*"],
           },
+        },
+      },
+      // ts-config for projen default needs to be overridden to commonjs
+      // https://stackoverflow.com/questions/67089549/is-it-ok-to-use-module-commonjs-in-tsconfig-json-for-a-next-js-project-usi
+      tsconfigDev: {
+        compilerOptions: {
+          module: "commonjs",
         },
       },
     };

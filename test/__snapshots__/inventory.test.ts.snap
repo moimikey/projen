@@ -133,6 +133,23 @@ exports[`inventory 1`] = `
         "switch": "cdk-assertions",
       },
       {
+        "default": ""^2"",
+        "docs": "Version range of the AWS CDK CLI to depend on.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "cdkCliVersion",
+        "optional": true,
+        "parent": "AwsCdkDepsCommonOptions",
+        "path": [
+          "cdkCliVersion",
+        ],
+        "simpleType": "string",
+        "switch": "cdk-cli-version",
+      },
+      {
         "deprecated": true,
         "docs": "Which AWS CDKv1 modules this project requires.",
         "featured": false,
@@ -1323,6 +1340,23 @@ exports[`inventory 1`] = `
         "switch": "cdk-assertions",
       },
       {
+        "default": ""^2"",
+        "docs": "Version range of the AWS CDK CLI to depend on.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "cdkCliVersion",
+        "optional": true,
+        "parent": "AwsCdkDepsCommonOptions",
+        "path": [
+          "cdkCliVersion",
+        ],
+        "simpleType": "string",
+        "switch": "cdk-cli-version",
+      },
+      {
         "deprecated": true,
         "docs": "Which AWS CDKv1 modules this project requires.",
         "featured": false,
@@ -2301,6 +2335,23 @@ exports[`inventory 1`] = `
         "switch": "sample",
       },
       {
+        "default": ""tests"",
+        "docs": "Location of sample tests.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "sampleTestdir",
+        "optional": true,
+        "parent": "PythonProjectOptions",
+        "path": [
+          "sampleTestdir",
+        ],
+        "simpleType": "string",
+        "switch": "sample-testdir",
+      },
+      {
         "docs": "Additional fields to pass in the setup() function if using setuptools.",
         "featured": false,
         "fullType": {
@@ -2376,6 +2427,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": ""tests"",
+        "deprecated": true,
         "docs": "Python sources directory.",
         "featured": false,
         "fullType": {
@@ -2807,7 +2859,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -2824,6 +2895,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -2865,6 +2953,23 @@ exports[`inventory 1`] = `
         "switch": "bundler-options",
       },
       {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
+      },
+      {
         "default": "- will be included by default for AWS CDK >= 1.0.0 < 2.0.0",
         "deprecated": true,
         "docs": "Warning: NodeJS only.",
@@ -2898,6 +3003,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "boolean",
         "switch": "cdk-assertions",
+      },
+      {
+        "default": ""^2"",
+        "docs": "Version range of the AWS CDK CLI to depend on.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "cdkCliVersion",
+        "optional": true,
+        "parent": "AwsCdkDepsCommonOptions",
+        "path": [
+          "cdkCliVersion",
+        ],
+        "simpleType": "string",
+        "switch": "cdk-cli-version",
       },
       {
         "deprecated": true,
@@ -3068,7 +3190,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -3904,8 +4026,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -3976,8 +4098,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -3994,6 +4116,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -4025,6 +4148,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -4318,7 +4458,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -4466,7 +4606,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -5282,7 +5422,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -5422,8 +5562,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -5816,7 +5956,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -5833,6 +5992,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -5872,6 +6048,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": "- new version will be announced",
@@ -5926,6 +6119,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "boolean",
         "switch": "cdk-assertions",
+      },
+      {
+        "default": ""^2"",
+        "docs": "Version range of the AWS CDK CLI to depend on.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "cdkCliVersion",
+        "optional": true,
+        "parent": "AwsCdkDepsCommonOptions",
+        "path": [
+          "cdkCliVersion",
+        ],
+        "simpleType": "string",
+        "switch": "cdk-cli-version",
       },
       {
         "deprecated": true,
@@ -6079,7 +6289,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -6753,7 +6963,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
-        "docs": "Automatically discovers and creates integration tests for each \`.integ.ts\` file in under your test directory.",
+        "docs": "Automatically discovers and creates integration tests for each \`.integ.ts\` file under your test directory.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -6822,13 +7032,13 @@ exports[`inventory 1`] = `
         "switch": "jsii-release-version",
       },
       {
-        "default": ""1.x"",
+        "default": ""~5.6.0"",
         "docs": "Version of the jsii compiler to use.",
         "featured": false,
         "fullType": {
           "primitive": "string",
         },
-        "initialValue": ""~5.0.0"",
+        "initialValue": ""~5.7.0"",
         "jsonLike": true,
         "name": "jsiiVersion",
         "optional": true,
@@ -7001,8 +7211,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -7073,8 +7283,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -7091,6 +7301,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -7122,6 +7333,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -7415,7 +7643,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -7563,7 +7791,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -8487,7 +8715,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -8583,8 +8811,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -9791,6 +10019,23 @@ exports[`inventory 1`] = `
         "switch": "sample",
       },
       {
+        "default": ""tests"",
+        "docs": "Location of sample tests.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "sampleTestdir",
+        "optional": true,
+        "parent": "PythonProjectOptions",
+        "path": [
+          "sampleTestdir",
+        ],
+        "simpleType": "string",
+        "switch": "sample-testdir",
+      },
+      {
         "docs": "Additional fields to pass in the setup() function if using setuptools.",
         "featured": false,
         "fullType": {
@@ -10219,7 +10464,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -10236,6 +10500,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -10275,6 +10556,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": ""2.0.28"",
@@ -10474,7 +10772,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -11234,8 +11532,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -11306,8 +11604,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -11324,6 +11622,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -11355,6 +11654,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -11648,7 +11964,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -11796,7 +12112,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -12593,7 +12909,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -12689,8 +13005,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -13083,7 +13399,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -13100,6 +13435,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -13139,6 +13491,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": "- new version will be announced",
@@ -13267,7 +13636,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -13992,13 +14361,13 @@ exports[`inventory 1`] = `
         "switch": "jsii-release-version",
       },
       {
-        "default": ""1.x"",
+        "default": ""~5.6.0"",
         "docs": "Version of the jsii compiler to use.",
         "featured": false,
         "fullType": {
           "primitive": "string",
         },
-        "initialValue": ""~5.0.0"",
+        "initialValue": ""~5.7.0"",
         "jsonLike": true,
         "name": "jsiiVersion",
         "optional": true,
@@ -14118,8 +14487,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -14190,8 +14559,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -14208,6 +14577,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -14239,6 +14609,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -14532,7 +14919,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -14680,7 +15067,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -15604,7 +15991,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -15700,8 +16087,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -16094,7 +16481,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -16111,6 +16517,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -16150,6 +16573,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": "- new version will be announced",
@@ -16244,7 +16684,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -16935,13 +17375,13 @@ exports[`inventory 1`] = `
         "switch": "jsii-release-version",
       },
       {
-        "default": ""1.x"",
+        "default": ""~5.6.0"",
         "docs": "Version of the jsii compiler to use.",
         "featured": false,
         "fullType": {
           "primitive": "string",
         },
-        "initialValue": ""~5.0.0"",
+        "initialValue": ""~5.7.0"",
         "jsonLike": true,
         "name": "jsiiVersion",
         "optional": true,
@@ -17061,8 +17501,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -17133,8 +17573,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -17151,6 +17591,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -17182,6 +17623,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -17475,7 +17933,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -17623,7 +18081,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -18547,7 +19005,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -18643,8 +19101,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -19892,7 +20350,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -19909,6 +20386,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -19948,6 +20442,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": "- no license checks are run during the build and all licenses will be accepted",
@@ -20006,7 +20517,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -20680,13 +21191,13 @@ exports[`inventory 1`] = `
         "switch": "jsii-release-version",
       },
       {
-        "default": ""1.x"",
+        "default": ""~5.6.0"",
         "docs": "Version of the jsii compiler to use.",
         "featured": false,
         "fullType": {
           "primitive": "string",
         },
-        "initialValue": ""~5.0.0"",
+        "initialValue": ""~5.7.0"",
         "jsonLike": true,
         "name": "jsiiVersion",
         "optional": true,
@@ -20806,8 +21317,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -20878,8 +21389,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -20896,6 +21407,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -20927,6 +21439,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -21220,7 +21749,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -21368,7 +21897,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -22292,7 +22821,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -22388,8 +22917,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -22765,7 +23294,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -22782,6 +23330,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -22821,6 +23386,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": "- no license checks are run during the build and all licenses will be accepted",
@@ -22879,7 +23461,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -23416,8 +23998,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -23488,8 +24070,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -23506,6 +24088,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -23537,6 +24120,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -23830,7 +24430,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -23978,7 +24578,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -24649,7 +25249,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -24745,8 +25345,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -25122,7 +25722,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -25139,6 +25758,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -25178,6 +25814,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": "- no license checks are run during the build and all licenses will be accepted",
@@ -25236,7 +25889,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -25911,8 +26564,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -25983,8 +26636,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -26001,6 +26654,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -26032,6 +26686,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -26325,7 +26996,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -26473,7 +27144,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -27287,7 +27958,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -27383,8 +28054,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -27743,7 +28414,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -27760,6 +28450,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -27799,6 +28506,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": "- no license checks are run during the build and all licenses will be accepted",
@@ -27857,7 +28581,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -28394,8 +29118,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -28466,8 +29190,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -28484,6 +29208,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -28515,6 +29240,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -28808,7 +29550,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -28956,7 +29698,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -29576,7 +30318,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -29672,8 +30414,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -30877,6 +31619,23 @@ exports[`inventory 1`] = `
         "switch": "sample",
       },
       {
+        "default": ""tests"",
+        "docs": "Location of sample tests.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "sampleTestdir",
+        "optional": true,
+        "parent": "PythonProjectOptions",
+        "path": [
+          "sampleTestdir",
+        ],
+        "simpleType": "string",
+        "switch": "sample-testdir",
+      },
+      {
         "docs": "Additional fields to pass in the setup() function if using setuptools.",
         "featured": false,
         "fullType": {
@@ -31288,7 +32047,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -31305,6 +32083,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -31344,6 +32139,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": "- no license checks are run during the build and all licenses will be accepted",
@@ -31402,7 +32214,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -31939,8 +32751,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -32011,8 +32823,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -32029,6 +32841,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -32060,6 +32873,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -32353,7 +33183,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -32501,7 +33331,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -33177,7 +34007,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -33273,8 +34103,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -33633,7 +34463,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -33650,6 +34499,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -33689,6 +34555,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": "- no license checks are run during the build and all licenses will be accepted",
@@ -33747,7 +34630,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -34422,8 +35305,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -34494,8 +35377,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -34512,6 +35395,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -34543,6 +35427,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -34836,7 +35737,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -34984,7 +35885,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -35803,7 +36704,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -35899,8 +36800,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -36259,7 +37160,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -36276,6 +37196,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -36315,6 +37252,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": "- no license checks are run during the build and all licenses will be accepted",
@@ -36373,7 +37327,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -37048,8 +38002,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -37120,8 +38074,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -37138,6 +38092,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -37169,6 +38124,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -37462,7 +38434,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -37610,7 +38582,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -38407,7 +39379,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -38503,8 +39475,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -38863,7 +39835,26 @@ exports[`inventory 1`] = `
         "switch": "build-workflow",
       },
       {
+        "docs": "Options for PR build workflow.",
+        "featured": false,
+        "fqn": "projen.javascript.BuildWorkflowOptions",
+        "fullType": {
+          "fqn": "projen.javascript.BuildWorkflowOptions",
+        },
+        "jsonLike": true,
+        "kind": "interface",
+        "name": "buildWorkflowOptions",
+        "optional": true,
+        "parent": "NodeProjectOptions",
+        "path": [
+          "buildWorkflowOptions",
+        ],
+        "simpleType": "BuildWorkflowOptions",
+        "switch": "build-workflow-options",
+      },
+      {
         "default": ""{ pullRequest: {}, workflowDispatch: {} }"",
+        "deprecated": true,
         "docs": "Build workflow triggers.",
         "featured": false,
         "fqn": "projen.github.workflows.Triggers",
@@ -38880,6 +39871,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "Triggers",
         "switch": "build-workflow-triggers",
+      },
+      {
+        "default": "- A recent version of "commit-and-tag-version"",
+        "docs": "The \`commit-and-tag-version\` compatible package used to bump the package version, as a dependency string.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bumpPackage",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "bumpPackage",
+        ],
+        "simpleType": "string",
+        "switch": "bump-package",
       },
       {
         "docs": "List of dependencies to bundle into this module.",
@@ -38919,6 +39927,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "BundlerOptions",
         "switch": "bundler-options",
+      },
+      {
+        "default": ""latest"",
+        "docs": "The version of Bun to use if using Bun as a package manager.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "bunVersion",
+        "optional": true,
+        "parent": "NodePackageOptions",
+        "path": [
+          "bunVersion",
+        ],
+        "simpleType": "string",
+        "switch": "bun-version",
       },
       {
         "default": "- no license checks are run during the build and all licenses will be accepted",
@@ -38977,7 +40002,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "false",
-        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
+        "docs": "Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with \`@codeCovTokenSecret\`.",
         "featured": false,
         "fullType": {
           "primitive": "boolean",
@@ -39652,8 +40677,8 @@ exports[`inventory 1`] = `
         "switch": "major-version",
       },
       {
-        "default": "- no max",
-        "docs": "Minimum node.js version to require via \`engines\` (inclusive).",
+        "default": "- no maximum version is enforced",
+        "docs": "The maximum node version supported by this package. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -39724,8 +40749,8 @@ exports[`inventory 1`] = `
         "switch": "min-major-version",
       },
       {
-        "default": "- no "engines" specified",
-        "docs": "Minimum Node.js version to require via package.json \`engines\` (inclusive).",
+        "default": "- no minimum version is enforced",
+        "docs": "The minimum node version required by this package to function. Most projects should not use this option.",
         "featured": false,
         "fullType": {
           "primitive": "string",
@@ -39742,6 +40767,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "true",
+        "deprecated": true,
         "docs": "Automatically update files modified during builds to pull-request branches.",
         "featured": false,
         "fullType": {
@@ -39773,6 +40799,23 @@ exports[`inventory 1`] = `
         ],
         "simpleType": "string",
         "switch": "name",
+      },
+      {
+        "default": "- The next version will be determined based on the commit history and project settings.",
+        "docs": "A shell command to control the next version to release.",
+        "featured": false,
+        "fullType": {
+          "primitive": "string",
+        },
+        "jsonLike": true,
+        "name": "nextVersionCommand",
+        "optional": true,
+        "parent": "ReleaseProjectOptions",
+        "path": [
+          "nextVersionCommand",
+        ],
+        "simpleType": "string",
+        "switch": "next-version-command",
       },
       {
         "default": "- for scoped packages (e.g. \`foo@bar\`), the default is
@@ -40066,7 +41109,7 @@ exports[`inventory 1`] = `
         "switch": "peer-deps",
       },
       {
-        "default": ""7"",
+        "default": ""9"",
         "docs": "The version of PNPM to use if using PNPM as a package manager.",
         "featured": false,
         "fullType": {
@@ -40214,7 +41257,7 @@ exports[`inventory 1`] = `
         "switch": "projen-credentials",
       },
       {
-        "default": "true",
+        "default": "- true if not a subproject",
         "docs": "Indicates of "projen" should be installed as a devDependency.",
         "featured": false,
         "fullType": {
@@ -41011,7 +42054,7 @@ exports[`inventory 1`] = `
       },
       {
         "default": "- standard configuration applicable for GitHub repositories",
-        "docs": "Custom configuration used when creating changelog with standard-version package.",
+        "docs": "Custom configuration used when creating changelog with commit-and-tag-version package.",
         "featured": false,
         "fullType": {
           "collection": {
@@ -41107,8 +42150,8 @@ exports[`inventory 1`] = `
         "switch": "workflow-git-identity",
       },
       {
-        "default": "- same as \`minNodeVersion\`",
-        "docs": "The node version to use in GitHub workflows.",
+        "default": "- \`minNodeVersion\` if set, otherwise \`lts/*\`.",
+        "docs": "The node version used in GitHub Actions workflows.",
         "featured": false,
         "fullType": {
           "primitive": "string",

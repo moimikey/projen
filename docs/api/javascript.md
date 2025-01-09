@@ -341,14 +341,14 @@ Synthesizes files to the project output directory.
 ##### `addExtends` <a name="addExtends" id="projen.javascript.Eslint.addExtends"></a>
 
 ```typescript
-public addExtends(extendList: string): void
+public addExtends(extendList: ...string[]): void
 ```
 
 Adds an `extends` item to the eslint configuration.
 
 ###### `extendList`<sup>Required</sup> <a name="extendList" id="projen.javascript.Eslint.addExtends.parameter.extendList"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The list of "extends" to add.
 
@@ -399,14 +399,14 @@ Add an eslint override.
 ##### `addPlugins` <a name="addPlugins" id="projen.javascript.Eslint.addPlugins"></a>
 
 ```typescript
-public addPlugins(plugins: string): void
+public addPlugins(plugins: ...string[]): void
 ```
 
 Adds an eslint plugin.
 
 ###### `plugins`<sup>Required</sup> <a name="plugins" id="projen.javascript.Eslint.addPlugins.parameter.plugins"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The names of plugins to add.
 
@@ -448,7 +448,7 @@ glob pattern.
 | --- | --- |
 | <code><a href="#projen.javascript.Eslint.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
 | <code><a href="#projen.javascript.Eslint.isComponent">isComponent</a></code> | Test whether the given construct is a component. |
-| <code><a href="#projen.javascript.Eslint.of">of</a></code> | Returns the singletone Eslint component of a project or undefined if there is none. |
+| <code><a href="#projen.javascript.Eslint.of">of</a></code> | Returns the singleton Eslint component of a project or undefined if there is none. |
 
 ---
 
@@ -508,7 +508,7 @@ import { javascript } from 'projen'
 javascript.Eslint.of(project: Project)
 ```
 
-Returns the singletone Eslint component of a project or undefined if there is none.
+Returns the singleton Eslint component of a project or undefined if there is none.
 
 ###### `project`<sup>Required</sup> <a name="project" id="projen.javascript.Eslint.of.parameter.project"></a>
 
@@ -679,6 +679,7 @@ new javascript.Jest(project: NodeProject, options?: JestOptions)
 | <code><a href="#projen.javascript.Jest.addSnapshotResolver">addSnapshotResolver</a></code> | *No description.* |
 | <code><a href="#projen.javascript.Jest.addTestMatch">addTestMatch</a></code> | Adds a test match pattern. |
 | <code><a href="#projen.javascript.Jest.addWatchIgnorePattern">addWatchIgnorePattern</a></code> | Adds a watch ignore pattern. |
+| <code><a href="#projen.javascript.Jest.discoverTestMatchPatternsForDirs">discoverTestMatchPatternsForDirs</a></code> | Build standard test match patterns for a directory. |
 
 ---
 
@@ -749,14 +750,14 @@ A map from regular expressions to module names or to arrays of module names that
 ##### `addModulePaths` <a name="addModulePaths" id="projen.javascript.Jest.addModulePaths"></a>
 
 ```typescript
-public addModulePaths(modulePaths: string): void
+public addModulePaths(modulePaths: ...string[]): void
 ```
 
 Adds one or more modulePaths to Jest's configuration.
 
 ###### `modulePaths`<sup>Required</sup> <a name="modulePaths" id="projen.javascript.Jest.addModulePaths.parameter.modulePaths"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 An array of absolute paths to additional locations to search when resolving modules   *.
 
@@ -777,14 +778,14 @@ public addReporter(reporter: JestReporter): void
 ##### `addRoots` <a name="addRoots" id="projen.javascript.Jest.addRoots"></a>
 
 ```typescript
-public addRoots(roots: string): void
+public addRoots(roots: ...string[]): void
 ```
 
 Adds one or more roots to Jest's configuration.
 
 ###### `roots`<sup>Required</sup> <a name="roots" id="projen.javascript.Jest.addRoots.parameter.roots"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 A list of paths to directories that Jest should use to search for files in.
 
@@ -863,6 +864,32 @@ Adds a watch ignore pattern.
 - *Type:* string
 
 The pattern (regular expression).
+
+---
+
+##### `discoverTestMatchPatternsForDirs` <a name="discoverTestMatchPatternsForDirs" id="projen.javascript.Jest.discoverTestMatchPatternsForDirs"></a>
+
+```typescript
+public discoverTestMatchPatternsForDirs(dirs: string[], options?: JestDiscoverTestMatchPatternsForDirsOptions): void
+```
+
+Build standard test match patterns for a directory.
+
+###### `dirs`<sup>Required</sup> <a name="dirs" id="projen.javascript.Jest.discoverTestMatchPatternsForDirs.parameter.dirs"></a>
+
+- *Type:* string[]
+
+The directories to add test matches for.
+
+Matches any folder if not specified or an empty array.
+
+---
+
+###### `options`<sup>Optional</sup> <a name="options" id="projen.javascript.Jest.discoverTestMatchPatternsForDirs.parameter.options"></a>
+
+- *Type:* <a href="#projen.javascript.JestDiscoverTestMatchPatternsForDirsOptions">JestDiscoverTestMatchPatternsForDirsOptions</a>
+
+Options for building test match patterns.
 
 ---
 
@@ -1294,7 +1321,7 @@ public addBin(bins: {[ key: string ]: string}): void
 ##### `addBundledDeps` <a name="addBundledDeps" id="projen.javascript.NodePackage.addBundledDeps"></a>
 
 ```typescript
-public addBundledDeps(deps: string): void
+public addBundledDeps(deps: ...string[]): void
 ```
 
 Defines bundled dependencies.
@@ -1304,7 +1331,7 @@ Bundled dependencies will be added as normal dependencies as well as to the
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.javascript.NodePackage.addBundledDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -1319,14 +1346,14 @@ add/upgrade`. If you wish to specify a version range use this syntax:
 ##### `addDeps` <a name="addDeps" id="projen.javascript.NodePackage.addDeps"></a>
 
 ```typescript
-public addDeps(deps: string): void
+public addDeps(deps: ...string[]): void
 ```
 
 Defines normal dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.javascript.NodePackage.addDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -1341,14 +1368,14 @@ add/upgrade`. If you wish to specify a version range use this syntax:
 ##### `addDevDeps` <a name="addDevDeps" id="projen.javascript.NodePackage.addDevDeps"></a>
 
 ```typescript
-public addDevDeps(deps: string): void
+public addDevDeps(deps: ...string[]): void
 ```
 
 Defines development/test dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.javascript.NodePackage.addDevDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -1411,14 +1438,14 @@ field value.
 ##### `addKeywords` <a name="addKeywords" id="projen.javascript.NodePackage.addKeywords"></a>
 
 ```typescript
-public addKeywords(keywords: string): void
+public addKeywords(keywords: ...string[]): void
 ```
 
 Adds keywords to package.json (deduplicated).
 
 ###### `keywords`<sup>Required</sup> <a name="keywords" id="projen.javascript.NodePackage.addKeywords.parameter.keywords"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The keywords to add.
 
@@ -1427,14 +1454,14 @@ The keywords to add.
 ##### `addPackageResolutions` <a name="addPackageResolutions" id="projen.javascript.NodePackage.addPackageResolutions"></a>
 
 ```typescript
-public addPackageResolutions(resolutions: string): void
+public addPackageResolutions(resolutions: ...string[]): void
 ```
 
 Defines resolutions for dependencies to change the normally resolved version of a dependency to something else.
 
 ###### `resolutions`<sup>Required</sup> <a name="resolutions" id="projen.javascript.NodePackage.addPackageResolutions.parameter.resolutions"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names resolutions to be added.
 
@@ -1447,7 +1474,7 @@ range with this syntax:
 ##### `addPeerDeps` <a name="addPeerDeps" id="projen.javascript.NodePackage.addPeerDeps"></a>
 
 ```typescript
-public addPeerDeps(deps: string): void
+public addPeerDeps(deps: ...string[]): void
 ```
 
 Defines peer dependencies.
@@ -1458,7 +1485,7 @@ your code against the minimum version required from your consumers.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.javascript.NodePackage.addPeerDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -1656,10 +1683,11 @@ The project.
 | <code><a href="#projen.javascript.NodePackage.property.packageManager">packageManager</a></code> | <code><a href="#projen.javascript.NodePackageManager">NodePackageManager</a></code> | The package manager to use. |
 | <code><a href="#projen.javascript.NodePackage.property.packageName">packageName</a></code> | <code>string</code> | The name of the npm package. |
 | <code><a href="#projen.javascript.NodePackage.property.projenCommand">projenCommand</a></code> | <code>string</code> | The command which executes "projen". |
+| <code><a href="#projen.javascript.NodePackage.property.bunVersion">bunVersion</a></code> | <code>string</code> | The version of Bun to use if using Bun as a package manager. |
 | <code><a href="#projen.javascript.NodePackage.property.codeArtifactOptions">codeArtifactOptions</a></code> | <code><a href="#projen.javascript.CodeArtifactOptions">CodeArtifactOptions</a></code> | Options for npm packages using AWS CodeArtifact. |
 | <code><a href="#projen.javascript.NodePackage.property.license">license</a></code> | <code>string</code> | The SPDX license of this module. |
-| <code><a href="#projen.javascript.NodePackage.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Maximum node version required by this package. |
-| <code><a href="#projen.javascript.NodePackage.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | Minimum node.js version required by this package. |
+| <code><a href="#projen.javascript.NodePackage.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Maximum node version supported by this package. |
+| <code><a href="#projen.javascript.NodePackage.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | The minimum node version required by this package to function. |
 | <code><a href="#projen.javascript.NodePackage.property.npmTokenSecret">npmTokenSecret</a></code> | <code>string</code> | GitHub secret which contains the NPM token to use when publishing packages. |
 | <code><a href="#projen.javascript.NodePackage.property.pnpmVersion">pnpmVersion</a></code> | <code>string</code> | The version of PNPM to use if using PNPM as a package manager. |
 | <code><a href="#projen.javascript.NodePackage.property.scopedPackagesOptions">scopedPackagesOptions</a></code> | <code><a href="#projen.javascript.ScopedPackagesOptions">ScopedPackagesOptions</a>[]</code> | Options for privately hosted scoped packages. |
@@ -1882,6 +1910,18 @@ The command which executes "projen".
 
 ---
 
+##### `bunVersion`<sup>Optional</sup> <a name="bunVersion" id="projen.javascript.NodePackage.property.bunVersion"></a>
+
+```typescript
+public readonly bunVersion: string;
+```
+
+- *Type:* string
+
+The version of Bun to use if using Bun as a package manager.
+
+---
+
 ##### `codeArtifactOptions`<sup>Optional</sup> <a name="codeArtifactOptions" id="projen.javascript.NodePackage.property.codeArtifactOptions"></a>
 
 ```typescript
@@ -1918,9 +1958,10 @@ public readonly maxNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no maximum.
 
-Maximum node version required by this package.
+Maximum node version supported by this package.
+
+The value indicates the package is incompatible with newer versions.
 
 ---
 
@@ -1931,9 +1972,10 @@ public readonly minNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no minimum
 
-Minimum node.js version required by this package.
+The minimum node version required by this package to function.
+
+This value indicates the package is incompatible with older versions.
 
 ---
 
@@ -1956,7 +1998,6 @@ public readonly pnpmVersion: string;
 ```
 
 - *Type:* string
-- *Default:* "7"
 
 The version of PNPM to use if using PNPM as a package manager.
 
@@ -2048,7 +2089,7 @@ Returns a string representation of this construct.
 ##### `addExcludeFromCleanup` <a name="addExcludeFromCleanup" id="projen.javascript.NodeProject.addExcludeFromCleanup"></a>
 
 ```typescript
-public addExcludeFromCleanup(globs: string): void
+public addExcludeFromCleanup(globs: ...string[]): void
 ```
 
 Exclude the matching files from pre-synth cleanup.
@@ -2058,7 +2099,7 @@ source files include the projen marker and we don't want them to be erased durin
 
 ###### `globs`<sup>Required</sup> <a name="globs" id="projen.javascript.NodeProject.addExcludeFromCleanup.parameter.globs"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The glob patterns to match.
 
@@ -2314,7 +2355,7 @@ public addBins(bins: {[ key: string ]: string}): void
 ##### `addBundledDeps` <a name="addBundledDeps" id="projen.javascript.NodeProject.addBundledDeps"></a>
 
 ```typescript
-public addBundledDeps(deps: string): void
+public addBundledDeps(deps: ...string[]): void
 ```
 
 Defines bundled dependencies.
@@ -2324,7 +2365,7 @@ Bundled dependencies will be added as normal dependencies as well as to the
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.javascript.NodeProject.addBundledDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -2339,28 +2380,28 @@ add/upgrade`. If you wish to specify a version range use this syntax:
 ##### ~~`addCompileCommand`~~ <a name="addCompileCommand" id="projen.javascript.NodeProject.addCompileCommand"></a>
 
 ```typescript
-public addCompileCommand(commands: string): void
+public addCompileCommand(commands: ...string[]): void
 ```
 
 DEPRECATED.
 
 ###### `commands`<sup>Required</sup> <a name="commands" id="projen.javascript.NodeProject.addCompileCommand.parameter.commands"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 ---
 
 ##### `addDeps` <a name="addDeps" id="projen.javascript.NodeProject.addDeps"></a>
 
 ```typescript
-public addDeps(deps: string): void
+public addDeps(deps: ...string[]): void
 ```
 
 Defines normal dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.javascript.NodeProject.addDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -2375,14 +2416,14 @@ add/upgrade`. If you wish to specify a version range use this syntax:
 ##### `addDevDeps` <a name="addDevDeps" id="projen.javascript.NodeProject.addDevDeps"></a>
 
 ```typescript
-public addDevDeps(deps: string): void
+public addDevDeps(deps: ...string[]): void
 ```
 
 Defines development/test dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.javascript.NodeProject.addDevDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -2413,14 +2454,14 @@ The fields to set.
 ##### `addKeywords` <a name="addKeywords" id="projen.javascript.NodeProject.addKeywords"></a>
 
 ```typescript
-public addKeywords(keywords: string): void
+public addKeywords(keywords: ...string[]): void
 ```
 
 Adds keywords to package.json (deduplicated).
 
 ###### `keywords`<sup>Required</sup> <a name="keywords" id="projen.javascript.NodeProject.addKeywords.parameter.keywords"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The keywords to add.
 
@@ -2429,7 +2470,7 @@ The keywords to add.
 ##### `addPeerDeps` <a name="addPeerDeps" id="projen.javascript.NodeProject.addPeerDeps"></a>
 
 ```typescript
-public addPeerDeps(deps: string): void
+public addPeerDeps(deps: ...string[]): void
 ```
 
 Defines peer dependencies.
@@ -2440,7 +2481,7 @@ your code against the minimum version required from your consumers.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.javascript.NodeProject.addPeerDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -2471,14 +2512,14 @@ The scripts to set.
 ##### ~~`addTestCommand`~~ <a name="addTestCommand" id="projen.javascript.NodeProject.addTestCommand"></a>
 
 ```typescript
-public addTestCommand(commands: string): void
+public addTestCommand(commands: ...string[]): void
 ```
 
 DEPRECATED.
 
 ###### `commands`<sup>Required</sup> <a name="commands" id="projen.javascript.NodeProject.addTestCommand.parameter.commands"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 ---
 
@@ -2679,8 +2720,8 @@ When given a project, this it the project itself.
 | <code><a href="#projen.javascript.NodeProject.property.buildWorkflow">buildWorkflow</a></code> | <code>projen.build.BuildWorkflow</code> | The PR build GitHub workflow. |
 | <code><a href="#projen.javascript.NodeProject.property.buildWorkflowJobId">buildWorkflowJobId</a></code> | <code>string</code> | The job ID of the build workflow. |
 | <code><a href="#projen.javascript.NodeProject.property.jest">jest</a></code> | <code><a href="#projen.javascript.Jest">Jest</a></code> | The Jest configuration (if enabled). |
-| <code><a href="#projen.javascript.NodeProject.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Maximum node version required by this package. |
-| <code><a href="#projen.javascript.NodeProject.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | Minimum node.js version required by this package. |
+| <code><a href="#projen.javascript.NodeProject.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Maximum node version supported by this package. |
+| <code><a href="#projen.javascript.NodeProject.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | The minimum node version required by this package to function. |
 | <code><a href="#projen.javascript.NodeProject.property.npmignore">npmignore</a></code> | <code>projen.IgnoreFile</code> | The .npmignore file. |
 | <code><a href="#projen.javascript.NodeProject.property.prettier">prettier</a></code> | <code><a href="#projen.javascript.Prettier">Prettier</a></code> | *No description.* |
 | <code><a href="#projen.javascript.NodeProject.property.publisher">publisher</a></code> | <code>projen.release.Publisher</code> | Package publisher. |
@@ -3246,7 +3287,9 @@ public readonly maxNodeVersion: string;
 
 - *Type:* string
 
-Maximum node version required by this package.
+Maximum node version supported by this package.
+
+The value indicates the package is incompatible with newer versions.
 
 ---
 
@@ -3258,7 +3301,9 @@ public readonly minNodeVersion: string;
 
 - *Type:* string
 
-Minimum node.js version required by this package.
+The minimum node version required by this package to function.
+
+This value indicates the package is incompatible with older versions.
 
 ---
 
@@ -3820,7 +3865,10 @@ The .prettierIgnore file.
 
 ### Projenrc <a name="Projenrc" id="projen.javascript.Projenrc"></a>
 
-Sets up a javascript project to use TypeScript for projenrc.
+A projenrc file written in JavaScript.
+
+This component can be instantiated in any type of project
+and has no expectations around the project's main language.
 
 #### Initializers <a name="Initializers" id="projen.javascript.Projenrc.Initializer"></a>
 
@@ -4052,9 +4100,11 @@ new javascript.TypescriptConfig(project: Project, options: TypescriptConfigOptio
 | <code><a href="#projen.javascript.TypescriptConfig.postSynthesize">postSynthesize</a></code> | Called after synthesis. |
 | <code><a href="#projen.javascript.TypescriptConfig.preSynthesize">preSynthesize</a></code> | Called before synthesis. |
 | <code><a href="#projen.javascript.TypescriptConfig.synthesize">synthesize</a></code> | Synthesizes files to the project output directory. |
-| <code><a href="#projen.javascript.TypescriptConfig.addExclude">addExclude</a></code> | *No description.* |
+| <code><a href="#projen.javascript.TypescriptConfig.addExclude">addExclude</a></code> | Add an exclude pattern to the `exclude` array of the TSConfig. |
 | <code><a href="#projen.javascript.TypescriptConfig.addExtends">addExtends</a></code> | Extend from base `TypescriptConfig` instance. |
-| <code><a href="#projen.javascript.TypescriptConfig.addInclude">addInclude</a></code> | *No description.* |
+| <code><a href="#projen.javascript.TypescriptConfig.addInclude">addInclude</a></code> | Add an include pattern to the `include` array of the TSConfig. |
+| <code><a href="#projen.javascript.TypescriptConfig.removeExclude">removeExclude</a></code> | Remove an exclude pattern from the `exclude` array of the TSConfig. |
+| <code><a href="#projen.javascript.TypescriptConfig.removeInclude">removeInclude</a></code> | Remove an include pattern from the `include` array of the TSConfig. |
 | <code><a href="#projen.javascript.TypescriptConfig.resolveExtendsPath">resolveExtendsPath</a></code> | Resolve valid TypeScript extends paths relative to this config. |
 
 ---
@@ -4099,9 +4149,15 @@ Synthesizes files to the project output directory.
 public addExclude(pattern: string): void
 ```
 
+Add an exclude pattern to the `exclude` array of the TSConfig.
+
+> [https://www.typescriptlang.org/tsconfig#exclude](https://www.typescriptlang.org/tsconfig#exclude)
+
 ###### `pattern`<sup>Required</sup> <a name="pattern" id="projen.javascript.TypescriptConfig.addExclude.parameter.pattern"></a>
 
 - *Type:* string
+
+The pattern to add.
 
 ---
 
@@ -4127,9 +4183,51 @@ Base `TypescriptConfig` instance.
 public addInclude(pattern: string): void
 ```
 
+Add an include pattern to the `include` array of the TSConfig.
+
+> [https://www.typescriptlang.org/tsconfig#include](https://www.typescriptlang.org/tsconfig#include)
+
 ###### `pattern`<sup>Required</sup> <a name="pattern" id="projen.javascript.TypescriptConfig.addInclude.parameter.pattern"></a>
 
 - *Type:* string
+
+The pattern to add.
+
+---
+
+##### `removeExclude` <a name="removeExclude" id="projen.javascript.TypescriptConfig.removeExclude"></a>
+
+```typescript
+public removeExclude(pattern: string): void
+```
+
+Remove an exclude pattern from the `exclude` array of the TSConfig.
+
+> [https://www.typescriptlang.org/tsconfig#exclude](https://www.typescriptlang.org/tsconfig#exclude)
+
+###### `pattern`<sup>Required</sup> <a name="pattern" id="projen.javascript.TypescriptConfig.removeExclude.parameter.pattern"></a>
+
+- *Type:* string
+
+The pattern to remove.
+
+---
+
+##### `removeInclude` <a name="removeInclude" id="projen.javascript.TypescriptConfig.removeInclude"></a>
+
+```typescript
+public removeInclude(pattern: string): void
+```
+
+Remove an include pattern from the `include` array of the TSConfig.
+
+> [https://www.typescriptlang.org/tsconfig#include](https://www.typescriptlang.org/tsconfig#include)
+
+###### `pattern`<sup>Required</sup> <a name="pattern" id="projen.javascript.TypescriptConfig.removeInclude.parameter.pattern"></a>
+
+- *Type:* string
+
+The pattern to remove.
 
 ---
 
@@ -4212,12 +4310,12 @@ Test whether the given construct is a component.
 | --- | --- | --- |
 | <code><a href="#projen.javascript.TypescriptConfig.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#projen.javascript.TypescriptConfig.property.project">project</a></code> | <code>projen.Project</code> | *No description.* |
-| <code><a href="#projen.javascript.TypescriptConfig.property.compilerOptions">compilerOptions</a></code> | <code><a href="#projen.javascript.TypeScriptCompilerOptions">TypeScriptCompilerOptions</a></code> | *No description.* |
 | <code><a href="#projen.javascript.TypescriptConfig.property.exclude">exclude</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#projen.javascript.TypescriptConfig.property.extends">extends</a></code> | <code>string[]</code> | Array of base `tsconfig.json` paths. Any absolute paths are resolved relative to this instance, while any relative paths are used as is. |
 | <code><a href="#projen.javascript.TypescriptConfig.property.file">file</a></code> | <code>projen.JsonFile</code> | *No description.* |
 | <code><a href="#projen.javascript.TypescriptConfig.property.fileName">fileName</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#projen.javascript.TypescriptConfig.property.include">include</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#projen.javascript.TypescriptConfig.property.compilerOptions">compilerOptions</a></code> | <code><a href="#projen.javascript.TypeScriptCompilerOptions">TypeScriptCompilerOptions</a></code> | *No description.* |
 
 ---
 
@@ -4240,16 +4338,6 @@ public readonly project: Project;
 ```
 
 - *Type:* projen.Project
-
----
-
-##### `compilerOptions`<sup>Required</sup> <a name="compilerOptions" id="projen.javascript.TypescriptConfig.property.compilerOptions"></a>
-
-```typescript
-public readonly compilerOptions: TypeScriptCompilerOptions;
-```
-
-- *Type:* <a href="#projen.javascript.TypeScriptCompilerOptions">TypeScriptCompilerOptions</a>
 
 ---
 
@@ -4302,6 +4390,16 @@ public readonly include: string[];
 ```
 
 - *Type:* string[]
+
+---
+
+##### `compilerOptions`<sup>Optional</sup> <a name="compilerOptions" id="projen.javascript.TypescriptConfig.property.compilerOptions"></a>
+
+```typescript
+public readonly compilerOptions: TypeScriptCompilerOptions;
+```
+
+- *Type:* <a href="#projen.javascript.TypeScriptCompilerOptions">TypeScriptCompilerOptions</a>
 
 ---
 
@@ -4386,14 +4484,14 @@ Synthesizes files to the project output directory.
 ##### `addPostBuildSteps` <a name="addPostBuildSteps" id="projen.javascript.UpgradeDependencies.addPostBuildSteps"></a>
 
 ```typescript
-public addPostBuildSteps(steps: JobStep): void
+public addPostBuildSteps(steps: ...JobStep[]): void
 ```
 
 Add steps to execute a successful build.
 
 ###### `steps`<sup>Required</sup> <a name="steps" id="projen.javascript.UpgradeDependencies.addPostBuildSteps.parameter.steps"></a>
 
-- *Type:* projen.github.workflows.JobStep
+- *Type:* ...projen.github.workflows.JobStep[]
 
 workflow steps.
 
@@ -5171,6 +5269,100 @@ The path of the tsconfig.json file to use for bundling.
 
 ---
 
+### BuildWorkflowOptions <a name="BuildWorkflowOptions" id="projen.javascript.BuildWorkflowOptions"></a>
+
+Build workflow options for NodeProject.
+
+#### Initializer <a name="Initializer" id="projen.javascript.BuildWorkflowOptions.Initializer"></a>
+
+```typescript
+import { javascript } from 'projen'
+
+const buildWorkflowOptions: javascript.BuildWorkflowOptions = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#projen.javascript.BuildWorkflowOptions.property.name">name</a></code> | <code>string</code> | Name of the buildfile (e.g. "build" becomes "build.yml"). |
+| <code><a href="#projen.javascript.BuildWorkflowOptions.property.permissions">permissions</a></code> | <code>projen.github.workflows.JobPermissions</code> | Permissions granted to the build job To limit job permissions for `contents`, the desired permissions have to be explicitly set, e.g.: `{ contents: JobPermission.NONE }`. |
+| <code><a href="#projen.javascript.BuildWorkflowOptions.property.preBuildSteps">preBuildSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute before the build. |
+| <code><a href="#projen.javascript.BuildWorkflowOptions.property.workflowTriggers">workflowTriggers</a></code> | <code>projen.github.workflows.Triggers</code> | Build workflow triggers. |
+| <code><a href="#projen.javascript.BuildWorkflowOptions.property.mutableBuild">mutableBuild</a></code> | <code>boolean</code> | Automatically update files modified during builds to pull-request branches. |
+
+---
+
+##### `name`<sup>Optional</sup> <a name="name" id="projen.javascript.BuildWorkflowOptions.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+- *Default:* "build"
+
+Name of the buildfile (e.g. "build" becomes "build.yml").
+
+---
+
+##### `permissions`<sup>Optional</sup> <a name="permissions" id="projen.javascript.BuildWorkflowOptions.property.permissions"></a>
+
+```typescript
+public readonly permissions: JobPermissions;
+```
+
+- *Type:* projen.github.workflows.JobPermissions
+- *Default:* `{ contents: JobPermission.WRITE }`
+
+Permissions granted to the build job To limit job permissions for `contents`, the desired permissions have to be explicitly set, e.g.: `{ contents: JobPermission.NONE }`.
+
+---
+
+##### `preBuildSteps`<sup>Optional</sup> <a name="preBuildSteps" id="projen.javascript.BuildWorkflowOptions.property.preBuildSteps"></a>
+
+```typescript
+public readonly preBuildSteps: JobStep[];
+```
+
+- *Type:* projen.github.workflows.JobStep[]
+- *Default:* []
+
+Steps to execute before the build.
+
+---
+
+##### `workflowTriggers`<sup>Optional</sup> <a name="workflowTriggers" id="projen.javascript.BuildWorkflowOptions.property.workflowTriggers"></a>
+
+```typescript
+public readonly workflowTriggers: Triggers;
+```
+
+- *Type:* projen.github.workflows.Triggers
+- *Default:* "{ pullRequest: {}, workflowDispatch: {} }"
+
+Build workflow triggers.
+
+---
+
+##### `mutableBuild`<sup>Optional</sup> <a name="mutableBuild" id="projen.javascript.BuildWorkflowOptions.property.mutableBuild"></a>
+
+```typescript
+public readonly mutableBuild: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Automatically update files modified during builds to pull-request branches.
+
+This means that any files synthesized by projen or e.g. test snapshots will
+always be up-to-date before a PR is merged.
+
+Implies that PR builds do not have anti-tamper checks.
+
+---
+
 ### Bundle <a name="Bundle" id="projen.javascript.Bundle"></a>
 
 #### Initializer <a name="Initializer" id="projen.javascript.Bundle.Initializer"></a>
@@ -5555,6 +5747,50 @@ public readonly statements: number;
 
 ---
 
+### EslintCommandOptions <a name="EslintCommandOptions" id="projen.javascript.EslintCommandOptions"></a>
+
+#### Initializer <a name="Initializer" id="projen.javascript.EslintCommandOptions.Initializer"></a>
+
+```typescript
+import { javascript } from 'projen'
+
+const eslintCommandOptions: javascript.EslintCommandOptions = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#projen.javascript.EslintCommandOptions.property.extraArgs">extraArgs</a></code> | <code>string[]</code> | Extra flag arguments to pass to eslint command. |
+| <code><a href="#projen.javascript.EslintCommandOptions.property.fix">fix</a></code> | <code>boolean</code> | Whether to fix eslint issues when running the eslint task. |
+
+---
+
+##### `extraArgs`<sup>Optional</sup> <a name="extraArgs" id="projen.javascript.EslintCommandOptions.property.extraArgs"></a>
+
+```typescript
+public readonly extraArgs: string[];
+```
+
+- *Type:* string[]
+
+Extra flag arguments to pass to eslint command.
+
+---
+
+##### `fix`<sup>Optional</sup> <a name="fix" id="projen.javascript.EslintCommandOptions.property.fix"></a>
+
+```typescript
+public readonly fix: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Whether to fix eslint issues when running the eslint task.
+
+---
+
 ### EslintOptions <a name="EslintOptions" id="projen.javascript.EslintOptions"></a>
 
 #### Initializer <a name="Initializer" id="projen.javascript.EslintOptions.Initializer"></a>
@@ -5572,12 +5808,14 @@ const eslintOptions: javascript.EslintOptions = { ... }
 | <code><a href="#projen.javascript.EslintOptions.property.dirs">dirs</a></code> | <code>string[]</code> | Files or glob patterns or directories with source files to lint (e.g. [ "src" ]). |
 | <code><a href="#projen.javascript.EslintOptions.property.aliasExtensions">aliasExtensions</a></code> | <code>string[]</code> | Enable import alias for module paths. |
 | <code><a href="#projen.javascript.EslintOptions.property.aliasMap">aliasMap</a></code> | <code>{[ key: string ]: string}</code> | Enable import alias for module paths. |
+| <code><a href="#projen.javascript.EslintOptions.property.commandOptions">commandOptions</a></code> | <code><a href="#projen.javascript.EslintCommandOptions">EslintCommandOptions</a></code> | Options for eslint command executed by eslint task. |
 | <code><a href="#projen.javascript.EslintOptions.property.devdirs">devdirs</a></code> | <code>string[]</code> | Files or glob patterns or directories with source files that include tests and build tools. |
 | <code><a href="#projen.javascript.EslintOptions.property.fileExtensions">fileExtensions</a></code> | <code>string[]</code> | File types that should be linted (e.g. [ ".js", ".ts" ]). |
 | <code><a href="#projen.javascript.EslintOptions.property.ignorePatterns">ignorePatterns</a></code> | <code>string[]</code> | List of file patterns that should not be linted, using the same syntax as .gitignore patterns. |
 | <code><a href="#projen.javascript.EslintOptions.property.lintProjenRc">lintProjenRc</a></code> | <code>boolean</code> | Should we lint .projenrc.js. |
 | <code><a href="#projen.javascript.EslintOptions.property.lintProjenRcFile">lintProjenRcFile</a></code> | <code>string</code> | Projenrc file to lint. |
 | <code><a href="#projen.javascript.EslintOptions.property.prettier">prettier</a></code> | <code>boolean</code> | Enable prettier for code formatting. |
+| <code><a href="#projen.javascript.EslintOptions.property.sortExtends">sortExtends</a></code> | <code>projen.ICompareString</code> | The extends array in eslint is order dependent. |
 | <code><a href="#projen.javascript.EslintOptions.property.tsAlwaysTryTypes">tsAlwaysTryTypes</a></code> | <code>boolean</code> | Always try to resolve types under `<root>@types` directory even it doesn't contain any source code. |
 | <code><a href="#projen.javascript.EslintOptions.property.tsconfigPath">tsconfigPath</a></code> | <code>string</code> | Path to `tsconfig.json` which should be used by eslint. |
 | <code><a href="#projen.javascript.EslintOptions.property.yaml">yaml</a></code> | <code>boolean</code> | Write eslint configuration as YAML instead of JSON. |
@@ -5619,6 +5857,18 @@ public readonly aliasMap: {[ key: string ]: string};
 - *Default:* undefined
 
 Enable import alias for module paths.
+
+---
+
+##### `commandOptions`<sup>Optional</sup> <a name="commandOptions" id="projen.javascript.EslintOptions.property.commandOptions"></a>
+
+```typescript
+public readonly commandOptions: EslintCommandOptions;
+```
+
+- *Type:* <a href="#projen.javascript.EslintCommandOptions">EslintCommandOptions</a>
+
+Options for eslint command executed by eslint task.
 
 ---
 
@@ -5708,6 +5958,21 @@ Enable prettier for code formatting.
 
 ---
 
+##### `sortExtends`<sup>Optional</sup> <a name="sortExtends" id="projen.javascript.EslintOptions.property.sortExtends"></a>
+
+```typescript
+public readonly sortExtends: ICompareString;
+```
+
+- *Type:* projen.ICompareString
+- *Default:* Use known ESLint best practices to place "prettier" plugins at the end of the array
+
+The extends array in eslint is order dependent.
+
+This option allows to sort the extends array in any way seen fit.
+
+---
+
 ##### `tsAlwaysTryTypes`<sup>Optional</sup> <a name="tsAlwaysTryTypes" id="projen.javascript.EslintOptions.property.tsAlwaysTryTypes"></a>
 
 ```typescript
@@ -5770,7 +6035,7 @@ const eslintOverride: javascript.EslintOverride = { ... }
 | <code><a href="#projen.javascript.EslintOverride.property.extends">extends</a></code> | <code>string[]</code> | Config(s) to extend in this override. |
 | <code><a href="#projen.javascript.EslintOverride.property.parser">parser</a></code> | <code>string</code> | The overridden parser. |
 | <code><a href="#projen.javascript.EslintOverride.property.plugins">plugins</a></code> | <code>string[]</code> | `plugins` override. |
-| <code><a href="#projen.javascript.EslintOverride.property.rules">rules</a></code> | <code>{[ key: string ]: any}</code> | The overriden rules. |
+| <code><a href="#projen.javascript.EslintOverride.property.rules">rules</a></code> | <code>{[ key: string ]: any}</code> | The overridden rules. |
 
 ---
 
@@ -5844,7 +6109,7 @@ public readonly rules: {[ key: string ]: any};
 
 - *Type:* {[ key: string ]: any}
 
-The overriden rules.
+The overridden rules.
 
 ---
 
@@ -6139,11 +6404,11 @@ public readonly coverageProvider: string;
 ```
 
 - *Type:* string
-- *Default:* "babel"
+- *Default:* "v8"
 
 Indicates which provider should be used to instrument code for coverage.
 
-Allowed values are babel (default) or v8
+Allowed values are v8 (default) or babel
 
 ---
 
@@ -6753,7 +7018,7 @@ public readonly testMatch: string[];
 ```
 
 - *Type:* string[]
-- *Default:* ['**\/__tests__/**\/*.[jt]s?(x)', '**\/?(*.)+(spec|test).[tj]s?(x)']
+- *Default:* ['**\/__tests__/**\/*.[jt]s?(x)', '**\/*(*.)@(spec|test).[tj]s?(x)']
 
 The glob patterns Jest uses to detect test files.
 
@@ -6986,6 +7251,40 @@ public readonly watchPlugins: WatchPlugin[];
 
 ---
 
+### JestDiscoverTestMatchPatternsForDirsOptions <a name="JestDiscoverTestMatchPatternsForDirsOptions" id="projen.javascript.JestDiscoverTestMatchPatternsForDirsOptions"></a>
+
+Options for discoverTestMatchPatternsForDirs.
+
+#### Initializer <a name="Initializer" id="projen.javascript.JestDiscoverTestMatchPatternsForDirsOptions.Initializer"></a>
+
+```typescript
+import { javascript } from 'projen'
+
+const jestDiscoverTestMatchPatternsForDirsOptions: javascript.JestDiscoverTestMatchPatternsForDirsOptions = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#projen.javascript.JestDiscoverTestMatchPatternsForDirsOptions.property.fileExtensionPattern">fileExtensionPattern</a></code> | <code>string</code> | The file extension pattern to use. |
+
+---
+
+##### `fileExtensionPattern`<sup>Optional</sup> <a name="fileExtensionPattern" id="projen.javascript.JestDiscoverTestMatchPatternsForDirsOptions.property.fileExtensionPattern"></a>
+
+```typescript
+public readonly fileExtensionPattern: string;
+```
+
+- *Type:* string
+
+The file extension pattern to use.
+
+Defaults to "[jt]s?(x)".
+
+---
+
 ### JestOptions <a name="JestOptions" id="projen.javascript.JestOptions"></a>
 
 #### Initializer <a name="Initializer" id="projen.javascript.JestOptions.Initializer"></a>
@@ -7008,6 +7307,7 @@ const jestOptions: javascript.JestOptions = { ... }
 | <code><a href="#projen.javascript.JestOptions.property.jestConfig">jestConfig</a></code> | <code><a href="#projen.javascript.JestConfigOptions">JestConfigOptions</a></code> | Jest configuration. |
 | <code><a href="#projen.javascript.JestOptions.property.jestVersion">jestVersion</a></code> | <code>string</code> | The version of jest to use. |
 | <code><a href="#projen.javascript.JestOptions.property.junitReporting">junitReporting</a></code> | <code>boolean</code> | Result processing with jest-junit. |
+| <code><a href="#projen.javascript.JestOptions.property.passWithNoTests">passWithNoTests</a></code> | <code>boolean</code> | Pass with no tests. |
 | <code><a href="#projen.javascript.JestOptions.property.preserveDefaultReporters">preserveDefaultReporters</a></code> | <code>boolean</code> | Preserve the default Jest reporter when additional reporters are added. |
 | <code><a href="#projen.javascript.JestOptions.property.updateSnapshot">updateSnapshot</a></code> | <code><a href="#projen.javascript.UpdateSnapshot">UpdateSnapshot</a></code> | Whether to update snapshots in task "test" (which is executed in task "build" and build workflows), or create a separate task "test:update" for updating snapshots. |
 
@@ -7124,6 +7424,19 @@ public readonly junitReporting: boolean;
 Result processing with jest-junit.
 
 Output directory is `test-reports/`.
+
+---
+
+##### `passWithNoTests`<sup>Optional</sup> <a name="passWithNoTests" id="projen.javascript.JestOptions.property.passWithNoTests"></a>
+
+```typescript
+public readonly passWithNoTests: boolean;
+```
+
+- *Type:* boolean
+- *Default:* true
+
+Pass with no tests.
 
 ---
 
@@ -7272,6 +7585,7 @@ const nodePackageOptions: javascript.NodePackageOptions = { ... }
 | <code><a href="#projen.javascript.NodePackageOptions.property.bugsEmail">bugsEmail</a></code> | <code>string</code> | The email address to which issues should be reported. |
 | <code><a href="#projen.javascript.NodePackageOptions.property.bugsUrl">bugsUrl</a></code> | <code>string</code> | The url to your project's issue tracker. |
 | <code><a href="#projen.javascript.NodePackageOptions.property.bundledDeps">bundledDeps</a></code> | <code>string[]</code> | List of dependencies to bundle into this module. |
+| <code><a href="#projen.javascript.NodePackageOptions.property.bunVersion">bunVersion</a></code> | <code>string</code> | The version of Bun to use if using Bun as a package manager. |
 | <code><a href="#projen.javascript.NodePackageOptions.property.codeArtifactOptions">codeArtifactOptions</a></code> | <code><a href="#projen.javascript.CodeArtifactOptions">CodeArtifactOptions</a></code> | Options for npm packages using AWS CodeArtifact. |
 | <code><a href="#projen.javascript.NodePackageOptions.property.deps">deps</a></code> | <code>string[]</code> | Runtime dependencies of this module. |
 | <code><a href="#projen.javascript.NodePackageOptions.property.description">description</a></code> | <code>string</code> | The description is just a string that helps people understand the purpose of the package. |
@@ -7281,8 +7595,8 @@ const nodePackageOptions: javascript.NodePackageOptions = { ... }
 | <code><a href="#projen.javascript.NodePackageOptions.property.keywords">keywords</a></code> | <code>string[]</code> | Keywords to include in `package.json`. |
 | <code><a href="#projen.javascript.NodePackageOptions.property.license">license</a></code> | <code>string</code> | License's SPDX identifier. |
 | <code><a href="#projen.javascript.NodePackageOptions.property.licensed">licensed</a></code> | <code>boolean</code> | Indicates if a license should be added. |
-| <code><a href="#projen.javascript.NodePackageOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Minimum node.js version to require via `engines` (inclusive). |
-| <code><a href="#projen.javascript.NodePackageOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | Minimum Node.js version to require via package.json `engines` (inclusive). |
+| <code><a href="#projen.javascript.NodePackageOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | The maximum node version supported by this package. Most projects should not use this option. |
+| <code><a href="#projen.javascript.NodePackageOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | The minimum node version required by this package to function. Most projects should not use this option. |
 | <code><a href="#projen.javascript.NodePackageOptions.property.npmAccess">npmAccess</a></code> | <code><a href="#projen.javascript.NpmAccess">NpmAccess</a></code> | Access level of the npm package. |
 | <code><a href="#projen.javascript.NodePackageOptions.property.npmProvenance">npmProvenance</a></code> | <code>boolean</code> | Should provenance statements be generated when the package is published. |
 | <code><a href="#projen.javascript.NodePackageOptions.property.npmRegistry">npmRegistry</a></code> | <code>string</code> | The host name of the npm registry to publish to. |
@@ -7439,6 +7753,19 @@ sense that it will add the module as a dependency to your `package.json`
 file with the latest version (`^`). You can specify semver requirements in
 the same syntax passed to `npm i` or `yarn add` (e.g. `express@^2`) and
 this will be what you `package.json` will eventually include.
+
+---
+
+##### `bunVersion`<sup>Optional</sup> <a name="bunVersion" id="projen.javascript.NodePackageOptions.property.bunVersion"></a>
+
+```typescript
+public readonly bunVersion: string;
+```
+
+- *Type:* string
+- *Default:* "latest"
+
+The version of Bun to use if using Bun as a package manager.
 
 ---
 
@@ -7605,9 +7932,15 @@ public readonly maxNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no max
+- *Default:* no maximum version is enforced
 
-Minimum node.js version to require via `engines` (inclusive).
+The maximum node version supported by this package. Most projects should not use this option.
+
+The value indicates that the package is incompatible with any newer versions of node.
+This requirement is enforced via the engines field.
+
+You will normally not need to set this option.
+Consider this option only if your package is known to not function with newer versions of node.
 
 ---
 
@@ -7618,9 +7951,19 @@ public readonly minNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no "engines" specified
+- *Default:* no minimum version is enforced
 
-Minimum Node.js version to require via package.json `engines` (inclusive).
+The minimum node version required by this package to function. Most projects should not use this option.
+
+The value indicates that the package is incompatible with any older versions of node.
+This requirement is enforced via the engines field.
+
+You will normally not need to set this option, even if your package is incompatible with EOL versions of node.
+Consider this option only if your package depends on a specific feature, that is not available in other LTS versions.
+Setting this option has very high impact on the consumers of your package,
+as package managers will actively prevent usage with node versions you have marked as incompatible.
+
+To change the node version of your CI/CD workflows, use `workflowNodeVersion`.
 
 ---
 
@@ -7774,7 +8117,7 @@ public readonly pnpmVersion: string;
 ```
 
 - *Type:* string
-- *Default:* "7"
+- *Default:* "9"
 
 The version of PNPM to use if using PNPM as a package manager.
 
@@ -7916,6 +8259,7 @@ const nodeProjectOptions: javascript.NodeProjectOptions = { ... }
 | <code><a href="#projen.javascript.NodeProjectOptions.property.bugsEmail">bugsEmail</a></code> | <code>string</code> | The email address to which issues should be reported. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.bugsUrl">bugsUrl</a></code> | <code>string</code> | The url to your project's issue tracker. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.bundledDeps">bundledDeps</a></code> | <code>string[]</code> | List of dependencies to bundle into this module. |
+| <code><a href="#projen.javascript.NodeProjectOptions.property.bunVersion">bunVersion</a></code> | <code>string</code> | The version of Bun to use if using Bun as a package manager. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.codeArtifactOptions">codeArtifactOptions</a></code> | <code><a href="#projen.javascript.CodeArtifactOptions">CodeArtifactOptions</a></code> | Options for npm packages using AWS CodeArtifact. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.deps">deps</a></code> | <code>string[]</code> | Runtime dependencies of this module. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.description">description</a></code> | <code>string</code> | The description is just a string that helps people understand the purpose of the package. |
@@ -7925,8 +8269,8 @@ const nodeProjectOptions: javascript.NodeProjectOptions = { ... }
 | <code><a href="#projen.javascript.NodeProjectOptions.property.keywords">keywords</a></code> | <code>string[]</code> | Keywords to include in `package.json`. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.license">license</a></code> | <code>string</code> | License's SPDX identifier. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.licensed">licensed</a></code> | <code>boolean</code> | Indicates if a license should be added. |
-| <code><a href="#projen.javascript.NodeProjectOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Minimum node.js version to require via `engines` (inclusive). |
-| <code><a href="#projen.javascript.NodeProjectOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | Minimum Node.js version to require via package.json `engines` (inclusive). |
+| <code><a href="#projen.javascript.NodeProjectOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | The maximum node version supported by this package. Most projects should not use this option. |
+| <code><a href="#projen.javascript.NodeProjectOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | The minimum node version required by this package to function. Most projects should not use this option. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.npmAccess">npmAccess</a></code> | <code><a href="#projen.javascript.NpmAccess">NpmAccess</a></code> | Access level of the npm package. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.npmProvenance">npmProvenance</a></code> | <code>boolean</code> | Should provenance statements be generated when the package is published. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.npmRegistry">npmRegistry</a></code> | <code>string</code> | The host name of the npm registry to publish to. |
@@ -7943,9 +8287,11 @@ const nodeProjectOptions: javascript.NodeProjectOptions = { ... }
 | <code><a href="#projen.javascript.NodeProjectOptions.property.scripts">scripts</a></code> | <code>{[ key: string ]: string}</code> | npm scripts to include. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.stability">stability</a></code> | <code>string</code> | Package's Stability. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.yarnBerryOptions">yarnBerryOptions</a></code> | <code><a href="#projen.javascript.YarnBerryOptions">YarnBerryOptions</a></code> | Options for Yarn Berry. |
+| <code><a href="#projen.javascript.NodeProjectOptions.property.bumpPackage">bumpPackage</a></code> | <code>string</code> | The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.jsiiReleaseVersion">jsiiReleaseVersion</a></code> | <code>string</code> | Version requirement of `publib` which is used to publish modules to npm. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.majorVersion">majorVersion</a></code> | <code>number</code> | Major version to release from the default branch. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.minMajorVersion">minMajorVersion</a></code> | <code>number</code> | Minimal Major version to release. |
+| <code><a href="#projen.javascript.NodeProjectOptions.property.nextVersionCommand">nextVersionCommand</a></code> | <code>string</code> | A shell command to control the next version to release. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.npmDistTag">npmDistTag</a></code> | <code>string</code> | The npmDistTag to use when publishing from the default branch. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.postBuildSteps">postBuildSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after build as part of the release workflow. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.prerelease">prerelease</a></code> | <code>string</code> | Bump versions from the default branch as pre-releases (e.g. "beta", "alpha", "pre"). |
@@ -7961,7 +8307,7 @@ const nodeProjectOptions: javascript.NodeProjectOptions = { ... }
 | <code><a href="#projen.javascript.NodeProjectOptions.property.releaseTrigger">releaseTrigger</a></code> | <code>projen.release.ReleaseTrigger</code> | The release trigger to use. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.releaseWorkflowName">releaseWorkflowName</a></code> | <code>string</code> | The name of the default release workflow. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.releaseWorkflowSetupSteps">releaseWorkflowSetupSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | A set of workflow steps to execute in order to setup the workflow container. |
-| <code><a href="#projen.javascript.NodeProjectOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with standard-version package. |
+| <code><a href="#projen.javascript.NodeProjectOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with commit-and-tag-version package. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.workflowContainerImage">workflowContainerImage</a></code> | <code>string</code> | Container image to use for GitHub workflows. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.workflowRunsOn">workflowRunsOn</a></code> | <code>string[]</code> | Github Runner selection labels. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.workflowRunsOnGroup">workflowRunsOnGroup</a></code> | <code>projen.GroupRunnerOptions</code> | Github Runner Group selection options. |
@@ -7969,10 +8315,11 @@ const nodeProjectOptions: javascript.NodeProjectOptions = { ... }
 | <code><a href="#projen.javascript.NodeProjectOptions.property.artifactsDirectory">artifactsDirectory</a></code> | <code>string</code> | A directory which will contain build artifacts. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.autoApproveUpgrades">autoApproveUpgrades</a></code> | <code>boolean</code> | Automatically approve deps upgrade PRs, allowing them to be merged by mergify (if configued). |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.buildWorkflow">buildWorkflow</a></code> | <code>boolean</code> | Define a GitHub workflow for building PRs. |
+| <code><a href="#projen.javascript.NodeProjectOptions.property.buildWorkflowOptions">buildWorkflowOptions</a></code> | <code><a href="#projen.javascript.BuildWorkflowOptions">BuildWorkflowOptions</a></code> | Options for PR build workflow. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.buildWorkflowTriggers">buildWorkflowTriggers</a></code> | <code>projen.github.workflows.Triggers</code> | Build workflow triggers. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.bundlerOptions">bundlerOptions</a></code> | <code><a href="#projen.javascript.BundlerOptions">BundlerOptions</a></code> | Options for `Bundler`. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.checkLicenses">checkLicenses</a></code> | <code><a href="#projen.javascript.LicenseCheckerOptions">LicenseCheckerOptions</a></code> | Configure which licenses should be deemed acceptable for use by dependencies. |
-| <code><a href="#projen.javascript.NodeProjectOptions.property.codeCov">codeCov</a></code> | <code>boolean</code> | Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with `@codeCovTokenSecret`. |
+| <code><a href="#projen.javascript.NodeProjectOptions.property.codeCov">codeCov</a></code> | <code>boolean</code> | Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with `@codeCovTokenSecret`. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.codeCovTokenSecret">codeCovTokenSecret</a></code> | <code>string</code> | Define the secret name for a specified https://codecov.io/ token A secret is required to send coverage for private repositories. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.copyrightOwner">copyrightOwner</a></code> | <code>string</code> | License copyright owner. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.copyrightPeriod">copyrightPeriod</a></code> | <code>string</code> | The copyright years to put in the LICENSE file. |
@@ -8001,7 +8348,7 @@ const nodeProjectOptions: javascript.NodeProjectOptions = { ... }
 | <code><a href="#projen.javascript.NodeProjectOptions.property.releaseWorkflow">releaseWorkflow</a></code> | <code>boolean</code> | DEPRECATED: renamed to `release`. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.workflowBootstrapSteps">workflowBootstrapSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Workflow steps to use in order to bootstrap this repo. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.workflowGitIdentity">workflowGitIdentity</a></code> | <code>projen.github.GitIdentity</code> | The git identity to use in workflows. |
-| <code><a href="#projen.javascript.NodeProjectOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | The node version to use in GitHub workflows. |
+| <code><a href="#projen.javascript.NodeProjectOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | The node version used in GitHub Actions workflows. |
 | <code><a href="#projen.javascript.NodeProjectOptions.property.workflowPackageCache">workflowPackageCache</a></code> | <code>boolean</code> | Enable Node.js package cache in GitHub workflows. |
 
 ---
@@ -8560,6 +8907,19 @@ this will be what you `package.json` will eventually include.
 
 ---
 
+##### `bunVersion`<sup>Optional</sup> <a name="bunVersion" id="projen.javascript.NodeProjectOptions.property.bunVersion"></a>
+
+```typescript
+public readonly bunVersion: string;
+```
+
+- *Type:* string
+- *Default:* "latest"
+
+The version of Bun to use if using Bun as a package manager.
+
+---
+
 ##### `codeArtifactOptions`<sup>Optional</sup> <a name="codeArtifactOptions" id="projen.javascript.NodeProjectOptions.property.codeArtifactOptions"></a>
 
 ```typescript
@@ -8723,9 +9083,15 @@ public readonly maxNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no max
+- *Default:* no maximum version is enforced
 
-Minimum node.js version to require via `engines` (inclusive).
+The maximum node version supported by this package. Most projects should not use this option.
+
+The value indicates that the package is incompatible with any newer versions of node.
+This requirement is enforced via the engines field.
+
+You will normally not need to set this option.
+Consider this option only if your package is known to not function with newer versions of node.
 
 ---
 
@@ -8736,9 +9102,19 @@ public readonly minNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no "engines" specified
+- *Default:* no minimum version is enforced
 
-Minimum Node.js version to require via package.json `engines` (inclusive).
+The minimum node version required by this package to function. Most projects should not use this option.
+
+The value indicates that the package is incompatible with any older versions of node.
+This requirement is enforced via the engines field.
+
+You will normally not need to set this option, even if your package is incompatible with EOL versions of node.
+Consider this option only if your package depends on a specific feature, that is not available in other LTS versions.
+Setting this option has very high impact on the consumers of your package,
+as package managers will actively prevent usage with node versions you have marked as incompatible.
+
+To change the node version of your CI/CD workflows, use `workflowNodeVersion`.
 
 ---
 
@@ -8892,7 +9268,7 @@ public readonly pnpmVersion: string;
 ```
 
 - *Type:* string
-- *Default:* "7"
+- *Default:* "9"
 
 The version of PNPM to use if using PNPM as a package manager.
 
@@ -8981,6 +9357,21 @@ Options for Yarn Berry.
 
 ---
 
+##### `bumpPackage`<sup>Optional</sup> <a name="bumpPackage" id="projen.javascript.NodeProjectOptions.property.bumpPackage"></a>
+
+```typescript
+public readonly bumpPackage: string;
+```
+
+- *Type:* string
+- *Default:* A recent version of "commit-and-tag-version"
+
+The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string.
+
+This can be any compatible package version, including the deprecated `standard-version@9`.
+
+---
+
 ##### `jsiiReleaseVersion`<sup>Optional</sup> <a name="jsiiReleaseVersion" id="projen.javascript.NodeProjectOptions.property.jsiiReleaseVersion"></a>
 
 ```typescript
@@ -9025,6 +9416,37 @@ This can be useful to set to 1, as breaking changes before the 1.x major
 release are not incrementing the major version number.
 
 Can not be set together with `majorVersion`.
+
+---
+
+##### `nextVersionCommand`<sup>Optional</sup> <a name="nextVersionCommand" id="projen.javascript.NodeProjectOptions.property.nextVersionCommand"></a>
+
+```typescript
+public readonly nextVersionCommand: string;
+```
+
+- *Type:* string
+- *Default:* The next version will be determined based on the commit history and project settings.
+
+A shell command to control the next version to release.
+
+If present, this shell command will be run before the bump is executed, and
+it determines what version to release. It will be executed in the following
+environment:
+
+- Working directory: the project directory.
+- `$VERSION`: the current version. Looks like `1.2.3`.
+- `$LATEST_TAG`: the most recent tag. Looks like `prefix-v1.2.3`, or may be unset.
+
+The command should print one of the following to `stdout`:
+
+- Nothing: the next version number will be determined based on commit history.
+- `x.y.z`: the next version number will be `x.y.z`.
+- `major|minor|patch`: the next version number will be the current version number
+  with the indicated component bumped.
+
+This setting cannot be specified together with `minMajorVersion`; the invoked
+script can be used to achieve the effects of `minMajorVersion`.
 
 ---
 
@@ -9255,7 +9677,7 @@ public readonly versionrcOptions: {[ key: string ]: any};
 - *Type:* {[ key: string ]: any}
 - *Default:* standard configuration applicable for GitHub repositories
 
-Custom configuration used when creating changelog with standard-version package.
+Custom configuration used when creating changelog with commit-and-tag-version package.
 
 Given values either append to default configuration or overwrite values in it.
 
@@ -9353,7 +9775,21 @@ Define a GitHub workflow for building PRs.
 
 ---
 
-##### `buildWorkflowTriggers`<sup>Optional</sup> <a name="buildWorkflowTriggers" id="projen.javascript.NodeProjectOptions.property.buildWorkflowTriggers"></a>
+##### `buildWorkflowOptions`<sup>Optional</sup> <a name="buildWorkflowOptions" id="projen.javascript.NodeProjectOptions.property.buildWorkflowOptions"></a>
+
+```typescript
+public readonly buildWorkflowOptions: BuildWorkflowOptions;
+```
+
+- *Type:* <a href="#projen.javascript.BuildWorkflowOptions">BuildWorkflowOptions</a>
+
+Options for PR build workflow.
+
+---
+
+##### ~~`buildWorkflowTriggers`~~<sup>Optional</sup> <a name="buildWorkflowTriggers" id="projen.javascript.NodeProjectOptions.property.buildWorkflowTriggers"></a>
+
+- *Deprecated:* - Use `buildWorkflowOptions.workflowTriggers`
 
 ```typescript
 public readonly buildWorkflowTriggers: Triggers;
@@ -9402,7 +9838,7 @@ public readonly codeCov: boolean;
 - *Type:* boolean
 - *Default:* false
 
-Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with `@codeCovTokenSecret`.
+Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with `@codeCovTokenSecret`.
 
 ---
 
@@ -9539,7 +9975,9 @@ Jest options.
 
 ---
 
-##### `mutableBuild`<sup>Optional</sup> <a name="mutableBuild" id="projen.javascript.NodeProjectOptions.property.mutableBuild"></a>
+##### ~~`mutableBuild`~~<sup>Optional</sup> <a name="mutableBuild" id="projen.javascript.NodeProjectOptions.property.mutableBuild"></a>
+
+- *Deprecated:* - Use `buildWorkflowOptions.mutableBuild`
 
 ```typescript
 public readonly mutableBuild: boolean;
@@ -9643,7 +10081,7 @@ public readonly projenDevDependency: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* true
+- *Default:* true if not a subproject
 
 Indicates of "projen" should be installed as a devDependency.
 
@@ -9788,9 +10226,11 @@ public readonly workflowNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* same as `minNodeVersion`
+- *Default:* `minNodeVersion` if set, otherwise `lts/*`.
 
-The node version to use in GitHub workflows.
+The node version used in GitHub Actions workflows.
+
+Always use this option if your GitHub Actions workflows require a specific to run.
 
 ---
 
@@ -10576,8 +11016,11 @@ const typeScriptCompilerOptions: javascript.TypeScriptCompilerOptions = { ... }
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.allowImportingTsExtensions">allowImportingTsExtensions</a></code> | <code>boolean</code> | Allows TypeScript files to import each other with TypeScript-specific extensions (`.ts`, `.mts`, `.tsx`). Requires `noEmit` or `emitDeclarationOnly`. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.allowJs">allowJs</a></code> | <code>boolean</code> | Allow JavaScript files to be compiled. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.allowSyntheticDefaultImports">allowSyntheticDefaultImports</a></code> | <code>boolean</code> | Allow default imports from modules with no default export. |
+| <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.allowUnreachableCode">allowUnreachableCode</a></code> | <code>boolean</code> | Allow Unreachable Code. |
+| <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.allowUnusedLabels">allowUnusedLabels</a></code> | <code>boolean</code> | Allow Unused Labels. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.alwaysStrict">alwaysStrict</a></code> | <code>boolean</code> | Ensures that your files are parsed in the ECMAScript strict mode, and emit “use strict” for each source file. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.baseUrl">baseUrl</a></code> | <code>string</code> | Lets you set a base directory to resolve non-absolute module names. |
+| <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.checkJs">checkJs</a></code> | <code>boolean</code> | Check JS. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.customConditions">customConditions</a></code> | <code>string[]</code> | List of additional conditions that should succeed when TypeScript resolves from an `exports` or `imports` field of a `package.json`. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.declaration">declaration</a></code> | <code>boolean</code> | To be specified along with the above. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.declarationDir">declarationDir</a></code> | <code>string</code> | Offers a way to configure the root directory for where declaration files are emitted. |
@@ -10598,6 +11041,7 @@ const typeScriptCompilerOptions: javascript.TypeScriptCompilerOptions = { ... }
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.jsxImportSource">jsxImportSource</a></code> | <code>string</code> | Declares the module specifier to be used for importing the jsx and jsxs factory functions when using jsx. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.lib">lib</a></code> | <code>string[]</code> | Reference for type definitions / libraries to use (eg. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.module">module</a></code> | <code>string</code> | Sets the module system for the program. |
+| <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.moduleDetection">moduleDetection</a></code> | <code><a href="#projen.javascript.TypeScriptModuleDetection">TypeScriptModuleDetection</a></code> | This setting controls how TypeScript determines whether a file is a [script or a module](https://www.typescriptlang.org/docs/handbook/modules/theory.html#scripts-and-modules-in-javascript). |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.moduleResolution">moduleResolution</a></code> | <code><a href="#projen.javascript.TypeScriptModuleResolution">TypeScriptModuleResolution</a></code> | Determine how modules get resolved. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.noEmit">noEmit</a></code> | <code>boolean</code> | Do not emit outputs. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.noEmitOnError">noEmitOnError</a></code> | <code>boolean</code> | Do not emit compiler output files like JavaScript source code, source-maps or declarations if any errors were reported. |
@@ -10625,6 +11069,7 @@ const typeScriptCompilerOptions: javascript.TypeScriptCompilerOptions = { ... }
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.stripInternal">stripInternal</a></code> | <code>boolean</code> | Do not emit declarations for code that has an `@internal` annotation in it’s JSDoc comment. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.target">target</a></code> | <code>string</code> | Modern browsers support all ES6 features, so ES6 is a good choice. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.tsBuildInfoFile">tsBuildInfoFile</a></code> | <code>string</code> | This setting lets you specify a file for storing incremental compilation information as a part of composite projects which enables faster building of larger TypeScript codebases. |
+| <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.typeRoots">typeRoots</a></code> | <code>string[]</code> | If typeRoots is specified, only packages under typeRoots will be included. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.types">types</a></code> | <code>string[]</code> | If types is specified, only packages listed will be included in the global scope. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.useUnknownInCatchVariables">useUnknownInCatchVariables</a></code> | <code>boolean</code> | Change the type of the variable in a catch clause from any to unknown Available with TypeScript 4.4 and newer. |
 | <code><a href="#projen.javascript.TypeScriptCompilerOptions.property.verbatimModuleSyntax">verbatimModuleSyntax</a></code> | <code>boolean</code> | Simplifies TypeScript's handling of import/export `type` modifiers. |
@@ -10686,6 +11131,60 @@ This does not affect code emit, just typechecking.
 
 ---
 
+##### `allowUnreachableCode`<sup>Optional</sup> <a name="allowUnreachableCode" id="projen.javascript.TypeScriptCompilerOptions.property.allowUnreachableCode"></a>
+
+```typescript
+public readonly allowUnreachableCode: boolean;
+```
+
+- *Type:* boolean
+
+Allow Unreachable Code.
+
+When:
+
+- `undefined` (default) provide suggestions as warnings to editors
+- `true` unreachable code is ignored
+- `false` raises compiler errors about unreachable code
+
+These warnings are only about code which is provably unreachable due to the use of JavaScript syntax.
+
+> [https://www.typescriptlang.org/tsconfig#allowUnreachableCode](https://www.typescriptlang.org/tsconfig#allowUnreachableCode)
+
+---
+
+##### `allowUnusedLabels`<sup>Optional</sup> <a name="allowUnusedLabels" id="projen.javascript.TypeScriptCompilerOptions.property.allowUnusedLabels"></a>
+
+```typescript
+public readonly allowUnusedLabels: boolean;
+```
+
+- *Type:* boolean
+
+Allow Unused Labels.
+
+When:
+
+- `undefined` (default) provide suggestions as warnings to editors
+- `true` unused labels are ignored
+- `false` raises compiler errors about unused labels
+
+Labels are very rare in JavaScript and typically indicate an attempt to write an object literal:
+
+```ts
+function verifyAge(age: number) {
+  // Forgot 'return' statement
+  if (age > 18) {
+    verified: true;
+//  ^^^^^^^^ Unused label.
+  }
+}
+```
+
+> [https://www.typescriptlang.org/tsconfig#allowUnusedLabels](https://www.typescriptlang.org/tsconfig#allowUnusedLabels)
+
+---
+
 ##### `alwaysStrict`<sup>Optional</sup> <a name="alwaysStrict" id="projen.javascript.TypeScriptCompilerOptions.property.alwaysStrict"></a>
 
 ```typescript
@@ -10710,6 +11209,23 @@ public readonly baseUrl: string;
 Lets you set a base directory to resolve non-absolute module names.
 
 You can define a root folder where you can do absolute file resolution.
+
+---
+
+##### `checkJs`<sup>Optional</sup> <a name="checkJs" id="projen.javascript.TypeScriptCompilerOptions.property.checkJs"></a>
+
+```typescript
+public readonly checkJs: boolean;
+```
+
+- *Type:* boolean
+
+Check JS.
+
+Works in tandem with [allowJs](https://www.typescriptlang.org/tsconfig#allowJs). When checkJs is enabled then
+errors are reported in JavaScript files. This is the equivalent of including //
+
+> [https://www.typescriptlang.org/tsconfig#checkJs](https://www.typescriptlang.org/tsconfig#checkJs)
 
 ---
 
@@ -10996,6 +11512,19 @@ public readonly module: string;
 Sets the module system for the program.
 
 See https://www.typescriptlang.org/docs/handbook/modules.html#ambient-modules.
+
+---
+
+##### `moduleDetection`<sup>Optional</sup> <a name="moduleDetection" id="projen.javascript.TypeScriptCompilerOptions.property.moduleDetection"></a>
+
+```typescript
+public readonly moduleDetection: TypeScriptModuleDetection;
+```
+
+- *Type:* <a href="#projen.javascript.TypeScriptModuleDetection">TypeScriptModuleDetection</a>
+- *Default:* "auto"
+
+This setting controls how TypeScript determines whether a file is a [script or a module](https://www.typescriptlang.org/docs/handbook/modules/theory.html#scripts-and-modules-in-javascript).
 
 ---
 
@@ -11374,6 +11903,20 @@ You can read more about composite projects in the handbook.
 
 ---
 
+##### `typeRoots`<sup>Optional</sup> <a name="typeRoots" id="projen.javascript.TypeScriptCompilerOptions.property.typeRoots"></a>
+
+```typescript
+public readonly typeRoots: string[];
+```
+
+- *Type:* string[]
+
+If typeRoots is specified, only packages under typeRoots will be included.
+
+> [https://www.typescriptlang.org/tsconfig/#typeRoots](https://www.typescriptlang.org/tsconfig/#typeRoots)
+
+---
+
 ##### `types`<sup>Optional</sup> <a name="types" id="projen.javascript.TypeScriptCompilerOptions.property.types"></a>
 
 ```typescript
@@ -11384,7 +11927,7 @@ public readonly types: string[];
 
 If types is specified, only packages listed will be included in the global scope.
 
-> [{@link https://www.typescriptlang.org/tsconfig#types}]({@link https://www.typescriptlang.org/tsconfig#types})
+> [https://www.typescriptlang.org/tsconfig#types](https://www.typescriptlang.org/tsconfig#types)
 
 ---
 
@@ -11438,7 +11981,7 @@ const typescriptConfigOptions: javascript.TypescriptConfigOptions = { ... }
 
 ---
 
-##### `compilerOptions`<sup>Required</sup> <a name="compilerOptions" id="projen.javascript.TypescriptConfigOptions.property.compilerOptions"></a>
+##### `compilerOptions`<sup>Optional</sup> <a name="compilerOptions" id="projen.javascript.TypescriptConfigOptions.property.compilerOptions"></a>
 
 ```typescript
 public readonly compilerOptions: TypeScriptCompilerOptions;
@@ -11517,6 +12060,7 @@ const upgradeDependenciesOptions: javascript.UpgradeDependenciesOptions = { ... 
 | --- | --- | --- |
 | <code><a href="#projen.javascript.UpgradeDependenciesOptions.property.exclude">exclude</a></code> | <code>string[]</code> | List of package names to exclude during the upgrade. |
 | <code><a href="#projen.javascript.UpgradeDependenciesOptions.property.include">include</a></code> | <code>string[]</code> | List of package names to include during the upgrade. |
+| <code><a href="#projen.javascript.UpgradeDependenciesOptions.property.includeDeprecatedVersions">includeDeprecatedVersions</a></code> | <code>boolean</code> | Include deprecated packages. |
 | <code><a href="#projen.javascript.UpgradeDependenciesOptions.property.pullRequestTitle">pullRequestTitle</a></code> | <code>string</code> | Title of the pull request to use (should be all lower-case). |
 | <code><a href="#projen.javascript.UpgradeDependenciesOptions.property.satisfyPeerDependencies">satisfyPeerDependencies</a></code> | <code>boolean</code> | Check peer dependencies of installed packages and filter updates to compatible versions. |
 | <code><a href="#projen.javascript.UpgradeDependenciesOptions.property.semanticCommit">semanticCommit</a></code> | <code>string</code> | The semantic commit type. |
@@ -11552,6 +12096,23 @@ public readonly include: string[];
 - *Default:* Everything is included.
 
 List of package names to include during the upgrade.
+
+---
+
+##### `includeDeprecatedVersions`<sup>Optional</sup> <a name="includeDeprecatedVersions" id="projen.javascript.UpgradeDependenciesOptions.property.includeDeprecatedVersions"></a>
+
+```typescript
+public readonly includeDeprecatedVersions: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Include deprecated packages.
+
+By default, deprecated versions will be excluded from upgrades.
+
+> [https://github.com/raineorshine/npm-check-updates?tab=readme-ov-file#options](https://github.com/raineorshine/npm-check-updates?tab=readme-ov-file#options)
 
 ---
 
@@ -14528,6 +15089,49 @@ Same as `REACT_JSX` with additional debug data.
 ---
 
 
+### TypeScriptModuleDetection <a name="TypeScriptModuleDetection" id="projen.javascript.TypeScriptModuleDetection"></a>
+
+This setting controls how TypeScript determines whether a file is a script or a module.
+
+> [https://www.typescriptlang.org/docs/handbook/modules/theory.html#scripts-and-modules-in-javascript](https://www.typescriptlang.org/docs/handbook/modules/theory.html#scripts-and-modules-in-javascript)
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#projen.javascript.TypeScriptModuleDetection.AUTO">AUTO</a></code> | TypeScript will not only look for import and export statements, but it will also check whether the "type" field in a package.json is set to "module" when running with module: nodenext or node16, and check whether the current file is a JSX file when running under jsx: react-jsx. |
+| <code><a href="#projen.javascript.TypeScriptModuleDetection.LEGACY">LEGACY</a></code> | The same behavior as 4.6 and prior, usings import and export statements to determine whether a file is a module. |
+| <code><a href="#projen.javascript.TypeScriptModuleDetection.FORCE">FORCE</a></code> | Ensures that every non-declaration file is treated as a module. |
+
+---
+
+##### `AUTO` <a name="AUTO" id="projen.javascript.TypeScriptModuleDetection.AUTO"></a>
+
+TypeScript will not only look for import and export statements, but it will also check whether the "type" field in a package.json is set to "module" when running with module: nodenext or node16, and check whether the current file is a JSX file when running under jsx: react-jsx.
+
+> [https://www.typescriptlang.org/tsconfig/#moduleDetection](https://www.typescriptlang.org/tsconfig/#moduleDetection)
+
+---
+
+
+##### `LEGACY` <a name="LEGACY" id="projen.javascript.TypeScriptModuleDetection.LEGACY"></a>
+
+The same behavior as 4.6 and prior, usings import and export statements to determine whether a file is a module.
+
+> [https://www.typescriptlang.org/tsconfig/#moduleDetection](https://www.typescriptlang.org/tsconfig/#moduleDetection)
+
+---
+
+
+##### `FORCE` <a name="FORCE" id="projen.javascript.TypeScriptModuleDetection.FORCE"></a>
+
+Ensures that every non-declaration file is treated as a module.
+
+> [https://www.typescriptlang.org/tsconfig/#moduleDetection](https://www.typescriptlang.org/tsconfig/#moduleDetection)
+
+---
+
+
 ### TypeScriptModuleResolution <a name="TypeScriptModuleResolution" id="projen.javascript.TypeScriptModuleResolution"></a>
 
 Determines how modules get resolved.
@@ -14540,6 +15144,7 @@ Determines how modules get resolved.
 | --- | --- |
 | <code><a href="#projen.javascript.TypeScriptModuleResolution.CLASSIC">CLASSIC</a></code> | TypeScript's former default resolution strategy. |
 | <code><a href="#projen.javascript.TypeScriptModuleResolution.NODE">NODE</a></code> | Resolution strategy which attempts to mimic the Node.js module resolution strategy at runtime. |
+| <code><a href="#projen.javascript.TypeScriptModuleResolution.NODE10">NODE10</a></code> | `--moduleResolution node` was renamed to `node10` (keeping `node` as an alias for backward compatibility) in TypeScript 5.0. It reflects the CommonJS module resolution algorithm as it existed in Node.js versions earlier than v12. It should no longer be used. |
 | <code><a href="#projen.javascript.TypeScriptModuleResolution.NODE16">NODE16</a></code> | Node.js’ ECMAScript Module Support from TypeScript 4.7 onwards. |
 | <code><a href="#projen.javascript.TypeScriptModuleResolution.NODE_NEXT">NODE_NEXT</a></code> | Node.js’ ECMAScript Module Support from TypeScript 4.7 onwards. |
 | <code><a href="#projen.javascript.TypeScriptModuleResolution.BUNDLER">BUNDLER</a></code> | Resolution strategy which attempts to mimic resolution patterns of modern bundlers; |
@@ -14560,6 +15165,15 @@ TypeScript's former default resolution strategy.
 Resolution strategy which attempts to mimic the Node.js module resolution strategy at runtime.
 
 > [https://www.typescriptlang.org/docs/handbook/module-resolution.html#node](https://www.typescriptlang.org/docs/handbook/module-resolution.html#node)
+
+---
+
+
+##### `NODE10` <a name="NODE10" id="projen.javascript.TypeScriptModuleResolution.NODE10"></a>
+
+`--moduleResolution node` was renamed to `node10` (keeping `node` as an alias for backward compatibility) in TypeScript 5.0. It reflects the CommonJS module resolution algorithm as it existed in Node.js versions earlier than v12. It should no longer be used.
+
+> [https://www.typescriptlang.org/docs/handbook/modules/reference.html#node10-formerly-known-as-node](https://www.typescriptlang.org/docs/handbook/modules/reference.html#node10-formerly-known-as-node)
 
 ---
 

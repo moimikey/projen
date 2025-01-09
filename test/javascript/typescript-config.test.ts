@@ -103,6 +103,46 @@ describe("TypescriptConfig", () => {
     });
   });
 
+  test("TypeScript should allow parse package for extends witout compilerOptions.", () => {
+    withProjectDir((outdir) => {
+      const project = new NodeProject({
+        name: "project",
+        defaultReleaseBranch: "main",
+        outdir,
+      });
+      const baseConfig = new TypescriptConfig(project, {
+        // No compilerOptions
+        extends: TypescriptConfigExtends.fromPaths([
+          "@tsconfig/recommended/tsconfig.json",
+        ]),
+      });
+      project.synth();
+
+      const loadedConfig = ts.readConfigFile(
+        baseConfig.file.absolutePath,
+        ts.sys.readFile
+      );
+      expect(loadedConfig.error).toBeUndefined();
+      expect(loadedConfig.config).toHaveProperty(
+        "extends",
+        "@tsconfig/recommended/tsconfig.json"
+      );
+    });
+  });
+
+  test("TypescriptConfig requires either extends or compilerOptions.", () => {
+    expect(() => {
+      const project = new NodeProject({
+        name: "project",
+        defaultReleaseBranch: "main",
+      });
+      new TypescriptConfig(project, {
+        // No compilerOptions
+        // No extends
+      });
+    }).toThrowError(/Must provide either `extends` or `compilerOptions`/);
+  });
+
   test("TypeScript should parse generated config with multiple extensions", () => {
     withProjectDir((outdir) => {
       const project = new NodeProject({
@@ -283,4 +323,66 @@ describe("TypescriptConfig", () => {
       });
     }
   );
+
+  test("Should allow adding to the includes array", () => {
+    const testNodeProject = new NodeProject({
+      defaultReleaseBranch: "main",
+      name: "test-node-project",
+    });
+
+    const typescriptConfig = new TypescriptConfig(testNodeProject, {
+      compilerOptions: {},
+    });
+
+    typescriptConfig.addInclude("test/**/*.ts");
+
+    expect(typescriptConfig.include).toContain("test/**/*.ts");
+  });
+
+  test("Should allow adding to the excludes array", () => {
+    const testNodeProject = new NodeProject({
+      defaultReleaseBranch: "main",
+      name: "test-node-project",
+    });
+
+    const typescriptConfig = new TypescriptConfig(testNodeProject, {
+      compilerOptions: {},
+    });
+
+    typescriptConfig.addExclude("test/**/*.ts");
+
+    expect(typescriptConfig.exclude).toContain("test/**/*.ts");
+  });
+
+  test("Should allow removing from the includes array", () => {
+    const testNodeProject = new NodeProject({
+      defaultReleaseBranch: "main",
+      name: "test-node-project",
+    });
+
+    const typescriptConfig = new TypescriptConfig(testNodeProject, {
+      compilerOptions: {},
+    });
+
+    typescriptConfig.addInclude("test/**/*.ts");
+    typescriptConfig.removeInclude("test/**/*.ts");
+
+    expect(typescriptConfig.include).not.toContain("test/**/*.ts");
+  });
+
+  test("Should allow removing from the excludes array", () => {
+    const testNodeProject = new NodeProject({
+      defaultReleaseBranch: "main",
+      name: "test-node-project",
+    });
+
+    const typescriptConfig = new TypescriptConfig(testNodeProject, {
+      compilerOptions: {},
+    });
+
+    typescriptConfig.addExclude("test/**/*.ts");
+    typescriptConfig.removeExclude("test/**/*.ts");
+
+    expect(typescriptConfig.exclude).not.toContain("test/**/*.ts");
+  });
 });

@@ -215,7 +215,7 @@ test("no install if package.json did not change at all", () => {
   const outdir = mkdtemp({ cleanup: false });
 
   const orig = {
-    name: "test",
+    name: "@projen/test",
     scripts: {
       build: "npx projen build",
       compile: "npx projen compile",
@@ -241,7 +241,7 @@ test("no install if package.json did not change at all", () => {
   );
   mkdirSync(join(outdir, "node_modules")); // <-- also causes an "install"
 
-  const project = new Project({ name: "test", outdir });
+  const project = new Project({ name: "@projen/test", outdir });
   project.addExcludeFromCleanup("package.json");
   const pkg = new NodePackage(project);
 
@@ -387,6 +387,30 @@ test("devDependencies are not pinned by peerDependencies if pinnedDevDependency 
 
   expect(pkgFile.peerDependencies).toStrictEqual({ ms: "^1.4.0" });
   expect(pkgFile.devDependencies).toBeUndefined();
+});
+
+test("bundled dependencies may not occur as peerDependencies", () => {
+  const project = new Project({ name: "test" });
+  new NodePackage(project, {
+    peerDeps: ["my-package"],
+    bundledDeps: ["my-package"],
+  });
+
+  expect(() => project.synth()).toThrow(
+    /unable to bundle "my-package": it cannot appear as a peer dependency/
+  );
+});
+
+test("bundled dependencies may not occur as devDependencies", () => {
+  const project = new Project({ name: "test" });
+  new NodePackage(project, {
+    devDeps: ["my-package"],
+    bundledDeps: ["my-package"],
+  });
+
+  expect(() => project.synth()).toThrow(
+    /unable to bundle "my-package": it cannot appear as a devDependency/
+  );
 });
 
 test("file path dependencies are respected", () => {
@@ -909,6 +933,22 @@ describe("npm provenance", () => {
     });
 
     expect(nodePackage.npmProvenance).toStrictEqual(true);
+  });
+
+  test("must always render npmAccess", () => {
+    const project = new TestProject();
+
+    new NodePackage(project, {
+      packageName: "@test-scope/test-package",
+      npmAccess: NpmAccess.PUBLIC,
+      npmProvenance: true,
+    });
+
+    const files = synthSnapshot(project);
+    expect(files["package.json"].publishConfig).toHaveProperty(
+      "access",
+      "public"
+    );
   });
 
   test("should throw an error if it's enabled for non-public packages", () => {

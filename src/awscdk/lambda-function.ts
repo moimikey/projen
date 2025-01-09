@@ -11,6 +11,7 @@ import { Bundler, BundlingOptions, Eslint } from "../javascript";
 import { Project } from "../project";
 import { SourceCode } from "../source-code";
 import { TypeScriptProject } from "../typescript";
+import { normalizePersistedPath } from "../util";
 
 /**
  * Common options for `LambdaFunction`. Applies to all functions in
@@ -136,12 +137,12 @@ export class LambdaFunction extends Component {
 
     const runtime = options.runtime ?? LambdaRuntime.NODEJS_18_X;
 
+    const entrypoint = normalizePersistedPath(options.entrypoint);
+
     // allow Lambda handler code to import dev-deps since they are only needed
     // during bundling
     const eslint = Eslint.of(project);
-    eslint?.allowDevDeps(options.entrypoint);
-
-    const entrypoint = options.entrypoint;
+    eslint?.allowDevDeps(entrypoint);
 
     if (
       !entrypoint.endsWith(TYPESCRIPT_LAMBDA_EXT) &&
@@ -301,7 +302,7 @@ export interface LambdaRuntimeOptions {
 export class LambdaRuntime {
   /**
    * Node.js 10.x
-   * @deprecated NodeJS10 has been deprecated on February 14, 2022
+   * @deprecated Node.js 10 runtime has been deprecated on Jul 30, 2021
    */
   public static readonly NODEJS_10_X = new LambdaRuntime(
     "nodejs10.x",
@@ -311,7 +312,7 @@ export class LambdaRuntime {
 
   /**
    * Node.js 12.x
-   * @deprecated NodeJS12 has been deprecated on April 30, 2023
+   * @deprecated Node.js 12 runtime has been deprecated on Mar 31, 2023
    */
   public static readonly NODEJS_12_X = new LambdaRuntime(
     "nodejs12.x",
@@ -321,7 +322,7 @@ export class LambdaRuntime {
 
   /**
    * Node.js 14.x
-   * @deprecated NodeJS14 will be deprecated on November 27, 2023
+   * @deprecated Node.js 14 runtime has been deprecated on Dec 4, 2023
    */
   public static readonly NODEJS_14_X = new LambdaRuntime(
     "nodejs14.x",
@@ -331,7 +332,7 @@ export class LambdaRuntime {
 
   /**
    * Node.js 16.x
-   * @deprecated NodeJS16 will be deprecated on March 11, 2024
+   * @deprecated Node.js 16 runtime has been deprecated on Jun 12, 2024
    */
   public static readonly NODEJS_16_X = new LambdaRuntime(
     "nodejs16.x",
@@ -341,6 +342,8 @@ export class LambdaRuntime {
 
   /**
    * Node.js 18.x
+   *
+   * Advanced notice: Node.js 18 runtime will be deprecated on Jul 31, 2025
    */
   public static readonly NODEJS_18_X = new LambdaRuntime(
     "nodejs18.x",
@@ -353,6 +356,14 @@ export class LambdaRuntime {
   public static readonly NODEJS_20_X = new LambdaRuntime(
     "nodejs20.x",
     "node20"
+  );
+
+  /**
+   * Node.js 22.x
+   */
+  public static readonly NODEJS_22_X = new LambdaRuntime(
+    "nodejs22.x",
+    "node22"
   );
 
   public readonly esbuildPlatform = "node";

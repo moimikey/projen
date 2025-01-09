@@ -4,6 +4,7 @@ import { NodeProject } from ".";
 import { Component } from "../component";
 import { JsonFile } from "../json";
 import { Project } from "../project";
+import { normalizePersistedPath } from "../util";
 
 export interface TypescriptConfigOptions {
   /**
@@ -13,6 +14,9 @@ export interface TypescriptConfigOptions {
 
   /**
    * Base `tsconfig.json` configuration(s) to inherit from.
+   *
+   * @remarks
+   * Must provide either `extends` or `compilerOptions` (or both).
    */
   readonly extends?: TypescriptConfigExtends;
 
@@ -32,8 +36,11 @@ export interface TypescriptConfigOptions {
 
   /**
    * Compiler options to use.
+   *
+   * @remarks
+   * Must provide either `extends` or `compilerOptions` (or both).
    */
-  readonly compilerOptions: TypeScriptCompilerOptions;
+  readonly compilerOptions?: TypeScriptCompilerOptions;
 }
 
 /**
@@ -57,6 +64,16 @@ export enum TypeScriptModuleResolution {
   NODE = "node",
 
   /**
+   * `--moduleResolution node` was renamed to `node10`
+   * (keeping `node` as an alias for backward compatibility) in TypeScript 5.0.
+   * It reflects the CommonJS module resolution algorithm as it existed in Node.js versions
+   * earlier than v12. It should no longer be used.
+   *
+   * @see https://www.typescriptlang.org/docs/handbook/modules/reference.html#node10-formerly-known-as-node
+   */
+  NODE10 = "node10",
+
+  /**
    * Node.js’ ECMAScript Module Support from TypeScript 4.7 onwards
    *
    * @see https://www.typescriptlang.org/tsconfig#moduleResolution
@@ -76,6 +93,34 @@ export enum TypeScriptModuleResolution {
    * @see https://www.typescriptlang.org/tsconfig#moduleResolution
    */
   BUNDLER = "bundler",
+}
+
+/**
+ * This setting controls how TypeScript determines whether a file is a script or a module.
+ *
+ * @see https://www.typescriptlang.org/docs/handbook/modules/theory.html#scripts-and-modules-in-javascript
+ */
+export enum TypeScriptModuleDetection {
+  /**
+   * TypeScript will not only look for import and export statements, but it will also check whether the "type" field in a package.json is set to "module" when running with module: nodenext or node16, and check whether the current file is a JSX file when running under jsx: react-jsx.
+   *
+   * @see https://www.typescriptlang.org/tsconfig/#moduleDetection
+   */
+  AUTO = "auto",
+
+  /**
+   * The same behavior as 4.6 and prior, usings import and export statements to determine whether a file is a module.
+   *
+   * @see https://www.typescriptlang.org/tsconfig/#moduleDetection
+   */
+  LEGACY = "legacy",
+
+  /**
+   * Ensures that every non-declaration file is treated as a module.
+   *
+   * @see https://www.typescriptlang.org/tsconfig/#moduleDetection
+   */
+  FORCE = "force",
 }
 
 /**
@@ -318,6 +363,13 @@ export interface TypeScriptCompilerOptions {
   readonly lib?: string[];
 
   /**
+   * This setting controls how TypeScript determines whether a file is a [script or a module](https://www.typescriptlang.org/docs/handbook/modules/theory.html#scripts-and-modules-in-javascript).
+   *
+   * @default "auto"
+   */
+  readonly moduleDetection?: TypeScriptModuleDetection;
+
+  /**
    * Sets the module system for the program.
    * See https://www.typescriptlang.org/docs/handbook/modules.html#ambient-modules.
    *
@@ -543,8 +595,14 @@ export interface TypeScriptCompilerOptions {
   readonly paths?: { [key: string]: string[] };
 
   /**
+   * If typeRoots is specified, only packages under typeRoots will be included
+   * @see https://www.typescriptlang.org/tsconfig/#typeRoots
+   */
+  readonly typeRoots?: string[];
+
+  /**
    * If types is specified, only packages listed will be included in the global scope
-   * @see {@link https://www.typescriptlang.org/tsconfig#types}
+   * @see https://www.typescriptlang.org/tsconfig#types
    */
   readonly types?: string[];
 
@@ -565,6 +623,57 @@ export interface TypeScriptCompilerOptions {
    * You can read more about composite projects in the handbook.
    */
   readonly tsBuildInfoFile?: string;
+
+  /**
+   * Allow Unused Labels
+   *
+   * When:
+   *
+   * - `undefined` (default) provide suggestions as warnings to editors
+   * - `true` unused labels are ignored
+   * - `false` raises compiler errors about unused labels
+   *
+   * Labels are very rare in JavaScript and typically indicate an attempt to write an object literal:
+   *
+   * ```ts
+   * function verifyAge(age: number) {
+   *   // Forgot 'return' statement
+   *   if (age > 18) {
+   *     verified: true;
+   * //  ^^^^^^^^ Unused label.
+   *   }
+   * }
+   * ```
+   *
+   * @see https://www.typescriptlang.org/tsconfig#allowUnusedLabels
+   */
+  readonly allowUnusedLabels?: boolean;
+
+  /**
+   * Allow Unreachable Code
+   *
+   * When:
+   *
+   * - `undefined` (default) provide suggestions as warnings to editors
+   * - `true` unreachable code is ignored
+   * - `false` raises compiler errors about unreachable code
+   *
+   * These warnings are only about code which is provably unreachable due to the use of JavaScript syntax.
+   *
+   * @see https://www.typescriptlang.org/tsconfig#allowUnreachableCode
+   */
+  readonly allowUnreachableCode?: boolean;
+
+  /**
+   * Check JS
+   *
+   * Works in tandem with [allowJs](https://www.typescriptlang.org/tsconfig#allowJs). When checkJs is enabled then
+   * errors are reported in JavaScript files. This is the equivalent of including // @ts-check at the top of all
+   * JavaScript files which are included in your project.
+   *
+   * @see https://www.typescriptlang.org/tsconfig#checkJs
+   */
+  readonly checkJs?: boolean;
 }
 
 /**
@@ -610,9 +719,9 @@ export class TypescriptConfigExtends {
 
 export class TypescriptConfig extends Component {
   private _extends: TypescriptConfigExtends;
-  public readonly compilerOptions: TypeScriptCompilerOptions;
-  public readonly include: string[];
-  public readonly exclude: string[];
+  public readonly compilerOptions?: TypeScriptCompilerOptions;
+  private readonly includeSet: Set<string>;
+  private readonly excludeSet: Set<string>;
   public readonly fileName: string;
   public readonly file: JsonFile;
 
@@ -620,9 +729,19 @@ export class TypescriptConfig extends Component {
     super(project);
     const fileName = options.fileName ?? "tsconfig.json";
 
+    if (!options.extends && !options.compilerOptions) {
+      throw new Error(
+        "TypescriptConfig: Must provide either `extends` or `compilerOptions` (or both)."
+      );
+    }
+
     this._extends = options.extends ?? TypescriptConfigExtends.fromPaths([]);
-    this.include = options.include ?? ["**/*.ts"];
-    this.exclude = options.exclude ?? ["node_modules"];
+    this.includeSet = options.include
+      ? new Set(options.include)
+      : new Set(["**/*.ts"]);
+    this.excludeSet = options.exclude
+      ? new Set(options.exclude)
+      : new Set(["node_modules"]);
     this.fileName = fileName;
 
     this.compilerOptions = options.compilerOptions;
@@ -640,6 +759,14 @@ export class TypescriptConfig extends Component {
     if (project instanceof NodeProject) {
       project.npmignore?.exclude(`/${fileName}`);
     }
+  }
+
+  public get include(): string[] {
+    return [...this.includeSet];
+  }
+
+  public get exclude(): string[] {
+    return [...this.excludeSet];
   }
 
   /**
@@ -679,7 +806,10 @@ export class TypescriptConfig extends Component {
     const configDir = dir
       ? path.format({ dir: dir.startsWith("..") ? "" : ".", base: dir })
       : ".";
-    return path.format({ ...pathParts, dir: configDir });
+
+    const extendsPath = path.format({ ...pathParts, dir: configDir });
+
+    return normalizePersistedPath(extendsPath);
   }
 
   /**
@@ -734,12 +864,50 @@ export class TypescriptConfig extends Component {
     ]);
   }
 
+  /**
+   * Add an include pattern to the `include` array of the TSConfig.
+   *
+   * @see https://www.typescriptlang.org/tsconfig#include
+   *
+   * @param pattern The pattern to add.
+   */
   public addInclude(pattern: string) {
     this.include.push(pattern);
+    this.includeSet.add(pattern);
   }
 
+  /**
+   * Add an exclude pattern to the `exclude` array of the TSConfig.
+   *
+   * @see https://www.typescriptlang.org/tsconfig#exclude
+   *
+   * @param pattern The pattern to add.
+   */
   public addExclude(pattern: string) {
     this.exclude.push(pattern);
+    this.excludeSet.add(pattern);
+  }
+
+  /**
+   * Remove an include pattern from the `include` array of the TSConfig.
+   *
+   * @see https://www.typescriptlang.org/tsconfig#include
+   *
+   * @param pattern The pattern to remove.
+   */
+  public removeInclude(pattern: string) {
+    this.includeSet.delete(pattern);
+  }
+
+  /**
+   * Remove an exclude pattern from the `exclude` array of the TSConfig.
+   *
+   * @see https://www.typescriptlang.org/tsconfig#exclude
+   *
+   * @param pattern The pattern to remove.
+   */
+  public removeExclude(pattern: string) {
+    this.excludeSet.delete(pattern);
   }
 
   preSynthesize() {

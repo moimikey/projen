@@ -3,7 +3,7 @@ import { Component } from "../../src";
 import { PROJEN_MARKER } from "../../src/common";
 import { DependencyType } from "../../src/dependencies";
 import { GithubCredentials } from "../../src/github";
-import { secretToString } from "../../src/github/util";
+import { secretToString } from "../../src/github/private/util";
 import { JobPermission } from "../../src/github/workflows-model";
 import {
   CodeArtifactAuthProvider,
@@ -145,7 +145,7 @@ describe("deps", () => {
       "jest-junit",
       "projen",
       "constructs",
-      "standard-version",
+      "commit-and-tag-version",
     ].forEach((d) => delete pkgjson.devDependencies[d]);
 
     expect(pkgjson.devDependencies).toStrictEqual({});
@@ -170,7 +170,7 @@ describe("deps", () => {
       "jest-junit",
       "projen",
       "constructs",
-      "standard-version",
+      "commit-and-tag-version",
     ].forEach((d) => delete pkgjson.devDependencies[d]);
 
     expect(pkgjson.peerDependencies).toStrictEqual({ ccc: "^2" });
@@ -196,6 +196,17 @@ describe("deps", () => {
       bar: "~1.0.0",
     });
     expect(pkgjson.bundledDependencies).toStrictEqual(["bar", "foo", "hey"]);
+  });
+
+  test("can override projen devDep on constructs", () => {
+    // GIVEN
+    const project = new TestNodeProject({
+      devDeps: ["constructs@^10.3.0"],
+    });
+
+    // THEN
+    const pkgjson = packageJson(project);
+    expect(pkgjson.devDependencies.constructs).toStrictEqual("^10.3.0");
   });
 });
 
@@ -305,77 +316,131 @@ describe("deps upgrade", () => {
 });
 
 describe("npm publishing options", () => {
-  test("defaults", () => {
-    // GIVEN
-    const project = new TestProject();
+  describe("unscoped package", () => {
+    test("defaults with npmProvenance enabled", () => {
+      // GIVEN
+      const project = new TestProject();
 
-    // WHEN
-    const npm = new NodePackage(project, {
-      packageName: "my-package",
+      // WHEN
+      const npm = new NodePackage(project, {
+        packageName: "my-package",
+        npmProvenance: true,
+      });
+
+      // THEN
+      expect(npm.npmAccess).toStrictEqual(NpmAccess.PUBLIC);
+      expect(npm.npmRegistry).toStrictEqual("registry.npmjs.org");
+      expect(npm.npmRegistryUrl).toStrictEqual("https://registry.npmjs.org/");
+      expect(npm.npmTokenSecret).toStrictEqual("NPM_TOKEN");
+
+      // npmProvenance requires publish config to be present
+      expect(
+        synthSnapshot(project)["package.json"].publishConfig
+      ).toHaveProperty("access", "public");
     });
 
-    // THEN
-    expect(npm.npmAccess).toStrictEqual(NpmAccess.PUBLIC);
-    expect(npm.npmRegistry).toStrictEqual("registry.npmjs.org");
-    expect(npm.npmRegistryUrl).toStrictEqual("https://registry.npmjs.org/");
-    expect(npm.npmTokenSecret).toStrictEqual("NPM_TOKEN");
+    test("defaults with npmProvenance disabled", () => {
+      // GIVEN
+      const project = new TestProject();
 
-    // since these are all defaults, publishConfig is not defined.
-    expect(
-      synthSnapshot(project)["package.json"].publishConfig
-    ).toBeUndefined();
-  });
+      // WHEN
+      const npm = new NodePackage(project, {
+        packageName: "my-package",
+        npmProvenance: false,
+      });
 
-  test("scoped packages default to RESTRICTED access", () => {
-    // GIVEN
-    const project = new TestProject();
+      // THEN
+      expect(npm.npmAccess).toStrictEqual(NpmAccess.PUBLIC);
+      expect(npm.npmRegistry).toStrictEqual("registry.npmjs.org");
+      expect(npm.npmRegistryUrl).toStrictEqual("https://registry.npmjs.org/");
+      expect(npm.npmTokenSecret).toStrictEqual("NPM_TOKEN");
 
-    // WHEN
-    const npm = new NodePackage(project, {
-      packageName: "scoped@my-package",
+      // without npmProvenance we don't need to render publishConfig
+      expect(
+        synthSnapshot(project)["package.json"].publishConfig
+      ).toBeUndefined();
     });
 
-    // THEN
-    expect(npm.npmAccess).toStrictEqual(NpmAccess.RESTRICTED);
+    test("unscoped package cannot be RESTRICTED", () => {
+      // GIVEN
+      const project = new TestProject();
 
-    // since these are all defaults, publishConfig is not defined.
-    expect(packageJson(project).publishConfig).toBeUndefined();
+      // THEN
+      expect(
+        () =>
+          new NodePackage(project, {
+            packageName: "my-package",
+            npmAccess: NpmAccess.RESTRICTED,
+          })
+      ).toThrow(/"npmAccess" cannot be RESTRICTED for non-scoped npm package/);
+    });
   });
 
-  test("non-scoped package cannot be RESTRICTED", () => {
-    // GIVEN
-    const project = new TestProject();
+  describe("scoped package", () => {
+    test("scoped packages default to RESTRICTED access", () => {
+      // GIVEN
+      const project = new TestProject();
 
-    // THEN
-    expect(
-      () =>
-        new NodePackage(project, {
-          packageName: "my-package",
-          npmAccess: NpmAccess.RESTRICTED,
-        })
-    ).toThrow(/"npmAccess" cannot be RESTRICTED for non-scoped npm package/);
-  });
+      // WHEN
+      const npm = new NodePackage(project, {
+        packageName: "scoped@my-package",
+      });
 
-  test("custom settings", () => {
-    // GIVEN
-    const project = new TestProject();
+      // THEN
+      expect(npm.npmAccess).toStrictEqual(NpmAccess.RESTRICTED);
+      expect(npm.npmProvenance).toStrictEqual(false);
 
-    // WHEN
-    const npm = new NodePackage(project, {
-      packageName: "scoped@my-package",
-      npmRegistryUrl: "https://foo.bar",
-      npmAccess: NpmAccess.PUBLIC,
-      npmTokenSecret: "GITHUB_TOKEN",
+      // since these are all defaults, publishConfig is not defined.
+      expect(packageJson(project).publishConfig).toBeUndefined();
     });
 
-    // THEN
-    expect(npm.npmRegistry).toStrictEqual("foo.bar");
-    expect(npm.npmRegistryUrl).toStrictEqual("https://foo.bar/");
-    expect(npm.npmAccess).toStrictEqual(NpmAccess.PUBLIC);
-    expect(npm.npmTokenSecret).toStrictEqual("GITHUB_TOKEN");
-    expect(packageJson(project).publishConfig).toStrictEqual({
-      access: "public",
-      registry: "https://foo.bar/",
+    test.each([[true, false]])(
+      "public with npmProvenance=%s",
+      (npmProvenance: boolean) => {
+        // GIVEN
+        const project = new TestProject();
+
+        // WHEN
+        const npm = new NodePackage(project, {
+          packageName: "@projen/my-package",
+          npmAccess: NpmAccess.PUBLIC,
+          npmProvenance,
+        });
+
+        // THEN
+        expect(npm.npmAccess).toStrictEqual(NpmAccess.PUBLIC);
+        expect(npm.npmRegistry).toStrictEqual("registry.npmjs.org");
+        expect(npm.npmRegistryUrl).toStrictEqual("https://registry.npmjs.org/");
+        expect(npm.npmTokenSecret).toStrictEqual("NPM_TOKEN");
+
+        // Since public is not the standard access, we always expect access to be rendered
+        expect(
+          synthSnapshot(project)["package.json"].publishConfig
+        ).toHaveProperty("access", "public");
+      }
+    );
+
+    test("custom settings", () => {
+      // GIVEN
+      const project = new TestProject();
+
+      // WHEN
+      const npm = new NodePackage(project, {
+        packageName: "scoped@my-package",
+        npmRegistryUrl: "https://foo.bar",
+        npmAccess: NpmAccess.PUBLIC,
+        npmTokenSecret: "GITHUB_TOKEN",
+      });
+
+      // THEN
+      expect(npm.npmRegistry).toStrictEqual("foo.bar");
+      expect(npm.npmRegistryUrl).toStrictEqual("https://foo.bar/");
+      expect(npm.npmAccess).toStrictEqual(NpmAccess.PUBLIC);
+      expect(npm.npmTokenSecret).toStrictEqual("GITHUB_TOKEN");
+      expect(packageJson(project).publishConfig).toStrictEqual({
+        access: "public",
+        registry: "https://foo.bar/",
+      });
     });
   });
 
@@ -391,9 +456,10 @@ describe("npm publishing options", () => {
     // THEN
     expect(npm.npmRegistry).toStrictEqual("foo.bar/path/");
     expect(npm.npmRegistryUrl).toStrictEqual("https://foo.bar/path/");
-    expect(packageJson(project).publishConfig).toStrictEqual({
-      registry: "https://foo.bar/path/",
-    });
+    expect(packageJson(project).publishConfig).toHaveProperty(
+      "registry",
+      "https://foo.bar/path/"
+    );
   });
 
   test("AWS CodeArtifact registry with default authProvider", () => {
@@ -413,10 +479,10 @@ describe("npm publishing options", () => {
     expect(npm.npmRegistryUrl).toStrictEqual(
       "https://my-domain-111122223333.d.codeartifact.us-west-2.amazonaws.com/npm/my_repo/"
     );
-    expect(packageJson(project).publishConfig).toStrictEqual({
-      registry:
-        "https://my-domain-111122223333.d.codeartifact.us-west-2.amazonaws.com/npm/my_repo/",
-    });
+    expect(packageJson(project).publishConfig).toHaveProperty(
+      "registry",
+      "https://my-domain-111122223333.d.codeartifact.us-west-2.amazonaws.com/npm/my_repo/"
+    );
     expect(npm.codeArtifactOptions?.accessKeyIdSecret).toStrictEqual(
       "AWS_ACCESS_KEY_ID"
     );
@@ -442,10 +508,10 @@ describe("npm publishing options", () => {
     expect(npm.npmRegistryUrl).toStrictEqual(
       "https://my-domain-111122223333.d.codeartifact.us-west-2.amazonaws.com/npm/my_repo/"
     );
-    expect(packageJson(project).publishConfig).toStrictEqual({
-      registry:
-        "https://my-domain-111122223333.d.codeartifact.us-west-2.amazonaws.com/npm/my_repo/",
-    });
+    expect(packageJson(project).publishConfig).toHaveProperty(
+      "registry",
+      "https://my-domain-111122223333.d.codeartifact.us-west-2.amazonaws.com/npm/my_repo/"
+    );
     expect(npm.codeArtifactOptions?.accessKeyIdSecret).toStrictEqual(
       "AWS_ACCESS_KEY_ID"
     );
@@ -665,7 +731,7 @@ test("extend github release workflow", () => {
       steps: [
         {
           name: "Check out the repo",
-          uses: "actions/checkout@v3",
+          uses: "actions/checkout@v4",
         },
         {
           name: "Push to Docker Hub",
@@ -696,7 +762,7 @@ test("codecov upload added to github release workflow", () => {
   });
 
   const workflow = synthSnapshot(project)[".github/workflows/release.yml"];
-  expect(workflow).toContain("uses: codecov/codecov-action@v3");
+  expect(workflow).toContain("uses: codecov/codecov-action@v4");
 });
 
 test("codecov upload not added to github release workflow", () => {
@@ -705,7 +771,7 @@ test("codecov upload not added to github release workflow", () => {
   });
 
   const workflow = synthSnapshot(project)[".github/workflows/release.yml"];
-  expect(workflow).not.toContain("uses: codecov/codecov-action@v3");
+  expect(workflow).not.toContain("uses: codecov/codecov-action@v4");
 });
 
 describe("scripts", () => {
@@ -746,7 +812,7 @@ describe("scripts", () => {
 test("mutableBuild will push changes to PR branches", () => {
   // WHEN
   const project = new TestNodeProject({
-    mutableBuild: true,
+    buildWorkflowOptions: { mutableBuild: true },
   });
 
   // THEN
@@ -760,7 +826,7 @@ test("mutableBuild will push changes to PR branches", () => {
 test("disabling mutableBuild will skip pushing changes to PR branches", () => {
   // WHEN
   const project = new TestNodeProject({
-    mutableBuild: false,
+    buildWorkflowOptions: { mutableBuild: false },
   });
 
   // THEN
@@ -768,6 +834,23 @@ test("disabling mutableBuild will skip pushing changes to PR branches", () => {
   const workflow = yaml.parse(workflowYaml);
   expect(workflow.jobs.build.steps).toMatchSnapshot();
   expect(Object.keys(workflow.jobs)).not.toContain("self-mutation");
+});
+
+test("provided preBuildSteps for build workflow get combined with setup steps", () => {
+  // WHEN
+  const project = new TestNodeProject({
+    buildWorkflowOptions: {
+      preBuildSteps: [{ name: "hello", run: "echo hello" }],
+    },
+  });
+
+  // THEN
+  const workflowYaml = synthSnapshot(project)[".github/workflows/build.yml"];
+  const workflow = yaml.parse(workflowYaml);
+  expect(workflow.jobs.build.steps).toMatchSnapshot();
+  expect(workflow.jobs.build.steps[0]?.name).toEqual("Checkout");
+  expect(workflow.jobs.build.steps[1]?.name).toEqual("Install dependencies");
+  expect(workflow.jobs.build.steps[2]?.name).toEqual("hello");
 });
 
 test("projen synth is only executed for subprojects", () => {
@@ -849,9 +932,9 @@ test("enabling renovatebot does not overturn mergify: false", () => {
   expect(snapshot).not.toHaveProperty([".mergify.yml"]);
   expect(snapshot).toHaveProperty(["renovate.json5"]);
   expect(snapshot["renovate.json5"].ignoreDeps).toMatchObject([
+    "commit-and-tag-version",
     "constructs",
     "jest-junit",
-    "standard-version",
     "projen",
   ]);
   expect(snapshot["renovate.json5"]).toMatchSnapshot();
@@ -875,9 +958,9 @@ test("renovatebot ignored dependency overrides", () => {
   //       as JSON object path delimiters.
   expect(snapshot).toHaveProperty(["renovate.json5"]);
   expect(snapshot["renovate.json5"].ignoreDeps).toMatchObject([
+    "commit-and-tag-version",
     "constructs",
     "jest-junit",
-    "standard-version",
     "axios",
     "some-overriden-package",
     "projen",
@@ -979,6 +1062,61 @@ test("workflowGitIdentity can be used to customize the git identity used in buil
       'git config user.name "heya"',
       'git config user.email "there@z.com"',
     ].join("\n"),
+  });
+});
+
+describe("Setup bun", () => {
+  const setupBunIndex = (job: any) =>
+    job.steps.findIndex((step: any) => step.name === "Setup bun");
+  const setupNodeIndex = (job: any) =>
+    job.steps.findIndex((step: any) => step.name === "Setup Node.js");
+
+  test("Setup bun should not run without bun selected as the package manager", () => {
+    // WHEN
+    const options = {};
+
+    const project = new TestNodeProject(options);
+
+    // THEN
+    const output = synthSnapshot(project);
+    const buildWorkflow = yaml.parse(output[".github/workflows/build.yml"]);
+    expect(setupBunIndex(buildWorkflow.jobs.build)).toEqual(-1);
+    const releaseWorkflow = yaml.parse(output[".github/workflows/release.yml"]);
+    expect(setupBunIndex(releaseWorkflow.jobs.release)).toEqual(-1);
+    const upgradeWorkflow = yaml.parse(
+      output[".github/workflows/upgrade-main.yml"]
+    );
+    expect(setupBunIndex(upgradeWorkflow.jobs.upgrade)).toEqual(-1);
+  });
+
+  test("Setup Node.js should not be used if bun is selected as the package manager", () => {
+    // WHEN
+    const options = {
+      workflowPackageCache: true,
+      packageManager: NodePackageManager.BUN,
+    };
+
+    const project = new TestNodeProject(options);
+
+    // THEN
+    const output = synthSnapshot(project);
+    const buildWorkflow = yaml.parse(output[".github/workflows/build.yml"]);
+    expect(setupBunIndex(buildWorkflow.jobs.build)).toBeGreaterThanOrEqual(0);
+    expect(setupNodeIndex(buildWorkflow.jobs.build)).toEqual(-1);
+
+    const releaseWorkflow = yaml.parse(output[".github/workflows/release.yml"]);
+    expect(setupBunIndex(releaseWorkflow.jobs.release)).toBeGreaterThanOrEqual(
+      0
+    );
+    expect(setupNodeIndex(releaseWorkflow.jobs.release)).toEqual(-1);
+
+    const upgradeWorkflow = yaml.parse(
+      output[".github/workflows/upgrade-main.yml"]
+    );
+    expect(setupBunIndex(upgradeWorkflow.jobs.upgrade)).toBeGreaterThanOrEqual(
+      0
+    );
+    expect(setupNodeIndex(upgradeWorkflow.jobs.upgrade)).toEqual(-1);
   });
 });
 
@@ -1164,9 +1302,11 @@ describe("buildWorkflowTriggers", () => {
   test("use custom triggers in build workflow", () => {
     // WHEN
     const project = new TestNodeProject({
-      buildWorkflowTriggers: {
-        push: {
-          branches: ["feature/*"],
+      buildWorkflowOptions: {
+        workflowTriggers: {
+          push: {
+            branches: ["feature/*"],
+          },
         },
       },
     });
@@ -1215,7 +1355,7 @@ test("node project can be ejected", () => {
   expect(outdir["package.json"].scripts.eject).toBeUndefined();
   expect(outdir["package.json"].scripts.default).toBeUndefined();
   expect(outdir["package.json"].devDependencies.projen).toBeUndefined();
-  expect(outdir["scripts/run-task"]).toBeDefined();
+  expect(outdir["scripts/run-task.cjs"]).toBeDefined();
   expect(outdir["foo/bar.json"]).not.toContain(PROJEN_MARKER);
   expect(outdir["sample.txt"]).not.toContain(PROJEN_MARKER);
   expect(outdir[".projenrc.js"]).toBeUndefined();
@@ -1701,6 +1841,10 @@ describe("package manager env", () => {
       packageManager: NodePackageManager.PNPM,
       cmd: '$(pnpm -c exec "node --print process.env.PATH")',
     },
+    {
+      packageManager: NodePackageManager.BUN,
+      cmd: '$(bun --eval "console.log(process.env.PATH)")',
+    },
   ].forEach((testCase) => {
     test(testCase.packageManager, () => {
       // GIVEN / WHEN
@@ -1783,6 +1927,39 @@ describe("Subproject", () => {
       )
     ).toBeDefined();
   });
+
+  test("should create a build workflow in the parent project", () => {
+    // GIVEN / WHEN
+    const root = new TestNodeProject();
+    new TestNodeProject({
+      parent: root,
+      outdir: "child",
+      buildWorkflow: true,
+      minNodeVersion: "18.0.0",
+      workflowNodeVersion: "18.14.0",
+    });
+
+    // THEN
+    const snapshot = synthSnapshot(root);
+
+    expect(snapshot).toHaveProperty([
+      ".github/workflows/build_test-node-project.yml",
+    ]);
+
+    const subProjecBuildWorkflow = yaml.parse(
+      snapshot[".github/workflows/build_test-node-project.yml"]
+    );
+    expect(
+      subProjecBuildWorkflow.jobs.build.defaults.run["working-directory"]
+    ).toEqual("./child");
+    expect(
+      subProjecBuildWorkflow.jobs.build.steps.find(
+        (step: any) => step.name === "Install dependencies"
+      )["working-directory"]
+    ).toEqual(
+      expect.stringContaining(".") // NodeProject is responsible for setting the install working directory to root
+    );
+  });
 });
 
 describe("npmignore", () => {
@@ -1812,5 +1989,27 @@ describe("npmignore", () => {
     // THEN
     expect(output[".npmignore"]).toMatchSnapshot();
     expect(output[".npmignore"]).toContain("/SECURITY.md");
+  });
+
+  test("should set bun version accordingly (via bunVersion)", () => {
+    // GIVEN
+    const project = new TestNodeProject({
+      packageManager: NodePackageManager.BUN,
+      bunVersion: "1.1.38",
+    });
+
+    // WHEN
+    const output = synthSnapshot(project);
+
+    // THEN
+    expect(output[".github/workflows/build.yml"]).toContain(
+      "bun-version: 1.1.38"
+    );
+    expect(output[".github/workflows/release.yml"]).toContain(
+      "bun-version: 1.1.38"
+    );
+    expect(output[".github/workflows/upgrade-main.yml"]).toContain(
+      "bun-version: 1.1.38"
+    );
   });
 });
