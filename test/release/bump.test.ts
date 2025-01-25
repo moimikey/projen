@@ -537,7 +537,7 @@ describe("newline at the end of version file", () => {
 
       // Commit files so the bump will work
       execSync("git add .", { cwd: projectdir });
-      execSync('git commit -m"chore: init"', { cwd: projectdir });
+      execSync('git commit -m "chore: init"', { cwd: projectdir });
 
       // Bump the version
       execProjenCLI(projectdir, ["bump"]);
@@ -577,7 +577,7 @@ async function testBump(
     await fs.mkdir(dirname(filePath), { recursive: true });
     await fs.writeFile(filePath, message);
     git("add .");
-    git(`commit -m "${message}"`);
+    git(`commit -F "${filePath}"`);
   };
 
   await commit("initial commit");

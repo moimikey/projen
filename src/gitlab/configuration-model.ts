@@ -76,6 +76,8 @@ export interface Default {
   readonly beforeScript?: string[];
   /* A list of cache definitions (max. 4) with the files and directories to cache between jobs. You can only use paths that are in the local working copy. */
   readonly cache?: Cache[];
+  /** Specifies the default ID tokens (JSON Web Tokens) that are used for CI/CD authentication to use globally for all jobs. */
+  readonly idTokens?: Record<string, IDToken>;
   /* Specifies the default docker image to use globally for all jobs. */
   readonly image?: Image;
   /* If a job should be canceled when a newer pipeline starts before the job completes (Default: false).*/
@@ -263,6 +265,8 @@ export interface IncludeRule {
   readonly exists?: string[];
   /* Clauses to specify when to add a job to a pipeline.*/
   readonly if?: string;
+  /* Specify to update a job’s needs for specific conditions. */
+  readonly needs?: string[];
   /* Execute scripts after a waiting period written in natural language (Ex. one hour, 3600 seconds, 60 minutes). */
   readonly startIn?: string;
   /* Use variables in rules to define variables for specific conditions. */
@@ -627,6 +631,8 @@ export interface VariableConfig {
  * @see https://docs.gitlab.com/ee/ci/yaml/#workflow
  */
 export interface Workflow {
+  /** You can use name to define a name for pipelines. */
+  readonly name?: string;
   /** Used to control whether or not a whole pipeline is created. */
   readonly rules?: WorkflowRule[];
 }
@@ -645,7 +651,7 @@ export interface WorkflowRule {
   /* Use variables in rules to define variables for specific conditions. */
   readonly variables?: Record<string, number | string>;
   /* Conditions for when to run the job. Defaults to 'on_success' */
-  readonly when?: JobWhen;
+  readonly when?: WorkflowWhen;
 }
 
 /**

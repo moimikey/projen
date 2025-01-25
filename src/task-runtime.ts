@@ -1,6 +1,5 @@
 import { SpawnOptions, spawnSync } from "child_process";
 import { existsSync, readFileSync, statSync } from "fs";
-import { platform } from "os";
 import { dirname, join, resolve } from "path";
 import * as path from "path";
 import { format } from "util";
@@ -8,6 +7,7 @@ import { gray, underline } from "chalk";
 import { PROJEN_DIR } from "./common";
 import * as logging from "./logging";
 import { TasksManifest, TaskSpec, TaskStep } from "./task-model";
+import { makeCrossPlatform } from "./util/tasks";
 
 const ENV_TRIM_LEN = 20;
 const ARGS_MARKER = "$@";
@@ -66,14 +66,15 @@ export class TaskRuntime {
   public runTask(
     name: string,
     parents: string[] = [],
-    args: Array<string | number> = []
+    args: Array<string | number> = [],
+    env: { [name: string]: string } = {}
   ) {
     const task = this.tryFindTask(name);
     if (!task) {
       throw new Error(`cannot find command ${task}`);
     }
 
-    new RunTask(this, task, parents, args);
+    new RunTask(this, task, parents, args, env);
   }
 }
 
@@ -87,7 +88,8 @@ class RunTask {
     private readonly runtime: TaskRuntime,
     private readonly task: TaskSpec,
     parents: string[] = [],
-    args: Array<string | number> = []
+    args: Array<string | number> = [],
+    envParam: { [name: string]: string } = {}
   ) {
     this.workdir = task.cwd ?? this.runtime.workdir;
 
@@ -98,7 +100,7 @@ class RunTask {
       return;
     }
 
-    this.env = this.resolveEnvironment(parents);
+    this.env = this.resolveEnvironment(envParam, parents);
 
     const envlogs = [];
     for (const [k, v] of Object.entries(this.env)) {
@@ -153,7 +155,8 @@ class RunTask {
         this.runtime.runTask(
           step.spawn,
           [...this.parents, this.task.name],
-          argsList
+          argsList,
+          step.env
         );
       }
 
@@ -167,17 +170,9 @@ class RunTask {
       }
 
       for (const exec of execs) {
-        let command = "";
         let hasError = false;
-        const cmd = exec.split(" ")[0];
-        if (
-          platform() == "win32" &&
-          ["mkdir", "mv", "rm", "cp"].includes(cmd)
-        ) {
-          command = `shx ${exec}`;
-        } else {
-          command = exec;
-        }
+
+        let command = makeCrossPlatform(exec);
 
         if (command.includes(ARGS_MARKER)) {
           command = command.replace(ARGS_MARKER, argsList.join(" "));
@@ -270,7 +265,10 @@ class RunTask {
    * `$(xx)` for allowing environment to be evaluated by executing a shell
    * command and obtaining its result.
    */
-  private resolveEnvironment(parents: string[]) {
+  private resolveEnvironment(
+    envParam: { [name: string]: string },
+    parents: string[]
+  ) {
     let env = this.runtime.manifest.env ?? {};
 
     // add env from all parent tasks one by one
@@ -281,10 +279,11 @@ class RunTask {
       };
     }
 
-    // apply the task environment last
+    // apply task environment, then the specific env last
     env = {
       ...env,
       ...(this.task.env ?? {}),
+      ...envParam,
     };
 
     return this.evalEnvironment(env ?? {});
@@ -363,7 +362,7 @@ class RunTask {
     const program = require.resolve(
       join(moduleRoot, "lib", `${builtin}.task.js`)
     );
-    return `'${process.execPath}' '${program}'`;
+    return `"${process.execPath}" "${program}"`;
   }
 }
 

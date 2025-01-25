@@ -6,30 +6,84 @@ import { synthSnapshot, TestProject } from "../util";
 describe("github-workflow", () => {
   const workflowName = "test-workflow";
 
-  test("Default concurrency allowed", () => {
+  test("concurrency is not set by default", () => {
     const project = new TestProject();
 
     new GithubWorkflow(project.github!, workflowName);
 
     const snapshot = synthSnapshot(project);
 
-    expect(snapshot[`.github/workflows/${workflowName}.yml`]).not.toContain(
-      "concurrency"
+    const workflow = YAML.parse(
+      snapshot[`.github/workflows/${workflowName}.yml`]
     );
+
+    expect(workflow.concurrency).toBeUndefined();
   });
 
-  test("concurrency set", () => {
-    const concurrencyName = "my-concurrency";
+  test("concurrency defaults", () => {
     const project = new TestProject();
 
     new GithubWorkflow(project.github!, workflowName, {
-      concurrency: concurrencyName,
+      limitConcurrency: true,
     });
 
     const snapshot = synthSnapshot(project);
 
-    expect(snapshot[`.github/workflows/${workflowName}.yml`]).toContain(
-      `concurrency: ${concurrencyName}`
+    const workflow = YAML.parse(
+      snapshot[`.github/workflows/${workflowName}.yml`]
+    );
+
+    expect(workflow.concurrency).toEqual({
+      "cancel-in-progress": false,
+      group: "${{ github.workflow }}",
+    });
+  });
+
+  test("can override concurrency defaults", () => {
+    const project = new TestProject();
+
+    new GithubWorkflow(project.github!, workflowName, {
+      limitConcurrency: true,
+      concurrencyOptions: {
+        group: "custom-group",
+        cancelInProgress: true,
+      },
+    });
+
+    const snapshot = synthSnapshot(project);
+
+    const workflow = YAML.parse(
+      snapshot[`.github/workflows/${workflowName}.yml`]
+    );
+
+    expect(workflow.concurrency).toEqual({
+      "cancel-in-progress": true,
+      group: "custom-group",
+    });
+  });
+
+  test("can set custom file name", () => {
+    const project = new TestProject();
+
+    const fileName = "FoObAr%.yaml";
+    new GithubWorkflow(project.github!, workflowName, {
+      fileName,
+    });
+
+    const snapshot = synthSnapshot(project);
+    expect(snapshot[`.github/workflows/${fileName}`]).not.toBeUndefined();
+  });
+
+  test("custom file name must use a YAML extension", () => {
+    expect(() => {
+      const project = new TestProject();
+
+      const fileName = "foobar.txt";
+      new GithubWorkflow(project.github!, workflowName, {
+        fileName,
+      });
+    }).toThrowError(
+      "GitHub Workflow files must have either a .yml or .yaml file extension, got: foobar.txt"
     );
   });
 
@@ -128,7 +182,7 @@ describe("github-workflow", () => {
     workflow.addJob("working-dir", {
       runsOn: ["ubuntu-latest"],
       permissions: {},
-      steps: [{ uses: "actions/checkout@v3" }],
+      steps: [{ uses: "actions/checkout@v4" }],
     });
     workflow.removeJob("working-dir");
 
@@ -149,7 +203,7 @@ describe("github-workflow", () => {
     workflow.addJob("working-dir", {
       runsOn: ["ubuntu-latest"],
       permissions: {},
-      steps: [{ uses: "actions/checkout@v3" }],
+      steps: [{ uses: "actions/checkout@v4" }],
     });
     workflow.updateJob("working-dir", {
       runsOn: ["ubuntu-latest"],
@@ -176,7 +230,7 @@ describe("github-workflow", () => {
       ghw.addJob("working-dir", {
         runsOn: ["ubuntu-latest"],
         permissions: {},
-        steps: [{ uses: "actions/checkout@v3" }],
+        steps: [{ uses: "actions/checkout@v4" }],
       });
 
       const snapshot = synthSnapshot(project);
@@ -193,18 +247,18 @@ describe("github-workflow", () => {
       ghw.addJob("working-dir", {
         runsOn: ["ubuntu-latest"],
         permissions: {},
-        steps: [{ uses: "actions/checkout@v3" }],
+        steps: [{ uses: "actions/checkout@v4" }],
       });
 
       project.github?.actions.set(
-        "actions/checkout@v3",
+        "actions/checkout@v4",
         "replacement/checkout"
       );
 
       const snapshot = synthSnapshot(project);
       const wf = snapshot[`.github/workflows/${workflowName}.yml`];
 
-      expect(wf).not.toContain("actions/checkout@v3");
+      expect(wf).not.toContain("actions/checkout@v4");
       expect(wf).toContain("replacement/checkout");
     });
 
@@ -215,7 +269,7 @@ describe("github-workflow", () => {
       ghw.addJob("working-dir", {
         runsOn: ["ubuntu-latest"],
         permissions: {},
-        steps: [{ uses: "actions/checkout@v3" }],
+        steps: [{ uses: "actions/checkout@v4" }],
       });
 
       project.github?.actions.set("actions/checkout", "replacement/checkout");
@@ -223,7 +277,7 @@ describe("github-workflow", () => {
       const snapshot = synthSnapshot(project);
       const wf = snapshot[`.github/workflows/${workflowName}.yml`];
 
-      expect(wf).not.toContain("actions/checkout@v3");
+      expect(wf).not.toContain("actions/checkout@v4");
       expect(wf).toContain("replacement/checkout");
     });
 
@@ -237,12 +291,13 @@ describe("github-workflow", () => {
         steps: [
           { uses: "actions/checkout@v2" },
           { uses: "actions/checkout@v3" },
+          { uses: "actions/checkout@v4" },
         ],
       });
 
       project.github?.actions.set(
-        "actions/checkout@v2",
-        "actions/checkout@explicit-v2"
+        "actions/checkout@v4",
+        "actions/checkout@explicit-v4"
       );
       project.github?.actions.set(
         "actions/checkout",
@@ -255,7 +310,8 @@ describe("github-workflow", () => {
       expect(wf).toMatchSnapshot();
       expect(wf).not.toContain("actions/checkout@v2");
       expect(wf).not.toContain("actions/checkout@v3");
-      expect(wf).toContain("actions/checkout@explicit-v2");
+      expect(wf).not.toContain("actions/checkout@v4");
+      expect(wf).toContain("actions/checkout@explicit-v4");
       expect(wf).toContain("actions/checkout@generic-override");
     });
   });

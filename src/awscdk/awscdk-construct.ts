@@ -43,7 +43,7 @@ export interface AwsCdkConstructLibraryOptions
 
   /**
    * Automatically discovers and creates integration tests for each `.integ.ts`
-   * file in under your test directory.
+   * file under your test directory.
    *
    * @default true
    */
@@ -87,7 +87,7 @@ export class AwsCdkConstructLibrary extends ConstructLibrary {
               pinnedDevDependency: false,
             }
           : undefined,
-      workflowNodeVersion: options.minNodeVersion ?? "18.x",
+      workflowNodeVersion: options.minNodeVersion ?? "lts/*",
       ...options,
     });
 

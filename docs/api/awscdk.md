@@ -245,7 +245,7 @@ Returns a string representation of this construct.
 ##### `addExcludeFromCleanup` <a name="addExcludeFromCleanup" id="projen.awscdk.AwsCdkConstructLibrary.addExcludeFromCleanup"></a>
 
 ```typescript
-public addExcludeFromCleanup(globs: string): void
+public addExcludeFromCleanup(globs: ...string[]): void
 ```
 
 Exclude the matching files from pre-synth cleanup.
@@ -255,7 +255,7 @@ source files include the projen marker and we don't want them to be erased durin
 
 ###### `globs`<sup>Required</sup> <a name="globs" id="projen.awscdk.AwsCdkConstructLibrary.addExcludeFromCleanup.parameter.globs"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The glob patterns to match.
 
@@ -511,7 +511,7 @@ public addBins(bins: {[ key: string ]: string}): void
 ##### `addBundledDeps` <a name="addBundledDeps" id="projen.awscdk.AwsCdkConstructLibrary.addBundledDeps"></a>
 
 ```typescript
-public addBundledDeps(deps: string): void
+public addBundledDeps(deps: ...string[]): void
 ```
 
 Defines bundled dependencies.
@@ -521,7 +521,7 @@ Bundled dependencies will be added as normal dependencies as well as to the
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkConstructLibrary.addBundledDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -536,28 +536,28 @@ add/upgrade`. If you wish to specify a version range use this syntax:
 ##### ~~`addCompileCommand`~~ <a name="addCompileCommand" id="projen.awscdk.AwsCdkConstructLibrary.addCompileCommand"></a>
 
 ```typescript
-public addCompileCommand(commands: string): void
+public addCompileCommand(commands: ...string[]): void
 ```
 
 DEPRECATED.
 
 ###### `commands`<sup>Required</sup> <a name="commands" id="projen.awscdk.AwsCdkConstructLibrary.addCompileCommand.parameter.commands"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 ---
 
 ##### `addDeps` <a name="addDeps" id="projen.awscdk.AwsCdkConstructLibrary.addDeps"></a>
 
 ```typescript
-public addDeps(deps: string): void
+public addDeps(deps: ...string[]): void
 ```
 
 Defines normal dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkConstructLibrary.addDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -572,14 +572,14 @@ add/upgrade`. If you wish to specify a version range use this syntax:
 ##### `addDevDeps` <a name="addDevDeps" id="projen.awscdk.AwsCdkConstructLibrary.addDevDeps"></a>
 
 ```typescript
-public addDevDeps(deps: string): void
+public addDevDeps(deps: ...string[]): void
 ```
 
 Defines development/test dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkConstructLibrary.addDevDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -610,14 +610,14 @@ The fields to set.
 ##### `addKeywords` <a name="addKeywords" id="projen.awscdk.AwsCdkConstructLibrary.addKeywords"></a>
 
 ```typescript
-public addKeywords(keywords: string): void
+public addKeywords(keywords: ...string[]): void
 ```
 
 Adds keywords to package.json (deduplicated).
 
 ###### `keywords`<sup>Required</sup> <a name="keywords" id="projen.awscdk.AwsCdkConstructLibrary.addKeywords.parameter.keywords"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The keywords to add.
 
@@ -626,7 +626,7 @@ The keywords to add.
 ##### `addPeerDeps` <a name="addPeerDeps" id="projen.awscdk.AwsCdkConstructLibrary.addPeerDeps"></a>
 
 ```typescript
-public addPeerDeps(deps: string): void
+public addPeerDeps(deps: ...string[]): void
 ```
 
 Defines peer dependencies.
@@ -637,7 +637,7 @@ your code against the minimum version required from your consumers.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkConstructLibrary.addPeerDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -668,14 +668,14 @@ The scripts to set.
 ##### ~~`addTestCommand`~~ <a name="addTestCommand" id="projen.awscdk.AwsCdkConstructLibrary.addTestCommand"></a>
 
 ```typescript
-public addTestCommand(commands: string): void
+public addTestCommand(commands: ...string[]): void
 ```
 
 DEPRECATED.
 
 ###### `commands`<sup>Required</sup> <a name="commands" id="projen.awscdk.AwsCdkConstructLibrary.addTestCommand.parameter.commands"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 ---
 
@@ -754,7 +754,7 @@ The command to execute.
 ##### ~~`addCdkDependencies`~~ <a name="addCdkDependencies" id="projen.awscdk.AwsCdkConstructLibrary.addCdkDependencies"></a>
 
 ```typescript
-public addCdkDependencies(deps: string): void
+public addCdkDependencies(deps: ...string[]): void
 ```
 
 Adds dependencies to AWS CDK modules.
@@ -763,7 +763,7 @@ Since this is a library project, dependencies will be added as peer dependencies
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkConstructLibrary.addCdkDependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -772,14 +772,14 @@ names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 ##### ~~`addCdkTestDependencies`~~ <a name="addCdkTestDependencies" id="projen.awscdk.AwsCdkConstructLibrary.addCdkTestDependencies"></a>
 
 ```typescript
-public addCdkTestDependencies(deps: string): void
+public addCdkTestDependencies(deps: ...string[]): void
 ```
 
 Adds AWS CDK modules as dev dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkConstructLibrary.addCdkTestDependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -910,8 +910,8 @@ When given a project, this it the project itself.
 | <code><a href="#projen.awscdk.AwsCdkConstructLibrary.property.buildWorkflow">buildWorkflow</a></code> | <code>projen.build.BuildWorkflow</code> | The PR build GitHub workflow. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibrary.property.buildWorkflowJobId">buildWorkflowJobId</a></code> | <code>string</code> | The job ID of the build workflow. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibrary.property.jest">jest</a></code> | <code>projen.javascript.Jest</code> | The Jest configuration (if enabled). |
-| <code><a href="#projen.awscdk.AwsCdkConstructLibrary.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Maximum node version required by this package. |
-| <code><a href="#projen.awscdk.AwsCdkConstructLibrary.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | Minimum node.js version required by this package. |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibrary.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Maximum node version supported by this package. |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibrary.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | The minimum node version required by this package to function. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibrary.property.npmignore">npmignore</a></code> | <code>projen.IgnoreFile</code> | The .npmignore file. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibrary.property.prettier">prettier</a></code> | <code>projen.javascript.Prettier</code> | *No description.* |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibrary.property.publisher">publisher</a></code> | <code>projen.release.Publisher</code> | Package publisher. |
@@ -1490,7 +1490,9 @@ public readonly maxNodeVersion: string;
 
 - *Type:* string
 
-Maximum node version required by this package.
+Maximum node version supported by this package.
+
+The value indicates the package is incompatible with newer versions.
 
 ---
 
@@ -1502,7 +1504,9 @@ public readonly minNodeVersion: string;
 
 - *Type:* string
 
-Minimum node.js version required by this package.
+The minimum node version required by this package to function.
+
+This value indicates the package is incompatible with older versions.
 
 ---
 
@@ -1828,7 +1832,7 @@ Synthesizes files to the project output directory.
 ##### `addV1Dependencies` <a name="addV1Dependencies" id="projen.awscdk.AwsCdkDeps.addV1Dependencies"></a>
 
 ```typescript
-public addV1Dependencies(deps: string): void
+public addV1Dependencies(deps: ...string[]): void
 ```
 
 Adds dependencies to AWS CDK modules.
@@ -1840,7 +1844,7 @@ This method is not supported in CDK v2. Use `project.addPeerDeps()` or
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkDeps.addV1Dependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -1849,7 +1853,7 @@ names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 ##### `addV1DevDependencies` <a name="addV1DevDependencies" id="projen.awscdk.AwsCdkDeps.addV1DevDependencies"></a>
 
 ```typescript
-public addV1DevDependencies(deps: string): void
+public addV1DevDependencies(deps: ...string[]): void
 ```
 
 Adds AWS CDK modules as dev dependencies.
@@ -1859,7 +1863,7 @@ This method is not supported in CDK v2. Use `project.addPeerDeps()` or
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkDeps.addV1DevDependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 fully qualified names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -1928,6 +1932,7 @@ Test whether the given construct is a component.
 | --- | --- | --- |
 | <code><a href="#projen.awscdk.AwsCdkDeps.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#projen.awscdk.AwsCdkDeps.property.project">project</a></code> | <code>projen.Project</code> | *No description.* |
+| <code><a href="#projen.awscdk.AwsCdkDeps.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | The dependency requirement for the CDK CLI (e.g. '^2.3.4'). |
 | <code><a href="#projen.awscdk.AwsCdkDeps.property.cdkDependenciesAsDeps">cdkDependenciesAsDeps</a></code> | <code>boolean</code> | Whether CDK dependencies are added as normal dependencies (and peer dependencies). |
 | <code><a href="#projen.awscdk.AwsCdkDeps.property.cdkMajorVersion">cdkMajorVersion</a></code> | <code>number</code> | The major version of the AWS CDK (e.g. 1, 2, ...). |
 | <code><a href="#projen.awscdk.AwsCdkDeps.property.cdkMinimumVersion">cdkMinimumVersion</a></code> | <code>string</code> | The minimum version of the AWS CDK (e.g. `2.0.0`). |
@@ -1954,6 +1959,20 @@ public readonly project: Project;
 ```
 
 - *Type:* projen.Project
+
+---
+
+##### `cdkCliVersion`<sup>Required</sup> <a name="cdkCliVersion" id="projen.awscdk.AwsCdkDeps.property.cdkCliVersion"></a>
+
+```typescript
+public readonly cdkCliVersion: string;
+```
+
+- *Type:* string
+
+The dependency requirement for the CDK CLI (e.g. '^2.3.4').
+
+Will return `^2` if the version was unspecified by the user.
 
 ---
 
@@ -2089,7 +2108,7 @@ Synthesizes files to the project output directory.
 ##### `addV1Dependencies` <a name="addV1Dependencies" id="projen.awscdk.AwsCdkDepsJava.addV1Dependencies"></a>
 
 ```typescript
-public addV1Dependencies(deps: string): void
+public addV1Dependencies(deps: ...string[]): void
 ```
 
 Adds dependencies to AWS CDK modules.
@@ -2101,7 +2120,7 @@ This method is not supported in CDK v2. Use `project.addPeerDeps()` or
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkDepsJava.addV1Dependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -2110,7 +2129,7 @@ names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 ##### `addV1DevDependencies` <a name="addV1DevDependencies" id="projen.awscdk.AwsCdkDepsJava.addV1DevDependencies"></a>
 
 ```typescript
-public addV1DevDependencies(deps: string): void
+public addV1DevDependencies(deps: ...string[]): void
 ```
 
 Adds AWS CDK modules as dev dependencies.
@@ -2120,7 +2139,7 @@ This method is not supported in CDK v2. Use `project.addPeerDeps()` or
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkDepsJava.addV1DevDependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 fully qualified names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -2189,6 +2208,7 @@ Test whether the given construct is a component.
 | --- | --- | --- |
 | <code><a href="#projen.awscdk.AwsCdkDepsJava.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#projen.awscdk.AwsCdkDepsJava.property.project">project</a></code> | <code>projen.Project</code> | *No description.* |
+| <code><a href="#projen.awscdk.AwsCdkDepsJava.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | The dependency requirement for the CDK CLI (e.g. '^2.3.4'). |
 | <code><a href="#projen.awscdk.AwsCdkDepsJava.property.cdkDependenciesAsDeps">cdkDependenciesAsDeps</a></code> | <code>boolean</code> | Whether CDK dependencies are added as normal dependencies (and peer dependencies). |
 | <code><a href="#projen.awscdk.AwsCdkDepsJava.property.cdkMajorVersion">cdkMajorVersion</a></code> | <code>number</code> | The major version of the AWS CDK (e.g. 1, 2, ...). |
 | <code><a href="#projen.awscdk.AwsCdkDepsJava.property.cdkMinimumVersion">cdkMinimumVersion</a></code> | <code>string</code> | The minimum version of the AWS CDK (e.g. `2.0.0`). |
@@ -2215,6 +2235,20 @@ public readonly project: Project;
 ```
 
 - *Type:* projen.Project
+
+---
+
+##### `cdkCliVersion`<sup>Required</sup> <a name="cdkCliVersion" id="projen.awscdk.AwsCdkDepsJava.property.cdkCliVersion"></a>
+
+```typescript
+public readonly cdkCliVersion: string;
+```
+
+- *Type:* string
+
+The dependency requirement for the CDK CLI (e.g. '^2.3.4').
+
+Will return `^2` if the version was unspecified by the user.
 
 ---
 
@@ -2350,7 +2384,7 @@ Synthesizes files to the project output directory.
 ##### `addV1Dependencies` <a name="addV1Dependencies" id="projen.awscdk.AwsCdkDepsJs.addV1Dependencies"></a>
 
 ```typescript
-public addV1Dependencies(deps: string): void
+public addV1Dependencies(deps: ...string[]): void
 ```
 
 Adds dependencies to AWS CDK modules.
@@ -2362,7 +2396,7 @@ This method is not supported in CDK v2. Use `project.addPeerDeps()` or
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkDepsJs.addV1Dependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -2371,7 +2405,7 @@ names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 ##### `addV1DevDependencies` <a name="addV1DevDependencies" id="projen.awscdk.AwsCdkDepsJs.addV1DevDependencies"></a>
 
 ```typescript
-public addV1DevDependencies(deps: string): void
+public addV1DevDependencies(deps: ...string[]): void
 ```
 
 Adds AWS CDK modules as dev dependencies.
@@ -2381,7 +2415,7 @@ This method is not supported in CDK v2. Use `project.addPeerDeps()` or
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkDepsJs.addV1DevDependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 fully qualified names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -2450,6 +2484,7 @@ Test whether the given construct is a component.
 | --- | --- | --- |
 | <code><a href="#projen.awscdk.AwsCdkDepsJs.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#projen.awscdk.AwsCdkDepsJs.property.project">project</a></code> | <code>projen.Project</code> | *No description.* |
+| <code><a href="#projen.awscdk.AwsCdkDepsJs.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | The dependency requirement for the CDK CLI (e.g. '^2.3.4'). |
 | <code><a href="#projen.awscdk.AwsCdkDepsJs.property.cdkDependenciesAsDeps">cdkDependenciesAsDeps</a></code> | <code>boolean</code> | Whether CDK dependencies are added as normal dependencies (and peer dependencies). |
 | <code><a href="#projen.awscdk.AwsCdkDepsJs.property.cdkMajorVersion">cdkMajorVersion</a></code> | <code>number</code> | The major version of the AWS CDK (e.g. 1, 2, ...). |
 | <code><a href="#projen.awscdk.AwsCdkDepsJs.property.cdkMinimumVersion">cdkMinimumVersion</a></code> | <code>string</code> | The minimum version of the AWS CDK (e.g. `2.0.0`). |
@@ -2476,6 +2511,20 @@ public readonly project: Project;
 ```
 
 - *Type:* projen.Project
+
+---
+
+##### `cdkCliVersion`<sup>Required</sup> <a name="cdkCliVersion" id="projen.awscdk.AwsCdkDepsJs.property.cdkCliVersion"></a>
+
+```typescript
+public readonly cdkCliVersion: string;
+```
+
+- *Type:* string
+
+The dependency requirement for the CDK CLI (e.g. '^2.3.4').
+
+Will return `^2` if the version was unspecified by the user.
 
 ---
 
@@ -2611,7 +2660,7 @@ Synthesizes files to the project output directory.
 ##### `addV1Dependencies` <a name="addV1Dependencies" id="projen.awscdk.AwsCdkDepsPy.addV1Dependencies"></a>
 
 ```typescript
-public addV1Dependencies(deps: string): void
+public addV1Dependencies(deps: ...string[]): void
 ```
 
 Adds dependencies to AWS CDK modules.
@@ -2623,7 +2672,7 @@ This method is not supported in CDK v2. Use `project.addPeerDeps()` or
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkDepsPy.addV1Dependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -2632,7 +2681,7 @@ names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 ##### `addV1DevDependencies` <a name="addV1DevDependencies" id="projen.awscdk.AwsCdkDepsPy.addV1DevDependencies"></a>
 
 ```typescript
-public addV1DevDependencies(deps: string): void
+public addV1DevDependencies(deps: ...string[]): void
 ```
 
 Adds AWS CDK modules as dev dependencies.
@@ -2642,7 +2691,7 @@ This method is not supported in CDK v2. Use `project.addPeerDeps()` or
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkDepsPy.addV1DevDependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 fully qualified names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -2711,6 +2760,7 @@ Test whether the given construct is a component.
 | --- | --- | --- |
 | <code><a href="#projen.awscdk.AwsCdkDepsPy.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
 | <code><a href="#projen.awscdk.AwsCdkDepsPy.property.project">project</a></code> | <code>projen.Project</code> | *No description.* |
+| <code><a href="#projen.awscdk.AwsCdkDepsPy.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | The dependency requirement for the CDK CLI (e.g. '^2.3.4'). |
 | <code><a href="#projen.awscdk.AwsCdkDepsPy.property.cdkDependenciesAsDeps">cdkDependenciesAsDeps</a></code> | <code>boolean</code> | Whether CDK dependencies are added as normal dependencies (and peer dependencies). |
 | <code><a href="#projen.awscdk.AwsCdkDepsPy.property.cdkMajorVersion">cdkMajorVersion</a></code> | <code>number</code> | The major version of the AWS CDK (e.g. 1, 2, ...). |
 | <code><a href="#projen.awscdk.AwsCdkDepsPy.property.cdkMinimumVersion">cdkMinimumVersion</a></code> | <code>string</code> | The minimum version of the AWS CDK (e.g. `2.0.0`). |
@@ -2737,6 +2787,20 @@ public readonly project: Project;
 ```
 
 - *Type:* projen.Project
+
+---
+
+##### `cdkCliVersion`<sup>Required</sup> <a name="cdkCliVersion" id="projen.awscdk.AwsCdkDepsPy.property.cdkCliVersion"></a>
+
+```typescript
+public readonly cdkCliVersion: string;
+```
+
+- *Type:* string
+
+The dependency requirement for the CDK CLI (e.g. '^2.3.4').
+
+Will return `^2` if the version was unspecified by the user.
 
 ---
 
@@ -2853,7 +2917,7 @@ Returns a string representation of this construct.
 ##### `addExcludeFromCleanup` <a name="addExcludeFromCleanup" id="projen.awscdk.AwsCdkJavaApp.addExcludeFromCleanup"></a>
 
 ```typescript
-public addExcludeFromCleanup(globs: string): void
+public addExcludeFromCleanup(globs: ...string[]): void
 ```
 
 Exclude the matching files from pre-synth cleanup.
@@ -2863,7 +2927,7 @@ source files include the projen marker and we don't want them to be erased durin
 
 ###### `globs`<sup>Required</sup> <a name="globs" id="projen.awscdk.AwsCdkJavaApp.addExcludeFromCleanup.parameter.globs"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The glob patterns to match.
 
@@ -3167,14 +3231,14 @@ Format `<groupId>/<artifactId>@<semver>`.
 ##### ~~`addCdkDependency`~~ <a name="addCdkDependency" id="projen.awscdk.AwsCdkJavaApp.addCdkDependency"></a>
 
 ```typescript
-public addCdkDependency(modules: string): void
+public addCdkDependency(modules: ...string[]): void
 ```
 
 Adds an AWS CDK module dependencies.
 
 ###### `modules`<sup>Required</sup> <a name="modules" id="projen.awscdk.AwsCdkJavaApp.addCdkDependency.parameter.modules"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The list of modules to depend on (e.g. "software.amazon.awscdk/aws-lambda", "software.amazon.awscdk/aws-iam", etc).
 
@@ -3908,7 +3972,7 @@ Returns a string representation of this construct.
 ##### `addExcludeFromCleanup` <a name="addExcludeFromCleanup" id="projen.awscdk.AwsCdkPythonApp.addExcludeFromCleanup"></a>
 
 ```typescript
-public addExcludeFromCleanup(globs: string): void
+public addExcludeFromCleanup(globs: ...string[]): void
 ```
 
 Exclude the matching files from pre-synth cleanup.
@@ -3918,7 +3982,7 @@ source files include the projen marker and we don't want them to be erased durin
 
 ###### `globs`<sup>Required</sup> <a name="globs" id="projen.awscdk.AwsCdkPythonApp.addExcludeFromCleanup.parameter.globs"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The glob patterns to match.
 
@@ -4307,6 +4371,7 @@ When given a project, this it the project itself.
 | <code><a href="#projen.awscdk.AwsCdkPythonApp.property.depsManager">depsManager</a></code> | <code>projen.python.IPythonDeps</code> | API for managing dependencies. |
 | <code><a href="#projen.awscdk.AwsCdkPythonApp.property.envManager">envManager</a></code> | <code>projen.python.IPythonEnv</code> | API for mangaging the Python runtime environment. |
 | <code><a href="#projen.awscdk.AwsCdkPythonApp.property.moduleName">moduleName</a></code> | <code>string</code> | Python module name (the project name, with any hyphens or periods replaced with underscores). |
+| <code><a href="#projen.awscdk.AwsCdkPythonApp.property.sampleTestdir">sampleTestdir</a></code> | <code>string</code> | The directory in which the python sample tests reside. |
 | <code><a href="#projen.awscdk.AwsCdkPythonApp.property.version">version</a></code> | <code>string</code> | Version of the package for distribution (should follow semver). |
 | <code><a href="#projen.awscdk.AwsCdkPythonApp.property.packagingManager">packagingManager</a></code> | <code>projen.python.IPythonPackaging</code> | API for managing packaging the project as a library. |
 | <code><a href="#projen.awscdk.AwsCdkPythonApp.property.pytest">pytest</a></code> | <code>projen.python.Pytest</code> | Pytest component. |
@@ -4730,6 +4795,18 @@ Python module name (the project name, with any hyphens or periods replaced with 
 
 ---
 
+##### `sampleTestdir`<sup>Required</sup> <a name="sampleTestdir" id="projen.awscdk.AwsCdkPythonApp.property.sampleTestdir"></a>
+
+```typescript
+public readonly sampleTestdir: string;
+```
+
+- *Type:* string
+
+The directory in which the python sample tests reside.
+
+---
+
 ##### `version`<sup>Required</sup> <a name="version" id="projen.awscdk.AwsCdkPythonApp.property.version"></a>
 
 ```typescript
@@ -4826,7 +4903,9 @@ The CDK version this app is using.
 
 ---
 
-##### `testdir`<sup>Required</sup> <a name="testdir" id="projen.awscdk.AwsCdkPythonApp.property.testdir"></a>
+##### ~~`testdir`~~<sup>Required</sup> <a name="testdir" id="projen.awscdk.AwsCdkPythonApp.property.testdir"></a>
+
+- *Deprecated:* Use `sampleTestdir` instead.
 
 ```typescript
 public readonly testdir: string;
@@ -4934,7 +5013,7 @@ Returns a string representation of this construct.
 ##### `addExcludeFromCleanup` <a name="addExcludeFromCleanup" id="projen.awscdk.AwsCdkTypeScriptApp.addExcludeFromCleanup"></a>
 
 ```typescript
-public addExcludeFromCleanup(globs: string): void
+public addExcludeFromCleanup(globs: ...string[]): void
 ```
 
 Exclude the matching files from pre-synth cleanup.
@@ -4944,7 +5023,7 @@ source files include the projen marker and we don't want them to be erased durin
 
 ###### `globs`<sup>Required</sup> <a name="globs" id="projen.awscdk.AwsCdkTypeScriptApp.addExcludeFromCleanup.parameter.globs"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The glob patterns to match.
 
@@ -5200,7 +5279,7 @@ public addBins(bins: {[ key: string ]: string}): void
 ##### `addBundledDeps` <a name="addBundledDeps" id="projen.awscdk.AwsCdkTypeScriptApp.addBundledDeps"></a>
 
 ```typescript
-public addBundledDeps(deps: string): void
+public addBundledDeps(deps: ...string[]): void
 ```
 
 Defines bundled dependencies.
@@ -5210,7 +5289,7 @@ Bundled dependencies will be added as normal dependencies as well as to the
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkTypeScriptApp.addBundledDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -5225,28 +5304,28 @@ add/upgrade`. If you wish to specify a version range use this syntax:
 ##### ~~`addCompileCommand`~~ <a name="addCompileCommand" id="projen.awscdk.AwsCdkTypeScriptApp.addCompileCommand"></a>
 
 ```typescript
-public addCompileCommand(commands: string): void
+public addCompileCommand(commands: ...string[]): void
 ```
 
 DEPRECATED.
 
 ###### `commands`<sup>Required</sup> <a name="commands" id="projen.awscdk.AwsCdkTypeScriptApp.addCompileCommand.parameter.commands"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 ---
 
 ##### `addDeps` <a name="addDeps" id="projen.awscdk.AwsCdkTypeScriptApp.addDeps"></a>
 
 ```typescript
-public addDeps(deps: string): void
+public addDeps(deps: ...string[]): void
 ```
 
 Defines normal dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkTypeScriptApp.addDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -5261,14 +5340,14 @@ add/upgrade`. If you wish to specify a version range use this syntax:
 ##### `addDevDeps` <a name="addDevDeps" id="projen.awscdk.AwsCdkTypeScriptApp.addDevDeps"></a>
 
 ```typescript
-public addDevDeps(deps: string): void
+public addDevDeps(deps: ...string[]): void
 ```
 
 Defines development/test dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkTypeScriptApp.addDevDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -5299,14 +5378,14 @@ The fields to set.
 ##### `addKeywords` <a name="addKeywords" id="projen.awscdk.AwsCdkTypeScriptApp.addKeywords"></a>
 
 ```typescript
-public addKeywords(keywords: string): void
+public addKeywords(keywords: ...string[]): void
 ```
 
 Adds keywords to package.json (deduplicated).
 
 ###### `keywords`<sup>Required</sup> <a name="keywords" id="projen.awscdk.AwsCdkTypeScriptApp.addKeywords.parameter.keywords"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The keywords to add.
 
@@ -5315,7 +5394,7 @@ The keywords to add.
 ##### `addPeerDeps` <a name="addPeerDeps" id="projen.awscdk.AwsCdkTypeScriptApp.addPeerDeps"></a>
 
 ```typescript
-public addPeerDeps(deps: string): void
+public addPeerDeps(deps: ...string[]): void
 ```
 
 Defines peer dependencies.
@@ -5326,7 +5405,7 @@ your code against the minimum version required from your consumers.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.AwsCdkTypeScriptApp.addPeerDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -5357,14 +5436,14 @@ The scripts to set.
 ##### ~~`addTestCommand`~~ <a name="addTestCommand" id="projen.awscdk.AwsCdkTypeScriptApp.addTestCommand"></a>
 
 ```typescript
-public addTestCommand(commands: string): void
+public addTestCommand(commands: ...string[]): void
 ```
 
 DEPRECATED.
 
 ###### `commands`<sup>Required</sup> <a name="commands" id="projen.awscdk.AwsCdkTypeScriptApp.addTestCommand.parameter.commands"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 ---
 
@@ -5443,14 +5522,14 @@ The command to execute.
 ##### `addCdkDependency` <a name="addCdkDependency" id="projen.awscdk.AwsCdkTypeScriptApp.addCdkDependency"></a>
 
 ```typescript
-public addCdkDependency(modules: string): void
+public addCdkDependency(modules: ...string[]): void
 ```
 
 Adds an AWS CDK module dependencies.
 
 ###### `modules`<sup>Required</sup> <a name="modules" id="projen.awscdk.AwsCdkTypeScriptApp.addCdkDependency.parameter.modules"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The list of modules to depend on.
 
@@ -5581,8 +5660,8 @@ When given a project, this it the project itself.
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptApp.property.buildWorkflow">buildWorkflow</a></code> | <code>projen.build.BuildWorkflow</code> | The PR build GitHub workflow. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptApp.property.buildWorkflowJobId">buildWorkflowJobId</a></code> | <code>string</code> | The job ID of the build workflow. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptApp.property.jest">jest</a></code> | <code>projen.javascript.Jest</code> | The Jest configuration (if enabled). |
-| <code><a href="#projen.awscdk.AwsCdkTypeScriptApp.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Maximum node version required by this package. |
-| <code><a href="#projen.awscdk.AwsCdkTypeScriptApp.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | Minimum node.js version required by this package. |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptApp.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Maximum node version supported by this package. |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptApp.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | The minimum node version required by this package to function. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptApp.property.npmignore">npmignore</a></code> | <code>projen.IgnoreFile</code> | The .npmignore file. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptApp.property.prettier">prettier</a></code> | <code>projen.javascript.Prettier</code> | *No description.* |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptApp.property.publisher">publisher</a></code> | <code>projen.release.Publisher</code> | Package publisher. |
@@ -6163,7 +6242,9 @@ public readonly maxNodeVersion: string;
 
 - *Type:* string
 
-Maximum node version required by this package.
+Maximum node version supported by this package.
+
+The value indicates the package is incompatible with newer versions.
 
 ---
 
@@ -6175,7 +6256,9 @@ public readonly minNodeVersion: string;
 
 - *Type:* string
 
-Minimum node.js version required by this package.
+The minimum node version required by this package to function.
+
+This value indicates the package is incompatible with older versions.
 
 ---
 
@@ -6525,14 +6608,14 @@ Synthesizes files to the project output directory.
 ##### `addExcludes` <a name="addExcludes" id="projen.awscdk.CdkConfig.addExcludes"></a>
 
 ```typescript
-public addExcludes(patterns: string): void
+public addExcludes(patterns: ...string[]): void
 ```
 
 Add excludes to `cdk.json`.
 
 ###### `patterns`<sup>Required</sup> <a name="patterns" id="projen.awscdk.CdkConfig.addExcludes.parameter.patterns"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The excludes to add.
 
@@ -6541,14 +6624,14 @@ The excludes to add.
 ##### `addIncludes` <a name="addIncludes" id="projen.awscdk.CdkConfig.addIncludes"></a>
 
 ```typescript
-public addIncludes(patterns: string): void
+public addIncludes(patterns: ...string[]): void
 ```
 
 Add includes to `cdk.json`.
 
 ###### `patterns`<sup>Required</sup> <a name="patterns" id="projen.awscdk.CdkConfig.addIncludes.parameter.patterns"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The includes to add.
 
@@ -7003,7 +7086,7 @@ Returns a string representation of this construct.
 ##### ~~`addExcludeFromCleanup`~~ <a name="addExcludeFromCleanup" id="projen.awscdk.ConstructLibraryAws.addExcludeFromCleanup"></a>
 
 ```typescript
-public addExcludeFromCleanup(globs: string): void
+public addExcludeFromCleanup(globs: ...string[]): void
 ```
 
 Exclude the matching files from pre-synth cleanup.
@@ -7013,7 +7096,7 @@ source files include the projen marker and we don't want them to be erased durin
 
 ###### `globs`<sup>Required</sup> <a name="globs" id="projen.awscdk.ConstructLibraryAws.addExcludeFromCleanup.parameter.globs"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The glob patterns to match.
 
@@ -7269,7 +7352,7 @@ public addBins(bins: {[ key: string ]: string}): void
 ##### ~~`addBundledDeps`~~ <a name="addBundledDeps" id="projen.awscdk.ConstructLibraryAws.addBundledDeps"></a>
 
 ```typescript
-public addBundledDeps(deps: string): void
+public addBundledDeps(deps: ...string[]): void
 ```
 
 Defines bundled dependencies.
@@ -7279,7 +7362,7 @@ Bundled dependencies will be added as normal dependencies as well as to the
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.ConstructLibraryAws.addBundledDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -7294,28 +7377,28 @@ add/upgrade`. If you wish to specify a version range use this syntax:
 ##### ~~`addCompileCommand`~~ <a name="addCompileCommand" id="projen.awscdk.ConstructLibraryAws.addCompileCommand"></a>
 
 ```typescript
-public addCompileCommand(commands: string): void
+public addCompileCommand(commands: ...string[]): void
 ```
 
 DEPRECATED.
 
 ###### `commands`<sup>Required</sup> <a name="commands" id="projen.awscdk.ConstructLibraryAws.addCompileCommand.parameter.commands"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 ---
 
 ##### ~~`addDeps`~~ <a name="addDeps" id="projen.awscdk.ConstructLibraryAws.addDeps"></a>
 
 ```typescript
-public addDeps(deps: string): void
+public addDeps(deps: ...string[]): void
 ```
 
 Defines normal dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.ConstructLibraryAws.addDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -7330,14 +7413,14 @@ add/upgrade`. If you wish to specify a version range use this syntax:
 ##### ~~`addDevDeps`~~ <a name="addDevDeps" id="projen.awscdk.ConstructLibraryAws.addDevDeps"></a>
 
 ```typescript
-public addDevDeps(deps: string): void
+public addDevDeps(deps: ...string[]): void
 ```
 
 Defines development/test dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.ConstructLibraryAws.addDevDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -7368,14 +7451,14 @@ The fields to set.
 ##### ~~`addKeywords`~~ <a name="addKeywords" id="projen.awscdk.ConstructLibraryAws.addKeywords"></a>
 
 ```typescript
-public addKeywords(keywords: string): void
+public addKeywords(keywords: ...string[]): void
 ```
 
 Adds keywords to package.json (deduplicated).
 
 ###### `keywords`<sup>Required</sup> <a name="keywords" id="projen.awscdk.ConstructLibraryAws.addKeywords.parameter.keywords"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 The keywords to add.
 
@@ -7384,7 +7467,7 @@ The keywords to add.
 ##### ~~`addPeerDeps`~~ <a name="addPeerDeps" id="projen.awscdk.ConstructLibraryAws.addPeerDeps"></a>
 
 ```typescript
-public addPeerDeps(deps: string): void
+public addPeerDeps(deps: ...string[]): void
 ```
 
 Defines peer dependencies.
@@ -7395,7 +7478,7 @@ your code against the minimum version required from your consumers.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.ConstructLibraryAws.addPeerDeps.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 Names modules to install.
 
@@ -7426,14 +7509,14 @@ The scripts to set.
 ##### ~~`addTestCommand`~~ <a name="addTestCommand" id="projen.awscdk.ConstructLibraryAws.addTestCommand"></a>
 
 ```typescript
-public addTestCommand(commands: string): void
+public addTestCommand(commands: ...string[]): void
 ```
 
 DEPRECATED.
 
 ###### `commands`<sup>Required</sup> <a name="commands" id="projen.awscdk.ConstructLibraryAws.addTestCommand.parameter.commands"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 ---
 
@@ -7512,7 +7595,7 @@ The command to execute.
 ##### ~~`addCdkDependencies`~~ <a name="addCdkDependencies" id="projen.awscdk.ConstructLibraryAws.addCdkDependencies"></a>
 
 ```typescript
-public addCdkDependencies(deps: string): void
+public addCdkDependencies(deps: ...string[]): void
 ```
 
 Adds dependencies to AWS CDK modules.
@@ -7521,7 +7604,7 @@ Since this is a library project, dependencies will be added as peer dependencies
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.ConstructLibraryAws.addCdkDependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -7530,14 +7613,14 @@ names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 ##### ~~`addCdkTestDependencies`~~ <a name="addCdkTestDependencies" id="projen.awscdk.ConstructLibraryAws.addCdkTestDependencies"></a>
 
 ```typescript
-public addCdkTestDependencies(deps: string): void
+public addCdkTestDependencies(deps: ...string[]): void
 ```
 
 Adds AWS CDK modules as dev dependencies.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="projen.awscdk.ConstructLibraryAws.addCdkTestDependencies.parameter.deps"></a>
 
-- *Type:* string
+- *Type:* ...string[]
 
 names of cdk modules (e.g. `@aws-cdk/aws-lambda`).
 
@@ -7668,8 +7751,8 @@ When given a project, this it the project itself.
 | <code><a href="#projen.awscdk.ConstructLibraryAws.property.buildWorkflow">buildWorkflow</a></code> | <code>projen.build.BuildWorkflow</code> | The PR build GitHub workflow. |
 | <code><a href="#projen.awscdk.ConstructLibraryAws.property.buildWorkflowJobId">buildWorkflowJobId</a></code> | <code>string</code> | The job ID of the build workflow. |
 | <code><a href="#projen.awscdk.ConstructLibraryAws.property.jest">jest</a></code> | <code>projen.javascript.Jest</code> | The Jest configuration (if enabled). |
-| <code><a href="#projen.awscdk.ConstructLibraryAws.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Maximum node version required by this package. |
-| <code><a href="#projen.awscdk.ConstructLibraryAws.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | Minimum node.js version required by this package. |
+| <code><a href="#projen.awscdk.ConstructLibraryAws.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Maximum node version supported by this package. |
+| <code><a href="#projen.awscdk.ConstructLibraryAws.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | The minimum node version required by this package to function. |
 | <code><a href="#projen.awscdk.ConstructLibraryAws.property.npmignore">npmignore</a></code> | <code>projen.IgnoreFile</code> | The .npmignore file. |
 | <code><a href="#projen.awscdk.ConstructLibraryAws.property.prettier">prettier</a></code> | <code>projen.javascript.Prettier</code> | *No description.* |
 | <code><a href="#projen.awscdk.ConstructLibraryAws.property.publisher">publisher</a></code> | <code>projen.release.Publisher</code> | Package publisher. |
@@ -8332,7 +8415,9 @@ public readonly maxNodeVersion: string;
 
 - *Type:* string
 
-Maximum node version required by this package.
+Maximum node version supported by this package.
+
+The value indicates the package is incompatible with newer versions.
 
 ---
 
@@ -8346,7 +8431,9 @@ public readonly minNodeVersion: string;
 
 - *Type:* string
 
-Minimum node.js version required by this package.
+The minimum node version required by this package to function.
+
+This value indicates the package is incompatible with older versions.
 
 ---
 
@@ -10191,6 +10278,7 @@ const awsCdkConstructLibraryOptions: awscdk.AwsCdkConstructLibraryOptions = { ..
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.bugsEmail">bugsEmail</a></code> | <code>string</code> | The email address to which issues should be reported. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.bugsUrl">bugsUrl</a></code> | <code>string</code> | The url to your project's issue tracker. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.bundledDeps">bundledDeps</a></code> | <code>string[]</code> | List of dependencies to bundle into this module. |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.bunVersion">bunVersion</a></code> | <code>string</code> | The version of Bun to use if using Bun as a package manager. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.codeArtifactOptions">codeArtifactOptions</a></code> | <code>projen.javascript.CodeArtifactOptions</code> | Options for npm packages using AWS CodeArtifact. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.deps">deps</a></code> | <code>string[]</code> | Runtime dependencies of this module. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.description">description</a></code> | <code>string</code> | The description is just a string that helps people understand the purpose of the package. |
@@ -10200,8 +10288,8 @@ const awsCdkConstructLibraryOptions: awscdk.AwsCdkConstructLibraryOptions = { ..
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.keywords">keywords</a></code> | <code>string[]</code> | Keywords to include in `package.json`. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.license">license</a></code> | <code>string</code> | License's SPDX identifier. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.licensed">licensed</a></code> | <code>boolean</code> | Indicates if a license should be added. |
-| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Minimum node.js version to require via `engines` (inclusive). |
-| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | Minimum Node.js version to require via package.json `engines` (inclusive). |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | The maximum node version supported by this package. Most projects should not use this option. |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | The minimum node version required by this package to function. Most projects should not use this option. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.npmAccess">npmAccess</a></code> | <code>projen.javascript.NpmAccess</code> | Access level of the npm package. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.npmProvenance">npmProvenance</a></code> | <code>boolean</code> | Should provenance statements be generated when the package is published. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.npmRegistry">npmRegistry</a></code> | <code>string</code> | The host name of the npm registry to publish to. |
@@ -10218,9 +10306,11 @@ const awsCdkConstructLibraryOptions: awscdk.AwsCdkConstructLibraryOptions = { ..
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.scripts">scripts</a></code> | <code>{[ key: string ]: string}</code> | npm scripts to include. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.stability">stability</a></code> | <code>string</code> | Package's Stability. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.yarnBerryOptions">yarnBerryOptions</a></code> | <code>projen.javascript.YarnBerryOptions</code> | Options for Yarn Berry. |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.bumpPackage">bumpPackage</a></code> | <code>string</code> | The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.jsiiReleaseVersion">jsiiReleaseVersion</a></code> | <code>string</code> | Version requirement of `publib` which is used to publish modules to npm. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.majorVersion">majorVersion</a></code> | <code>number</code> | Major version to release from the default branch. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.minMajorVersion">minMajorVersion</a></code> | <code>number</code> | Minimal Major version to release. |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.nextVersionCommand">nextVersionCommand</a></code> | <code>string</code> | A shell command to control the next version to release. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.npmDistTag">npmDistTag</a></code> | <code>string</code> | The npmDistTag to use when publishing from the default branch. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.postBuildSteps">postBuildSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after build as part of the release workflow. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.prerelease">prerelease</a></code> | <code>string</code> | Bump versions from the default branch as pre-releases (e.g. "beta", "alpha", "pre"). |
@@ -10236,7 +10326,7 @@ const awsCdkConstructLibraryOptions: awscdk.AwsCdkConstructLibraryOptions = { ..
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.releaseTrigger">releaseTrigger</a></code> | <code>projen.release.ReleaseTrigger</code> | The release trigger to use. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.releaseWorkflowName">releaseWorkflowName</a></code> | <code>string</code> | The name of the default release workflow. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.releaseWorkflowSetupSteps">releaseWorkflowSetupSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | A set of workflow steps to execute in order to setup the workflow container. |
-| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with standard-version package. |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with commit-and-tag-version package. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.workflowContainerImage">workflowContainerImage</a></code> | <code>string</code> | Container image to use for GitHub workflows. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.workflowRunsOn">workflowRunsOn</a></code> | <code>string[]</code> | Github Runner selection labels. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.workflowRunsOnGroup">workflowRunsOnGroup</a></code> | <code>projen.GroupRunnerOptions</code> | Github Runner Group selection options. |
@@ -10244,10 +10334,11 @@ const awsCdkConstructLibraryOptions: awscdk.AwsCdkConstructLibraryOptions = { ..
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.artifactsDirectory">artifactsDirectory</a></code> | <code>string</code> | A directory which will contain build artifacts. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.autoApproveUpgrades">autoApproveUpgrades</a></code> | <code>boolean</code> | Automatically approve deps upgrade PRs, allowing them to be merged by mergify (if configued). |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.buildWorkflow">buildWorkflow</a></code> | <code>boolean</code> | Define a GitHub workflow for building PRs. |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.buildWorkflowOptions">buildWorkflowOptions</a></code> | <code>projen.javascript.BuildWorkflowOptions</code> | Options for PR build workflow. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.buildWorkflowTriggers">buildWorkflowTriggers</a></code> | <code>projen.github.workflows.Triggers</code> | Build workflow triggers. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.bundlerOptions">bundlerOptions</a></code> | <code>projen.javascript.BundlerOptions</code> | Options for `Bundler`. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.checkLicenses">checkLicenses</a></code> | <code>projen.javascript.LicenseCheckerOptions</code> | Configure which licenses should be deemed acceptable for use by dependencies. |
-| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.codeCov">codeCov</a></code> | <code>boolean</code> | Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with `@codeCovTokenSecret`. |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.codeCov">codeCov</a></code> | <code>boolean</code> | Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with `@codeCovTokenSecret`. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.codeCovTokenSecret">codeCovTokenSecret</a></code> | <code>string</code> | Define the secret name for a specified https://codecov.io/ token A secret is required to send coverage for private repositories. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.copyrightOwner">copyrightOwner</a></code> | <code>string</code> | License copyright owner. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.copyrightPeriod">copyrightPeriod</a></code> | <code>string</code> | The copyright years to put in the LICENSE file. |
@@ -10276,7 +10367,7 @@ const awsCdkConstructLibraryOptions: awscdk.AwsCdkConstructLibraryOptions = { ..
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.releaseWorkflow">releaseWorkflow</a></code> | <code>boolean</code> | DEPRECATED: renamed to `release`. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.workflowBootstrapSteps">workflowBootstrapSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Workflow steps to use in order to bootstrap this repo. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.workflowGitIdentity">workflowGitIdentity</a></code> | <code>projen.github.GitIdentity</code> | The git identity to use in workflows. |
-| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | The node version to use in GitHub workflows. |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | The node version used in GitHub Actions workflows. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.workflowPackageCache">workflowPackageCache</a></code> | <code>boolean</code> | Enable Node.js package cache in GitHub workflows. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.disableTsconfig">disableTsconfig</a></code> | <code>boolean</code> | Do not generate a `tsconfig.json` file (used by jsii projects since tsconfig.json is generated by the jsii compiler). |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.disableTsconfigDev">disableTsconfigDev</a></code> | <code>boolean</code> | Do not generate a `tsconfig.dev.json` file. |
@@ -10316,6 +10407,7 @@ const awsCdkConstructLibraryOptions: awscdk.AwsCdkConstructLibraryOptions = { ..
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.cdkVersion">cdkVersion</a></code> | <code>string</code> | Minimum version of the AWS CDK to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.cdkAssert">cdkAssert</a></code> | <code>boolean</code> | Warning: NodeJS only. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.cdkAssertions">cdkAssertions</a></code> | <code>boolean</code> | Install the assertions library? |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version range of the AWS CDK CLI to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.cdkDependencies">cdkDependencies</a></code> | <code>string[]</code> | Which AWS CDKv1 modules this project requires. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.cdkDependenciesAsDeps">cdkDependenciesAsDeps</a></code> | <code>boolean</code> | If this is enabled (default), all modules declared in `cdkDependencies` will be also added as normal `dependencies` (as well as `peerDependencies`). |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.cdkTestDependencies">cdkTestDependencies</a></code> | <code>string[]</code> | AWS CDK modules required for testing. |
@@ -10323,7 +10415,7 @@ const awsCdkConstructLibraryOptions: awscdk.AwsCdkConstructLibraryOptions = { ..
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.constructsVersion">constructsVersion</a></code> | <code>string</code> | Minimum version of the `constructs` library to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.edgeLambdaAutoDiscover">edgeLambdaAutoDiscover</a></code> | <code>boolean</code> | Automatically adds an `cloudfront.experimental.EdgeFunction` for each `.edge-lambda.ts` handler in your source tree. If this is disabled, you can manually add an `awscdk.AutoDiscover` component to your project. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.experimentalIntegRunner">experimentalIntegRunner</a></code> | <code>boolean</code> | Enable experimental support for the AWS CDK integ-runner. |
-| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.integrationTestAutoDiscover">integrationTestAutoDiscover</a></code> | <code>boolean</code> | Automatically discovers and creates integration tests for each `.integ.ts` file in under your test directory. |
+| <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.integrationTestAutoDiscover">integrationTestAutoDiscover</a></code> | <code>boolean</code> | Automatically discovers and creates integration tests for each `.integ.ts` file under your test directory. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.lambdaAutoDiscover">lambdaAutoDiscover</a></code> | <code>boolean</code> | Automatically adds an `aws_lambda.Function` for each `.lambda.ts` handler in your source tree. If this is disabled, you either need to explicitly call `aws_lambda.Function.autoDiscover()` or define a `new aws_lambda.Function()` for each handler. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.lambdaExtensionAutoDiscover">lambdaExtensionAutoDiscover</a></code> | <code>boolean</code> | Automatically adds an `awscdk.LambdaExtension` for each `.lambda-extension.ts` entrypoint in your source tree. If this is disabled, you can manually add an `awscdk.AutoDiscover` component to your project. |
 | <code><a href="#projen.awscdk.AwsCdkConstructLibraryOptions.property.lambdaOptions">lambdaOptions</a></code> | <code><a href="#projen.awscdk.LambdaFunctionCommonOptions">LambdaFunctionCommonOptions</a></code> | Common options for all AWS Lambda functions. |
@@ -10884,6 +10976,19 @@ this will be what you `package.json` will eventually include.
 
 ---
 
+##### `bunVersion`<sup>Optional</sup> <a name="bunVersion" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.bunVersion"></a>
+
+```typescript
+public readonly bunVersion: string;
+```
+
+- *Type:* string
+- *Default:* "latest"
+
+The version of Bun to use if using Bun as a package manager.
+
+---
+
 ##### `codeArtifactOptions`<sup>Optional</sup> <a name="codeArtifactOptions" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.codeArtifactOptions"></a>
 
 ```typescript
@@ -11047,9 +11152,15 @@ public readonly maxNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no max
+- *Default:* no maximum version is enforced
 
-Minimum node.js version to require via `engines` (inclusive).
+The maximum node version supported by this package. Most projects should not use this option.
+
+The value indicates that the package is incompatible with any newer versions of node.
+This requirement is enforced via the engines field.
+
+You will normally not need to set this option.
+Consider this option only if your package is known to not function with newer versions of node.
 
 ---
 
@@ -11060,9 +11171,19 @@ public readonly minNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no "engines" specified
+- *Default:* no minimum version is enforced
 
-Minimum Node.js version to require via package.json `engines` (inclusive).
+The minimum node version required by this package to function. Most projects should not use this option.
+
+The value indicates that the package is incompatible with any older versions of node.
+This requirement is enforced via the engines field.
+
+You will normally not need to set this option, even if your package is incompatible with EOL versions of node.
+Consider this option only if your package depends on a specific feature, that is not available in other LTS versions.
+Setting this option has very high impact on the consumers of your package,
+as package managers will actively prevent usage with node versions you have marked as incompatible.
+
+To change the node version of your CI/CD workflows, use `workflowNodeVersion`.
 
 ---
 
@@ -11216,7 +11337,7 @@ public readonly pnpmVersion: string;
 ```
 
 - *Type:* string
-- *Default:* "7"
+- *Default:* "9"
 
 The version of PNPM to use if using PNPM as a package manager.
 
@@ -11305,6 +11426,21 @@ Options for Yarn Berry.
 
 ---
 
+##### `bumpPackage`<sup>Optional</sup> <a name="bumpPackage" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.bumpPackage"></a>
+
+```typescript
+public readonly bumpPackage: string;
+```
+
+- *Type:* string
+- *Default:* A recent version of "commit-and-tag-version"
+
+The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string.
+
+This can be any compatible package version, including the deprecated `standard-version@9`.
+
+---
+
 ##### `jsiiReleaseVersion`<sup>Optional</sup> <a name="jsiiReleaseVersion" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.jsiiReleaseVersion"></a>
 
 ```typescript
@@ -11349,6 +11485,37 @@ This can be useful to set to 1, as breaking changes before the 1.x major
 release are not incrementing the major version number.
 
 Can not be set together with `majorVersion`.
+
+---
+
+##### `nextVersionCommand`<sup>Optional</sup> <a name="nextVersionCommand" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.nextVersionCommand"></a>
+
+```typescript
+public readonly nextVersionCommand: string;
+```
+
+- *Type:* string
+- *Default:* The next version will be determined based on the commit history and project settings.
+
+A shell command to control the next version to release.
+
+If present, this shell command will be run before the bump is executed, and
+it determines what version to release. It will be executed in the following
+environment:
+
+- Working directory: the project directory.
+- `$VERSION`: the current version. Looks like `1.2.3`.
+- `$LATEST_TAG`: the most recent tag. Looks like `prefix-v1.2.3`, or may be unset.
+
+The command should print one of the following to `stdout`:
+
+- Nothing: the next version number will be determined based on commit history.
+- `x.y.z`: the next version number will be `x.y.z`.
+- `major|minor|patch`: the next version number will be the current version number
+  with the indicated component bumped.
+
+This setting cannot be specified together with `minMajorVersion`; the invoked
+script can be used to achieve the effects of `minMajorVersion`.
 
 ---
 
@@ -11579,7 +11746,7 @@ public readonly versionrcOptions: {[ key: string ]: any};
 - *Type:* {[ key: string ]: any}
 - *Default:* standard configuration applicable for GitHub repositories
 
-Custom configuration used when creating changelog with standard-version package.
+Custom configuration used when creating changelog with commit-and-tag-version package.
 
 Given values either append to default configuration or overwrite values in it.
 
@@ -11677,7 +11844,21 @@ Define a GitHub workflow for building PRs.
 
 ---
 
-##### `buildWorkflowTriggers`<sup>Optional</sup> <a name="buildWorkflowTriggers" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.buildWorkflowTriggers"></a>
+##### `buildWorkflowOptions`<sup>Optional</sup> <a name="buildWorkflowOptions" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.buildWorkflowOptions"></a>
+
+```typescript
+public readonly buildWorkflowOptions: BuildWorkflowOptions;
+```
+
+- *Type:* projen.javascript.BuildWorkflowOptions
+
+Options for PR build workflow.
+
+---
+
+##### ~~`buildWorkflowTriggers`~~<sup>Optional</sup> <a name="buildWorkflowTriggers" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.buildWorkflowTriggers"></a>
+
+- *Deprecated:* - Use `buildWorkflowOptions.workflowTriggers`
 
 ```typescript
 public readonly buildWorkflowTriggers: Triggers;
@@ -11726,7 +11907,7 @@ public readonly codeCov: boolean;
 - *Type:* boolean
 - *Default:* false
 
-Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with `@codeCovTokenSecret`.
+Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with `@codeCovTokenSecret`.
 
 ---
 
@@ -11863,7 +12044,9 @@ Jest options.
 
 ---
 
-##### `mutableBuild`<sup>Optional</sup> <a name="mutableBuild" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.mutableBuild"></a>
+##### ~~`mutableBuild`~~<sup>Optional</sup> <a name="mutableBuild" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.mutableBuild"></a>
+
+- *Deprecated:* - Use `buildWorkflowOptions.mutableBuild`
 
 ```typescript
 public readonly mutableBuild: boolean;
@@ -11967,7 +12150,7 @@ public readonly projenDevDependency: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* true
+- *Default:* true if not a subproject
 
 Indicates of "projen" should be installed as a devDependency.
 
@@ -12112,9 +12295,11 @@ public readonly workflowNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* same as `minNodeVersion`
+- *Default:* `minNodeVersion` if set, otherwise `lts/*`.
 
-The node version to use in GitHub workflows.
+The node version used in GitHub Actions workflows.
+
+Always use this option if your GitHub Actions workflows require a specific to run.
 
 ---
 
@@ -12502,7 +12687,7 @@ public readonly jsiiVersion: string;
 ```
 
 - *Type:* string
-- *Default:* "1.x"
+- *Default:* "~5.6.0"
 
 Version of the jsii compiler to use.
 
@@ -12660,6 +12845,24 @@ assertions is already included in 'aws-cdk-lib'
 
 ---
 
+##### `cdkCliVersion`<sup>Optional</sup> <a name="cdkCliVersion" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.cdkCliVersion"></a>
+
+```typescript
+public readonly cdkCliVersion: string;
+```
+
+- *Type:* string
+- *Default:* "^2"
+
+Version range of the AWS CDK CLI to depend on.
+
+Can be either a specific version, or an NPM version range.
+
+By default, the latest 2.x version will be installed; you can use this
+option to restrict it to a specific version or version range.
+
+---
+
 ##### ~~`cdkDependencies`~~<sup>Optional</sup> <a name="cdkDependencies" id="projen.awscdk.AwsCdkConstructLibraryOptions.property.cdkDependencies"></a>
 
 - *Deprecated:* For CDK 2.x use "deps" instead. (or "peerDeps" if you're building a library)
@@ -12773,7 +12976,7 @@ public readonly integrationTestAutoDiscover: boolean;
 - *Type:* boolean
 - *Default:* true
 
-Automatically discovers and creates integration tests for each `.integ.ts` file in under your test directory.
+Automatically discovers and creates integration tests for each `.integ.ts` file under your test directory.
 
 ---
 
@@ -12835,6 +13038,7 @@ const awsCdkDepsCommonOptions: awscdk.AwsCdkDepsCommonOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkDepsCommonOptions.property.cdkVersion">cdkVersion</a></code> | <code>string</code> | Minimum version of the AWS CDK to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkDepsCommonOptions.property.cdkAssert">cdkAssert</a></code> | <code>boolean</code> | Warning: NodeJS only. |
 | <code><a href="#projen.awscdk.AwsCdkDepsCommonOptions.property.cdkAssertions">cdkAssertions</a></code> | <code>boolean</code> | Install the assertions library? |
+| <code><a href="#projen.awscdk.AwsCdkDepsCommonOptions.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version range of the AWS CDK CLI to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkDepsCommonOptions.property.cdkDependencies">cdkDependencies</a></code> | <code>string[]</code> | Which AWS CDKv1 modules this project requires. |
 | <code><a href="#projen.awscdk.AwsCdkDepsCommonOptions.property.cdkDependenciesAsDeps">cdkDependenciesAsDeps</a></code> | <code>boolean</code> | If this is enabled (default), all modules declared in `cdkDependencies` will be also added as normal `dependencies` (as well as `peerDependencies`). |
 | <code><a href="#projen.awscdk.AwsCdkDepsCommonOptions.property.cdkTestDependencies">cdkTestDependencies</a></code> | <code>string[]</code> | AWS CDK modules required for testing. |
@@ -12886,6 +13090,24 @@ Install the assertions library?
 
 Only needed for CDK 1.x. If using CDK 2.x then
 assertions is already included in 'aws-cdk-lib'
+
+---
+
+##### `cdkCliVersion`<sup>Optional</sup> <a name="cdkCliVersion" id="projen.awscdk.AwsCdkDepsCommonOptions.property.cdkCliVersion"></a>
+
+```typescript
+public readonly cdkCliVersion: string;
+```
+
+- *Type:* string
+- *Default:* "^2"
+
+Version range of the AWS CDK CLI to depend on.
+
+Can be either a specific version, or an NPM version range.
+
+By default, the latest 2.x version will be installed; you can use this
+option to restrict it to a specific version or version range.
 
 ---
 
@@ -12984,6 +13206,7 @@ const awsCdkDepsOptions: awscdk.AwsCdkDepsOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkDepsOptions.property.cdkVersion">cdkVersion</a></code> | <code>string</code> | Minimum version of the AWS CDK to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkDepsOptions.property.cdkAssert">cdkAssert</a></code> | <code>boolean</code> | Warning: NodeJS only. |
 | <code><a href="#projen.awscdk.AwsCdkDepsOptions.property.cdkAssertions">cdkAssertions</a></code> | <code>boolean</code> | Install the assertions library? |
+| <code><a href="#projen.awscdk.AwsCdkDepsOptions.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version range of the AWS CDK CLI to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkDepsOptions.property.cdkDependencies">cdkDependencies</a></code> | <code>string[]</code> | Which AWS CDKv1 modules this project requires. |
 | <code><a href="#projen.awscdk.AwsCdkDepsOptions.property.cdkDependenciesAsDeps">cdkDependenciesAsDeps</a></code> | <code>boolean</code> | If this is enabled (default), all modules declared in `cdkDependencies` will be also added as normal `dependencies` (as well as `peerDependencies`). |
 | <code><a href="#projen.awscdk.AwsCdkDepsOptions.property.cdkTestDependencies">cdkTestDependencies</a></code> | <code>string[]</code> | AWS CDK modules required for testing. |
@@ -13036,6 +13259,24 @@ Install the assertions library?
 
 Only needed for CDK 1.x. If using CDK 2.x then
 assertions is already included in 'aws-cdk-lib'
+
+---
+
+##### `cdkCliVersion`<sup>Optional</sup> <a name="cdkCliVersion" id="projen.awscdk.AwsCdkDepsOptions.property.cdkCliVersion"></a>
+
+```typescript
+public readonly cdkCliVersion: string;
+```
+
+- *Type:* string
+- *Default:* "^2"
+
+Version range of the AWS CDK CLI to depend on.
+
+Can be either a specific version, or an NPM version range.
+
+By default, the latest 2.x version will be installed; you can use this
+option to restrict it to a specific version or version range.
 
 ---
 
@@ -13202,6 +13443,7 @@ const awsCdkJavaAppOptions: awscdk.AwsCdkJavaAppOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkJavaAppOptions.property.cdkVersion">cdkVersion</a></code> | <code>string</code> | Minimum version of the AWS CDK to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkJavaAppOptions.property.cdkAssert">cdkAssert</a></code> | <code>boolean</code> | Warning: NodeJS only. |
 | <code><a href="#projen.awscdk.AwsCdkJavaAppOptions.property.cdkAssertions">cdkAssertions</a></code> | <code>boolean</code> | Install the assertions library? |
+| <code><a href="#projen.awscdk.AwsCdkJavaAppOptions.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version range of the AWS CDK CLI to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkJavaAppOptions.property.cdkDependencies">cdkDependencies</a></code> | <code>string[]</code> | Which AWS CDKv1 modules this project requires. |
 | <code><a href="#projen.awscdk.AwsCdkJavaAppOptions.property.cdkDependenciesAsDeps">cdkDependenciesAsDeps</a></code> | <code>boolean</code> | If this is enabled (default), all modules declared in `cdkDependencies` will be also added as normal `dependencies` (as well as `peerDependencies`). |
 | <code><a href="#projen.awscdk.AwsCdkJavaAppOptions.property.cdkTestDependencies">cdkTestDependencies</a></code> | <code>string[]</code> | AWS CDK modules required for testing. |
@@ -14049,6 +14291,24 @@ assertions is already included in 'aws-cdk-lib'
 
 ---
 
+##### `cdkCliVersion`<sup>Optional</sup> <a name="cdkCliVersion" id="projen.awscdk.AwsCdkJavaAppOptions.property.cdkCliVersion"></a>
+
+```typescript
+public readonly cdkCliVersion: string;
+```
+
+- *Type:* string
+- *Default:* "^2"
+
+Version range of the AWS CDK CLI to depend on.
+
+Can be either a specific version, or an NPM version range.
+
+By default, the latest 2.x version will be installed; you can use this
+option to restrict it to a specific version or version range.
+
+---
+
 ##### ~~`cdkDependencies`~~<sup>Optional</sup> <a name="cdkDependencies" id="projen.awscdk.AwsCdkJavaAppOptions.property.cdkDependencies"></a>
 
 - *Deprecated:* For CDK 2.x use "deps" instead. (or "peerDeps" if you're building a library)
@@ -14297,6 +14557,7 @@ const awsCdkPythonAppOptions: awscdk.AwsCdkPythonAppOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.pytest">pytest</a></code> | <code>boolean</code> | Include pytest tests. |
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.pytestOptions">pytestOptions</a></code> | <code>projen.python.PytestOptions</code> | pytest options. |
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.sample">sample</a></code> | <code>boolean</code> | Include sample code and test if the relevant directories don't exist. |
+| <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.sampleTestdir">sampleTestdir</a></code> | <code>string</code> | Location of sample tests. |
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.setuptools">setuptools</a></code> | <code>boolean</code> | Use setuptools with a setup.py script for packaging and publishing. |
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.venv">venv</a></code> | <code>boolean</code> | Use venv to manage a virtual environment for installing dependencies inside. |
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.venvOptions">venvOptions</a></code> | <code>projen.python.VenvOptions</code> | Venv options. |
@@ -14310,6 +14571,7 @@ const awsCdkPythonAppOptions: awscdk.AwsCdkPythonAppOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.cdkVersion">cdkVersion</a></code> | <code>string</code> | Minimum version of the AWS CDK to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.cdkAssert">cdkAssert</a></code> | <code>boolean</code> | Warning: NodeJS only. |
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.cdkAssertions">cdkAssertions</a></code> | <code>boolean</code> | Install the assertions library? |
+| <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version range of the AWS CDK CLI to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.cdkDependencies">cdkDependencies</a></code> | <code>string[]</code> | Which AWS CDKv1 modules this project requires. |
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.cdkDependenciesAsDeps">cdkDependenciesAsDeps</a></code> | <code>boolean</code> | If this is enabled (default), all modules declared in `cdkDependencies` will be also added as normal `dependencies` (as well as `peerDependencies`). |
 | <code><a href="#projen.awscdk.AwsCdkPythonAppOptions.property.cdkTestDependencies">cdkTestDependencies</a></code> | <code>string[]</code> | AWS CDK modules required for testing. |
@@ -15076,6 +15338,21 @@ Include sample code and test if the relevant directories don't exist.
 
 ---
 
+##### `sampleTestdir`<sup>Optional</sup> <a name="sampleTestdir" id="projen.awscdk.AwsCdkPythonAppOptions.property.sampleTestdir"></a>
+
+```typescript
+public readonly sampleTestdir: string;
+```
+
+- *Type:* string
+- *Default:* "tests"
+
+Location of sample tests.
+
+Typically the same directory where project tests will be located.
+
+---
+
 ##### `setuptools`<sup>Optional</sup> <a name="setuptools" id="projen.awscdk.AwsCdkPythonAppOptions.property.setuptools"></a>
 
 ```typescript
@@ -15256,6 +15533,24 @@ assertions is already included in 'aws-cdk-lib'
 
 ---
 
+##### `cdkCliVersion`<sup>Optional</sup> <a name="cdkCliVersion" id="projen.awscdk.AwsCdkPythonAppOptions.property.cdkCliVersion"></a>
+
+```typescript
+public readonly cdkCliVersion: string;
+```
+
+- *Type:* string
+- *Default:* "^2"
+
+Version range of the AWS CDK CLI to depend on.
+
+Can be either a specific version, or an NPM version range.
+
+By default, the latest 2.x version will be installed; you can use this
+option to restrict it to a specific version or version range.
+
+---
+
 ##### ~~`cdkDependencies`~~<sup>Optional</sup> <a name="cdkDependencies" id="projen.awscdk.AwsCdkPythonAppOptions.property.cdkDependencies"></a>
 
 - *Deprecated:* For CDK 2.x use "deps" instead. (or "peerDeps" if you're building a library)
@@ -15347,7 +15642,9 @@ The CDK app's entrypoint (relative to the source directory, which is "src" by de
 
 ---
 
-##### `testdir`<sup>Optional</sup> <a name="testdir" id="projen.awscdk.AwsCdkPythonAppOptions.property.testdir"></a>
+##### ~~`testdir`~~<sup>Optional</sup> <a name="testdir" id="projen.awscdk.AwsCdkPythonAppOptions.property.testdir"></a>
+
+- *Deprecated:* Use `sampleTestdir` instead.
 
 ```typescript
 public readonly testdir: string;
@@ -15413,6 +15710,7 @@ const awsCdkTypeScriptAppOptions: awscdk.AwsCdkTypeScriptAppOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.bugsEmail">bugsEmail</a></code> | <code>string</code> | The email address to which issues should be reported. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.bugsUrl">bugsUrl</a></code> | <code>string</code> | The url to your project's issue tracker. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.bundledDeps">bundledDeps</a></code> | <code>string[]</code> | List of dependencies to bundle into this module. |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.bunVersion">bunVersion</a></code> | <code>string</code> | The version of Bun to use if using Bun as a package manager. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.codeArtifactOptions">codeArtifactOptions</a></code> | <code>projen.javascript.CodeArtifactOptions</code> | Options for npm packages using AWS CodeArtifact. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.deps">deps</a></code> | <code>string[]</code> | Runtime dependencies of this module. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.description">description</a></code> | <code>string</code> | The description is just a string that helps people understand the purpose of the package. |
@@ -15422,8 +15720,8 @@ const awsCdkTypeScriptAppOptions: awscdk.AwsCdkTypeScriptAppOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.keywords">keywords</a></code> | <code>string[]</code> | Keywords to include in `package.json`. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.license">license</a></code> | <code>string</code> | License's SPDX identifier. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.licensed">licensed</a></code> | <code>boolean</code> | Indicates if a license should be added. |
-| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Minimum node.js version to require via `engines` (inclusive). |
-| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | Minimum Node.js version to require via package.json `engines` (inclusive). |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | The maximum node version supported by this package. Most projects should not use this option. |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | The minimum node version required by this package to function. Most projects should not use this option. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.npmAccess">npmAccess</a></code> | <code>projen.javascript.NpmAccess</code> | Access level of the npm package. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.npmProvenance">npmProvenance</a></code> | <code>boolean</code> | Should provenance statements be generated when the package is published. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.npmRegistry">npmRegistry</a></code> | <code>string</code> | The host name of the npm registry to publish to. |
@@ -15440,9 +15738,11 @@ const awsCdkTypeScriptAppOptions: awscdk.AwsCdkTypeScriptAppOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.scripts">scripts</a></code> | <code>{[ key: string ]: string}</code> | npm scripts to include. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.stability">stability</a></code> | <code>string</code> | Package's Stability. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.yarnBerryOptions">yarnBerryOptions</a></code> | <code>projen.javascript.YarnBerryOptions</code> | Options for Yarn Berry. |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.bumpPackage">bumpPackage</a></code> | <code>string</code> | The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.jsiiReleaseVersion">jsiiReleaseVersion</a></code> | <code>string</code> | Version requirement of `publib` which is used to publish modules to npm. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.majorVersion">majorVersion</a></code> | <code>number</code> | Major version to release from the default branch. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.minMajorVersion">minMajorVersion</a></code> | <code>number</code> | Minimal Major version to release. |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.nextVersionCommand">nextVersionCommand</a></code> | <code>string</code> | A shell command to control the next version to release. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.npmDistTag">npmDistTag</a></code> | <code>string</code> | The npmDistTag to use when publishing from the default branch. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.postBuildSteps">postBuildSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after build as part of the release workflow. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.prerelease">prerelease</a></code> | <code>string</code> | Bump versions from the default branch as pre-releases (e.g. "beta", "alpha", "pre"). |
@@ -15458,7 +15758,7 @@ const awsCdkTypeScriptAppOptions: awscdk.AwsCdkTypeScriptAppOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.releaseTrigger">releaseTrigger</a></code> | <code>projen.release.ReleaseTrigger</code> | The release trigger to use. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.releaseWorkflowName">releaseWorkflowName</a></code> | <code>string</code> | The name of the default release workflow. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.releaseWorkflowSetupSteps">releaseWorkflowSetupSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | A set of workflow steps to execute in order to setup the workflow container. |
-| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with standard-version package. |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with commit-and-tag-version package. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.workflowContainerImage">workflowContainerImage</a></code> | <code>string</code> | Container image to use for GitHub workflows. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.workflowRunsOn">workflowRunsOn</a></code> | <code>string[]</code> | Github Runner selection labels. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.workflowRunsOnGroup">workflowRunsOnGroup</a></code> | <code>projen.GroupRunnerOptions</code> | Github Runner Group selection options. |
@@ -15466,10 +15766,11 @@ const awsCdkTypeScriptAppOptions: awscdk.AwsCdkTypeScriptAppOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.artifactsDirectory">artifactsDirectory</a></code> | <code>string</code> | A directory which will contain build artifacts. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.autoApproveUpgrades">autoApproveUpgrades</a></code> | <code>boolean</code> | Automatically approve deps upgrade PRs, allowing them to be merged by mergify (if configued). |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.buildWorkflow">buildWorkflow</a></code> | <code>boolean</code> | Define a GitHub workflow for building PRs. |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.buildWorkflowOptions">buildWorkflowOptions</a></code> | <code>projen.javascript.BuildWorkflowOptions</code> | Options for PR build workflow. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.buildWorkflowTriggers">buildWorkflowTriggers</a></code> | <code>projen.github.workflows.Triggers</code> | Build workflow triggers. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.bundlerOptions">bundlerOptions</a></code> | <code>projen.javascript.BundlerOptions</code> | Options for `Bundler`. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.checkLicenses">checkLicenses</a></code> | <code>projen.javascript.LicenseCheckerOptions</code> | Configure which licenses should be deemed acceptable for use by dependencies. |
-| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.codeCov">codeCov</a></code> | <code>boolean</code> | Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with `@codeCovTokenSecret`. |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.codeCov">codeCov</a></code> | <code>boolean</code> | Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with `@codeCovTokenSecret`. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.codeCovTokenSecret">codeCovTokenSecret</a></code> | <code>string</code> | Define the secret name for a specified https://codecov.io/ token A secret is required to send coverage for private repositories. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.copyrightOwner">copyrightOwner</a></code> | <code>string</code> | License copyright owner. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.copyrightPeriod">copyrightPeriod</a></code> | <code>string</code> | The copyright years to put in the LICENSE file. |
@@ -15498,7 +15799,7 @@ const awsCdkTypeScriptAppOptions: awscdk.AwsCdkTypeScriptAppOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.releaseWorkflow">releaseWorkflow</a></code> | <code>boolean</code> | DEPRECATED: renamed to `release`. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.workflowBootstrapSteps">workflowBootstrapSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Workflow steps to use in order to bootstrap this repo. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.workflowGitIdentity">workflowGitIdentity</a></code> | <code>projen.github.GitIdentity</code> | The git identity to use in workflows. |
-| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | The node version to use in GitHub workflows. |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | The node version used in GitHub Actions workflows. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.workflowPackageCache">workflowPackageCache</a></code> | <code>boolean</code> | Enable Node.js package cache in GitHub workflows. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.disableTsconfig">disableTsconfig</a></code> | <code>boolean</code> | Do not generate a `tsconfig.json` file (used by jsii projects since tsconfig.json is generated by the jsii compiler). |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.disableTsconfigDev">disableTsconfigDev</a></code> | <code>boolean</code> | Do not generate a `tsconfig.dev.json` file. |
@@ -15528,6 +15829,7 @@ const awsCdkTypeScriptAppOptions: awscdk.AwsCdkTypeScriptAppOptions = { ... }
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.cdkVersion">cdkVersion</a></code> | <code>string</code> | Minimum version of the AWS CDK to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.cdkAssert">cdkAssert</a></code> | <code>boolean</code> | Warning: NodeJS only. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.cdkAssertions">cdkAssertions</a></code> | <code>boolean</code> | Install the assertions library? |
+| <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version range of the AWS CDK CLI to depend on. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.cdkDependencies">cdkDependencies</a></code> | <code>string[]</code> | Which AWS CDKv1 modules this project requires. |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.cdkDependenciesAsDeps">cdkDependenciesAsDeps</a></code> | <code>boolean</code> | If this is enabled (default), all modules declared in `cdkDependencies` will be also added as normal `dependencies` (as well as `peerDependencies`). |
 | <code><a href="#projen.awscdk.AwsCdkTypeScriptAppOptions.property.cdkTestDependencies">cdkTestDependencies</a></code> | <code>string[]</code> | AWS CDK modules required for testing. |
@@ -16097,6 +16399,19 @@ this will be what you `package.json` will eventually include.
 
 ---
 
+##### `bunVersion`<sup>Optional</sup> <a name="bunVersion" id="projen.awscdk.AwsCdkTypeScriptAppOptions.property.bunVersion"></a>
+
+```typescript
+public readonly bunVersion: string;
+```
+
+- *Type:* string
+- *Default:* "latest"
+
+The version of Bun to use if using Bun as a package manager.
+
+---
+
 ##### `codeArtifactOptions`<sup>Optional</sup> <a name="codeArtifactOptions" id="projen.awscdk.AwsCdkTypeScriptAppOptions.property.codeArtifactOptions"></a>
 
 ```typescript
@@ -16260,9 +16575,15 @@ public readonly maxNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no max
+- *Default:* no maximum version is enforced
 
-Minimum node.js version to require via `engines` (inclusive).
+The maximum node version supported by this package. Most projects should not use this option.
+
+The value indicates that the package is incompatible with any newer versions of node.
+This requirement is enforced via the engines field.
+
+You will normally not need to set this option.
+Consider this option only if your package is known to not function with newer versions of node.
 
 ---
 
@@ -16273,9 +16594,19 @@ public readonly minNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no "engines" specified
+- *Default:* no minimum version is enforced
 
-Minimum Node.js version to require via package.json `engines` (inclusive).
+The minimum node version required by this package to function. Most projects should not use this option.
+
+The value indicates that the package is incompatible with any older versions of node.
+This requirement is enforced via the engines field.
+
+You will normally not need to set this option, even if your package is incompatible with EOL versions of node.
+Consider this option only if your package depends on a specific feature, that is not available in other LTS versions.
+Setting this option has very high impact on the consumers of your package,
+as package managers will actively prevent usage with node versions you have marked as incompatible.
+
+To change the node version of your CI/CD workflows, use `workflowNodeVersion`.
 
 ---
 
@@ -16429,7 +16760,7 @@ public readonly pnpmVersion: string;
 ```
 
 - *Type:* string
-- *Default:* "7"
+- *Default:* "9"
 
 The version of PNPM to use if using PNPM as a package manager.
 
@@ -16518,6 +16849,21 @@ Options for Yarn Berry.
 
 ---
 
+##### `bumpPackage`<sup>Optional</sup> <a name="bumpPackage" id="projen.awscdk.AwsCdkTypeScriptAppOptions.property.bumpPackage"></a>
+
+```typescript
+public readonly bumpPackage: string;
+```
+
+- *Type:* string
+- *Default:* A recent version of "commit-and-tag-version"
+
+The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string.
+
+This can be any compatible package version, including the deprecated `standard-version@9`.
+
+---
+
 ##### `jsiiReleaseVersion`<sup>Optional</sup> <a name="jsiiReleaseVersion" id="projen.awscdk.AwsCdkTypeScriptAppOptions.property.jsiiReleaseVersion"></a>
 
 ```typescript
@@ -16562,6 +16908,37 @@ This can be useful to set to 1, as breaking changes before the 1.x major
 release are not incrementing the major version number.
 
 Can not be set together with `majorVersion`.
+
+---
+
+##### `nextVersionCommand`<sup>Optional</sup> <a name="nextVersionCommand" id="projen.awscdk.AwsCdkTypeScriptAppOptions.property.nextVersionCommand"></a>
+
+```typescript
+public readonly nextVersionCommand: string;
+```
+
+- *Type:* string
+- *Default:* The next version will be determined based on the commit history and project settings.
+
+A shell command to control the next version to release.
+
+If present, this shell command will be run before the bump is executed, and
+it determines what version to release. It will be executed in the following
+environment:
+
+- Working directory: the project directory.
+- `$VERSION`: the current version. Looks like `1.2.3`.
+- `$LATEST_TAG`: the most recent tag. Looks like `prefix-v1.2.3`, or may be unset.
+
+The command should print one of the following to `stdout`:
+
+- Nothing: the next version number will be determined based on commit history.
+- `x.y.z`: the next version number will be `x.y.z`.
+- `major|minor|patch`: the next version number will be the current version number
+  with the indicated component bumped.
+
+This setting cannot be specified together with `minMajorVersion`; the invoked
+script can be used to achieve the effects of `minMajorVersion`.
 
 ---
 
@@ -16792,7 +17169,7 @@ public readonly versionrcOptions: {[ key: string ]: any};
 - *Type:* {[ key: string ]: any}
 - *Default:* standard configuration applicable for GitHub repositories
 
-Custom configuration used when creating changelog with standard-version package.
+Custom configuration used when creating changelog with commit-and-tag-version package.
 
 Given values either append to default configuration or overwrite values in it.
 
@@ -16890,7 +17267,21 @@ Define a GitHub workflow for building PRs.
 
 ---
 
-##### `buildWorkflowTriggers`<sup>Optional</sup> <a name="buildWorkflowTriggers" id="projen.awscdk.AwsCdkTypeScriptAppOptions.property.buildWorkflowTriggers"></a>
+##### `buildWorkflowOptions`<sup>Optional</sup> <a name="buildWorkflowOptions" id="projen.awscdk.AwsCdkTypeScriptAppOptions.property.buildWorkflowOptions"></a>
+
+```typescript
+public readonly buildWorkflowOptions: BuildWorkflowOptions;
+```
+
+- *Type:* projen.javascript.BuildWorkflowOptions
+
+Options for PR build workflow.
+
+---
+
+##### ~~`buildWorkflowTriggers`~~<sup>Optional</sup> <a name="buildWorkflowTriggers" id="projen.awscdk.AwsCdkTypeScriptAppOptions.property.buildWorkflowTriggers"></a>
+
+- *Deprecated:* - Use `buildWorkflowOptions.workflowTriggers`
 
 ```typescript
 public readonly buildWorkflowTriggers: Triggers;
@@ -16939,7 +17330,7 @@ public readonly codeCov: boolean;
 - *Type:* boolean
 - *Default:* false
 
-Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with `@codeCovTokenSecret`.
+Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with `@codeCovTokenSecret`.
 
 ---
 
@@ -17076,7 +17467,9 @@ Jest options.
 
 ---
 
-##### `mutableBuild`<sup>Optional</sup> <a name="mutableBuild" id="projen.awscdk.AwsCdkTypeScriptAppOptions.property.mutableBuild"></a>
+##### ~~`mutableBuild`~~<sup>Optional</sup> <a name="mutableBuild" id="projen.awscdk.AwsCdkTypeScriptAppOptions.property.mutableBuild"></a>
+
+- *Deprecated:* - Use `buildWorkflowOptions.mutableBuild`
 
 ```typescript
 public readonly mutableBuild: boolean;
@@ -17180,7 +17573,7 @@ public readonly projenDevDependency: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* true
+- *Default:* true if not a subproject
 
 Indicates of "projen" should be installed as a devDependency.
 
@@ -17325,9 +17718,11 @@ public readonly workflowNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* same as `minNodeVersion`
+- *Default:* `minNodeVersion` if set, otherwise `lts/*`.
 
-The node version to use in GitHub workflows.
+The node version used in GitHub Actions workflows.
+
+Always use this option if your GitHub Actions workflows require a specific to run.
 
 ---
 
@@ -17722,6 +18117,24 @@ Install the assertions library?
 
 Only needed for CDK 1.x. If using CDK 2.x then
 assertions is already included in 'aws-cdk-lib'
+
+---
+
+##### `cdkCliVersion`<sup>Optional</sup> <a name="cdkCliVersion" id="projen.awscdk.AwsCdkTypeScriptAppOptions.property.cdkCliVersion"></a>
+
+```typescript
+public readonly cdkCliVersion: string;
+```
+
+- *Type:* string
+- *Default:* "^2"
+
+Version range of the AWS CDK CLI to depend on.
+
+Can be either a specific version, or an NPM version range.
+
+By default, the latest 2.x version will be installed; you can use this
+option to restrict it to a specific version or version range.
 
 ---
 
@@ -18202,6 +18615,7 @@ const constructLibraryAwsOptions: awscdk.ConstructLibraryAwsOptions = { ... }
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.bugsEmail">bugsEmail</a></code> | <code>string</code> | The email address to which issues should be reported. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.bugsUrl">bugsUrl</a></code> | <code>string</code> | The url to your project's issue tracker. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.bundledDeps">bundledDeps</a></code> | <code>string[]</code> | List of dependencies to bundle into this module. |
+| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.bunVersion">bunVersion</a></code> | <code>string</code> | The version of Bun to use if using Bun as a package manager. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.codeArtifactOptions">codeArtifactOptions</a></code> | <code>projen.javascript.CodeArtifactOptions</code> | Options for npm packages using AWS CodeArtifact. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.deps">deps</a></code> | <code>string[]</code> | Runtime dependencies of this module. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.description">description</a></code> | <code>string</code> | The description is just a string that helps people understand the purpose of the package. |
@@ -18211,8 +18625,8 @@ const constructLibraryAwsOptions: awscdk.ConstructLibraryAwsOptions = { ... }
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.keywords">keywords</a></code> | <code>string[]</code> | Keywords to include in `package.json`. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.license">license</a></code> | <code>string</code> | License's SPDX identifier. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.licensed">licensed</a></code> | <code>boolean</code> | Indicates if a license should be added. |
-| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | Minimum node.js version to require via `engines` (inclusive). |
-| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | Minimum Node.js version to require via package.json `engines` (inclusive). |
+| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | The maximum node version supported by this package. Most projects should not use this option. |
+| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | The minimum node version required by this package to function. Most projects should not use this option. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.npmAccess">npmAccess</a></code> | <code>projen.javascript.NpmAccess</code> | Access level of the npm package. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.npmProvenance">npmProvenance</a></code> | <code>boolean</code> | Should provenance statements be generated when the package is published. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.npmRegistry">npmRegistry</a></code> | <code>string</code> | The host name of the npm registry to publish to. |
@@ -18229,9 +18643,11 @@ const constructLibraryAwsOptions: awscdk.ConstructLibraryAwsOptions = { ... }
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.scripts">scripts</a></code> | <code>{[ key: string ]: string}</code> | npm scripts to include. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.stability">stability</a></code> | <code>string</code> | Package's Stability. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.yarnBerryOptions">yarnBerryOptions</a></code> | <code>projen.javascript.YarnBerryOptions</code> | Options for Yarn Berry. |
+| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.bumpPackage">bumpPackage</a></code> | <code>string</code> | The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.jsiiReleaseVersion">jsiiReleaseVersion</a></code> | <code>string</code> | Version requirement of `publib` which is used to publish modules to npm. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.majorVersion">majorVersion</a></code> | <code>number</code> | Major version to release from the default branch. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.minMajorVersion">minMajorVersion</a></code> | <code>number</code> | Minimal Major version to release. |
+| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.nextVersionCommand">nextVersionCommand</a></code> | <code>string</code> | A shell command to control the next version to release. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.npmDistTag">npmDistTag</a></code> | <code>string</code> | The npmDistTag to use when publishing from the default branch. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.postBuildSteps">postBuildSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Steps to execute after build as part of the release workflow. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.prerelease">prerelease</a></code> | <code>string</code> | Bump versions from the default branch as pre-releases (e.g. "beta", "alpha", "pre"). |
@@ -18247,7 +18663,7 @@ const constructLibraryAwsOptions: awscdk.ConstructLibraryAwsOptions = { ... }
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.releaseTrigger">releaseTrigger</a></code> | <code>projen.release.ReleaseTrigger</code> | The release trigger to use. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.releaseWorkflowName">releaseWorkflowName</a></code> | <code>string</code> | The name of the default release workflow. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.releaseWorkflowSetupSteps">releaseWorkflowSetupSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | A set of workflow steps to execute in order to setup the workflow container. |
-| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with standard-version package. |
+| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.versionrcOptions">versionrcOptions</a></code> | <code>{[ key: string ]: any}</code> | Custom configuration used when creating changelog with commit-and-tag-version package. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.workflowContainerImage">workflowContainerImage</a></code> | <code>string</code> | Container image to use for GitHub workflows. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.workflowRunsOn">workflowRunsOn</a></code> | <code>string[]</code> | Github Runner selection labels. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.workflowRunsOnGroup">workflowRunsOnGroup</a></code> | <code>projen.GroupRunnerOptions</code> | Github Runner Group selection options. |
@@ -18255,10 +18671,11 @@ const constructLibraryAwsOptions: awscdk.ConstructLibraryAwsOptions = { ... }
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.artifactsDirectory">artifactsDirectory</a></code> | <code>string</code> | A directory which will contain build artifacts. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.autoApproveUpgrades">autoApproveUpgrades</a></code> | <code>boolean</code> | Automatically approve deps upgrade PRs, allowing them to be merged by mergify (if configued). |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.buildWorkflow">buildWorkflow</a></code> | <code>boolean</code> | Define a GitHub workflow for building PRs. |
+| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.buildWorkflowOptions">buildWorkflowOptions</a></code> | <code>projen.javascript.BuildWorkflowOptions</code> | Options for PR build workflow. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.buildWorkflowTriggers">buildWorkflowTriggers</a></code> | <code>projen.github.workflows.Triggers</code> | Build workflow triggers. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.bundlerOptions">bundlerOptions</a></code> | <code>projen.javascript.BundlerOptions</code> | Options for `Bundler`. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.checkLicenses">checkLicenses</a></code> | <code>projen.javascript.LicenseCheckerOptions</code> | Configure which licenses should be deemed acceptable for use by dependencies. |
-| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.codeCov">codeCov</a></code> | <code>boolean</code> | Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with `@codeCovTokenSecret`. |
+| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.codeCov">codeCov</a></code> | <code>boolean</code> | Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with `@codeCovTokenSecret`. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.codeCovTokenSecret">codeCovTokenSecret</a></code> | <code>string</code> | Define the secret name for a specified https://codecov.io/ token A secret is required to send coverage for private repositories. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.copyrightOwner">copyrightOwner</a></code> | <code>string</code> | License copyright owner. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.copyrightPeriod">copyrightPeriod</a></code> | <code>string</code> | The copyright years to put in the LICENSE file. |
@@ -18287,7 +18704,7 @@ const constructLibraryAwsOptions: awscdk.ConstructLibraryAwsOptions = { ... }
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.releaseWorkflow">releaseWorkflow</a></code> | <code>boolean</code> | DEPRECATED: renamed to `release`. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.workflowBootstrapSteps">workflowBootstrapSteps</a></code> | <code>projen.github.workflows.JobStep[]</code> | Workflow steps to use in order to bootstrap this repo. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.workflowGitIdentity">workflowGitIdentity</a></code> | <code>projen.github.GitIdentity</code> | The git identity to use in workflows. |
-| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | The node version to use in GitHub workflows. |
+| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | The node version used in GitHub Actions workflows. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.workflowPackageCache">workflowPackageCache</a></code> | <code>boolean</code> | Enable Node.js package cache in GitHub workflows. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.disableTsconfig">disableTsconfig</a></code> | <code>boolean</code> | Do not generate a `tsconfig.json` file (used by jsii projects since tsconfig.json is generated by the jsii compiler). |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.disableTsconfigDev">disableTsconfigDev</a></code> | <code>boolean</code> | Do not generate a `tsconfig.dev.json` file. |
@@ -18327,6 +18744,7 @@ const constructLibraryAwsOptions: awscdk.ConstructLibraryAwsOptions = { ... }
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.cdkVersion">cdkVersion</a></code> | <code>string</code> | Minimum version of the AWS CDK to depend on. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.cdkAssert">cdkAssert</a></code> | <code>boolean</code> | Warning: NodeJS only. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.cdkAssertions">cdkAssertions</a></code> | <code>boolean</code> | Install the assertions library? |
+| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version range of the AWS CDK CLI to depend on. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.cdkDependencies">cdkDependencies</a></code> | <code>string[]</code> | Which AWS CDKv1 modules this project requires. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.cdkDependenciesAsDeps">cdkDependenciesAsDeps</a></code> | <code>boolean</code> | If this is enabled (default), all modules declared in `cdkDependencies` will be also added as normal `dependencies` (as well as `peerDependencies`). |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.cdkTestDependencies">cdkTestDependencies</a></code> | <code>string[]</code> | AWS CDK modules required for testing. |
@@ -18334,7 +18752,7 @@ const constructLibraryAwsOptions: awscdk.ConstructLibraryAwsOptions = { ... }
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.constructsVersion">constructsVersion</a></code> | <code>string</code> | Minimum version of the `constructs` library to depend on. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.edgeLambdaAutoDiscover">edgeLambdaAutoDiscover</a></code> | <code>boolean</code> | Automatically adds an `cloudfront.experimental.EdgeFunction` for each `.edge-lambda.ts` handler in your source tree. If this is disabled, you can manually add an `awscdk.AutoDiscover` component to your project. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.experimentalIntegRunner">experimentalIntegRunner</a></code> | <code>boolean</code> | Enable experimental support for the AWS CDK integ-runner. |
-| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.integrationTestAutoDiscover">integrationTestAutoDiscover</a></code> | <code>boolean</code> | Automatically discovers and creates integration tests for each `.integ.ts` file in under your test directory. |
+| <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.integrationTestAutoDiscover">integrationTestAutoDiscover</a></code> | <code>boolean</code> | Automatically discovers and creates integration tests for each `.integ.ts` file under your test directory. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.lambdaAutoDiscover">lambdaAutoDiscover</a></code> | <code>boolean</code> | Automatically adds an `aws_lambda.Function` for each `.lambda.ts` handler in your source tree. If this is disabled, you either need to explicitly call `aws_lambda.Function.autoDiscover()` or define a `new aws_lambda.Function()` for each handler. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.lambdaExtensionAutoDiscover">lambdaExtensionAutoDiscover</a></code> | <code>boolean</code> | Automatically adds an `awscdk.LambdaExtension` for each `.lambda-extension.ts` entrypoint in your source tree. If this is disabled, you can manually add an `awscdk.AutoDiscover` component to your project. |
 | <code><a href="#projen.awscdk.ConstructLibraryAwsOptions.property.lambdaOptions">lambdaOptions</a></code> | <code><a href="#projen.awscdk.LambdaFunctionCommonOptions">LambdaFunctionCommonOptions</a></code> | Common options for all AWS Lambda functions. |
@@ -18965,6 +19383,21 @@ this will be what you `package.json` will eventually include.
 
 ---
 
+##### ~~`bunVersion`~~<sup>Optional</sup> <a name="bunVersion" id="projen.awscdk.ConstructLibraryAwsOptions.property.bunVersion"></a>
+
+- *Deprecated:* use `AwsCdkConstructLibraryOptions`
+
+```typescript
+public readonly bunVersion: string;
+```
+
+- *Type:* string
+- *Default:* "latest"
+
+The version of Bun to use if using Bun as a package manager.
+
+---
+
 ##### ~~`codeArtifactOptions`~~<sup>Optional</sup> <a name="codeArtifactOptions" id="projen.awscdk.ConstructLibraryAwsOptions.property.codeArtifactOptions"></a>
 
 - *Deprecated:* use `AwsCdkConstructLibraryOptions`
@@ -19148,9 +19581,15 @@ public readonly maxNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no max
+- *Default:* no maximum version is enforced
 
-Minimum node.js version to require via `engines` (inclusive).
+The maximum node version supported by this package. Most projects should not use this option.
+
+The value indicates that the package is incompatible with any newer versions of node.
+This requirement is enforced via the engines field.
+
+You will normally not need to set this option.
+Consider this option only if your package is known to not function with newer versions of node.
 
 ---
 
@@ -19163,9 +19602,19 @@ public readonly minNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* no "engines" specified
+- *Default:* no minimum version is enforced
 
-Minimum Node.js version to require via package.json `engines` (inclusive).
+The minimum node version required by this package to function. Most projects should not use this option.
+
+The value indicates that the package is incompatible with any older versions of node.
+This requirement is enforced via the engines field.
+
+You will normally not need to set this option, even if your package is incompatible with EOL versions of node.
+Consider this option only if your package depends on a specific feature, that is not available in other LTS versions.
+Setting this option has very high impact on the consumers of your package,
+as package managers will actively prevent usage with node versions you have marked as incompatible.
+
+To change the node version of your CI/CD workflows, use `workflowNodeVersion`.
 
 ---
 
@@ -19337,7 +19786,7 @@ public readonly pnpmVersion: string;
 ```
 
 - *Type:* string
-- *Default:* "7"
+- *Default:* "9"
 
 The version of PNPM to use if using PNPM as a package manager.
 
@@ -19436,6 +19885,23 @@ Options for Yarn Berry.
 
 ---
 
+##### ~~`bumpPackage`~~<sup>Optional</sup> <a name="bumpPackage" id="projen.awscdk.ConstructLibraryAwsOptions.property.bumpPackage"></a>
+
+- *Deprecated:* use `AwsCdkConstructLibraryOptions`
+
+```typescript
+public readonly bumpPackage: string;
+```
+
+- *Type:* string
+- *Default:* A recent version of "commit-and-tag-version"
+
+The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string.
+
+This can be any compatible package version, including the deprecated `standard-version@9`.
+
+---
+
 ##### ~~`jsiiReleaseVersion`~~<sup>Optional</sup> <a name="jsiiReleaseVersion" id="projen.awscdk.ConstructLibraryAwsOptions.property.jsiiReleaseVersion"></a>
 
 - *Deprecated:* use `AwsCdkConstructLibraryOptions`
@@ -19486,6 +19952,39 @@ This can be useful to set to 1, as breaking changes before the 1.x major
 release are not incrementing the major version number.
 
 Can not be set together with `majorVersion`.
+
+---
+
+##### ~~`nextVersionCommand`~~<sup>Optional</sup> <a name="nextVersionCommand" id="projen.awscdk.ConstructLibraryAwsOptions.property.nextVersionCommand"></a>
+
+- *Deprecated:* use `AwsCdkConstructLibraryOptions`
+
+```typescript
+public readonly nextVersionCommand: string;
+```
+
+- *Type:* string
+- *Default:* The next version will be determined based on the commit history and project settings.
+
+A shell command to control the next version to release.
+
+If present, this shell command will be run before the bump is executed, and
+it determines what version to release. It will be executed in the following
+environment:
+
+- Working directory: the project directory.
+- `$VERSION`: the current version. Looks like `1.2.3`.
+- `$LATEST_TAG`: the most recent tag. Looks like `prefix-v1.2.3`, or may be unset.
+
+The command should print one of the following to `stdout`:
+
+- Nothing: the next version number will be determined based on commit history.
+- `x.y.z`: the next version number will be `x.y.z`.
+- `major|minor|patch`: the next version number will be the current version number
+  with the indicated component bumped.
+
+This setting cannot be specified together with `minMajorVersion`; the invoked
+script can be used to achieve the effects of `minMajorVersion`.
 
 ---
 
@@ -19744,7 +20243,7 @@ public readonly versionrcOptions: {[ key: string ]: any};
 - *Type:* {[ key: string ]: any}
 - *Default:* standard configuration applicable for GitHub repositories
 
-Custom configuration used when creating changelog with standard-version package.
+Custom configuration used when creating changelog with commit-and-tag-version package.
 
 Given values either append to default configuration or overwrite values in it.
 
@@ -19856,9 +20355,23 @@ Define a GitHub workflow for building PRs.
 
 ---
 
-##### ~~`buildWorkflowTriggers`~~<sup>Optional</sup> <a name="buildWorkflowTriggers" id="projen.awscdk.ConstructLibraryAwsOptions.property.buildWorkflowTriggers"></a>
+##### ~~`buildWorkflowOptions`~~<sup>Optional</sup> <a name="buildWorkflowOptions" id="projen.awscdk.ConstructLibraryAwsOptions.property.buildWorkflowOptions"></a>
 
 - *Deprecated:* use `AwsCdkConstructLibraryOptions`
+
+```typescript
+public readonly buildWorkflowOptions: BuildWorkflowOptions;
+```
+
+- *Type:* projen.javascript.BuildWorkflowOptions
+
+Options for PR build workflow.
+
+---
+
+##### ~~`buildWorkflowTriggers`~~<sup>Optional</sup> <a name="buildWorkflowTriggers" id="projen.awscdk.ConstructLibraryAwsOptions.property.buildWorkflowTriggers"></a>
+
+- *Deprecated:* - Use `buildWorkflowOptions.workflowTriggers`
 
 ```typescript
 public readonly buildWorkflowTriggers: Triggers;
@@ -19913,7 +20426,7 @@ public readonly codeCov: boolean;
 - *Type:* boolean
 - *Default:* false
 
-Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v3 A secret is required for private repos. Configured with `@codeCovTokenSecret`.
+Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v4 A secret is required for private repos. Configured with `@codeCovTokenSecret`.
 
 ---
 
@@ -20072,7 +20585,7 @@ Jest options.
 
 ##### ~~`mutableBuild`~~<sup>Optional</sup> <a name="mutableBuild" id="projen.awscdk.ConstructLibraryAwsOptions.property.mutableBuild"></a>
 
-- *Deprecated:* use `AwsCdkConstructLibraryOptions`
+- *Deprecated:* - Use `buildWorkflowOptions.mutableBuild`
 
 ```typescript
 public readonly mutableBuild: boolean;
@@ -20188,7 +20701,7 @@ public readonly projenDevDependency: boolean;
 ```
 
 - *Type:* boolean
-- *Default:* true
+- *Default:* true if not a subproject
 
 Indicates of "projen" should be installed as a devDependency.
 
@@ -20353,9 +20866,11 @@ public readonly workflowNodeVersion: string;
 ```
 
 - *Type:* string
-- *Default:* same as `minNodeVersion`
+- *Default:* `minNodeVersion` if set, otherwise `lts/*`.
 
-The node version to use in GitHub workflows.
+The node version used in GitHub Actions workflows.
+
+Always use this option if your GitHub Actions workflows require a specific to run.
 
 ---
 
@@ -20799,7 +21314,7 @@ public readonly jsiiVersion: string;
 ```
 
 - *Type:* string
-- *Default:* "1.x"
+- *Default:* "~5.6.0"
 
 Version of the jsii compiler to use.
 
@@ -20973,6 +21488,26 @@ assertions is already included in 'aws-cdk-lib'
 
 ---
 
+##### ~~`cdkCliVersion`~~<sup>Optional</sup> <a name="cdkCliVersion" id="projen.awscdk.ConstructLibraryAwsOptions.property.cdkCliVersion"></a>
+
+- *Deprecated:* use `AwsCdkConstructLibraryOptions`
+
+```typescript
+public readonly cdkCliVersion: string;
+```
+
+- *Type:* string
+- *Default:* "^2"
+
+Version range of the AWS CDK CLI to depend on.
+
+Can be either a specific version, or an NPM version range.
+
+By default, the latest 2.x version will be installed; you can use this
+option to restrict it to a specific version or version range.
+
+---
+
 ##### ~~`cdkDependencies`~~<sup>Optional</sup> <a name="cdkDependencies" id="projen.awscdk.ConstructLibraryAwsOptions.property.cdkDependencies"></a>
 
 - *Deprecated:* For CDK 2.x use "deps" instead. (or "peerDeps" if you're building a library)
@@ -21096,7 +21631,7 @@ public readonly integrationTestAutoDiscover: boolean;
 - *Type:* boolean
 - *Default:* true
 
-Automatically discovers and creates integration tests for each `.integ.ts` file in under your test directory.
+Automatically discovers and creates integration tests for each `.integ.ts` file under your test directory.
 
 ---
 
@@ -22168,12 +22703,13 @@ The Node.js runtime to use.
 | <code><a href="#projen.awscdk.LambdaRuntime.property.NODEJS_16_X">NODEJS_16_X</a></code> | <code><a href="#projen.awscdk.LambdaRuntime">LambdaRuntime</a></code> | Node.js 16.x. |
 | <code><a href="#projen.awscdk.LambdaRuntime.property.NODEJS_18_X">NODEJS_18_X</a></code> | <code><a href="#projen.awscdk.LambdaRuntime">LambdaRuntime</a></code> | Node.js 18.x. |
 | <code><a href="#projen.awscdk.LambdaRuntime.property.NODEJS_20_X">NODEJS_20_X</a></code> | <code><a href="#projen.awscdk.LambdaRuntime">LambdaRuntime</a></code> | Node.js 20.x. |
+| <code><a href="#projen.awscdk.LambdaRuntime.property.NODEJS_22_X">NODEJS_22_X</a></code> | <code><a href="#projen.awscdk.LambdaRuntime">LambdaRuntime</a></code> | Node.js 22.x. |
 
 ---
 
 ##### ~~`NODEJS_10_X`~~<sup>Required</sup> <a name="NODEJS_10_X" id="projen.awscdk.LambdaRuntime.property.NODEJS_10_X"></a>
 
-- *Deprecated:* NodeJS10 has been deprecated on February 14, 2022
+- *Deprecated:* Node.js 10 runtime has been deprecated on Jul 30, 2021
 
 ```typescript
 public readonly NODEJS_10_X: LambdaRuntime;
@@ -22187,7 +22723,7 @@ Node.js 10.x.
 
 ##### ~~`NODEJS_12_X`~~<sup>Required</sup> <a name="NODEJS_12_X" id="projen.awscdk.LambdaRuntime.property.NODEJS_12_X"></a>
 
-- *Deprecated:* NodeJS12 has been deprecated on April 30, 2023
+- *Deprecated:* Node.js 12 runtime has been deprecated on Mar 31, 2023
 
 ```typescript
 public readonly NODEJS_12_X: LambdaRuntime;
@@ -22201,7 +22737,7 @@ Node.js 12.x.
 
 ##### ~~`NODEJS_14_X`~~<sup>Required</sup> <a name="NODEJS_14_X" id="projen.awscdk.LambdaRuntime.property.NODEJS_14_X"></a>
 
-- *Deprecated:* NodeJS14 will be deprecated on November 27, 2023
+- *Deprecated:* Node.js 14 runtime has been deprecated on Dec 4, 2023
 
 ```typescript
 public readonly NODEJS_14_X: LambdaRuntime;
@@ -22215,7 +22751,7 @@ Node.js 14.x.
 
 ##### ~~`NODEJS_16_X`~~<sup>Required</sup> <a name="NODEJS_16_X" id="projen.awscdk.LambdaRuntime.property.NODEJS_16_X"></a>
 
-- *Deprecated:* NodeJS16 will be deprecated on March 11, 2024
+- *Deprecated:* Node.js 16 runtime has been deprecated on Jun 12, 2024
 
 ```typescript
 public readonly NODEJS_16_X: LambdaRuntime;
@@ -22237,6 +22773,8 @@ public readonly NODEJS_18_X: LambdaRuntime;
 
 Node.js 18.x.
 
+Advanced notice: Node.js 18 runtime will be deprecated on Jul 31, 2025
+
 ---
 
 ##### `NODEJS_20_X`<sup>Required</sup> <a name="NODEJS_20_X" id="projen.awscdk.LambdaRuntime.property.NODEJS_20_X"></a>
@@ -22248,6 +22786,18 @@ public readonly NODEJS_20_X: LambdaRuntime;
 - *Type:* <a href="#projen.awscdk.LambdaRuntime">LambdaRuntime</a>
 
 Node.js 20.x.
+
+---
+
+##### `NODEJS_22_X`<sup>Required</sup> <a name="NODEJS_22_X" id="projen.awscdk.LambdaRuntime.property.NODEJS_22_X"></a>
+
+```typescript
+public readonly NODEJS_22_X: LambdaRuntime;
+```
+
+- *Type:* <a href="#projen.awscdk.LambdaRuntime">LambdaRuntime</a>
+
+Node.js 22.x.
 
 ---
 

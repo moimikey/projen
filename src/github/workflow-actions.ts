@@ -1,17 +1,14 @@
 import { GitIdentity, GithubCredentials } from ".";
 import { DEFAULT_GITHUB_ACTIONS_USER } from "./constants";
+import { context, isHiddenPath } from "./private/util";
 import { CheckoutWith, WorkflowSteps } from "./workflow-steps";
 import { JobStep } from "./workflows-model";
-
-function context(value: string) {
-  return `\${{ ${value} }}`;
-}
 
 const REPO = context("github.repository");
 const RUN_ID = context("github.run_id");
 const SERVER_URL = context("github.server_url");
 const RUN_URL = `${SERVER_URL}/${REPO}/actions/runs/${RUN_ID}`;
-const GIT_PATCH_FILE_DEFAULT = ".repo.patch";
+const GIT_PATCH_FILE_DEFAULT = "repo.patch";
 const RUNNER_TEMP = "${{ runner.temp }}";
 
 /**
@@ -39,11 +36,18 @@ export class WorkflowActions {
           "git add .",
           `git diff --staged --patch --exit-code > ${GIT_PATCH_FILE} || echo "${options.outputName}=true" >> $GITHUB_OUTPUT`,
         ].join("\n"),
+        // always run from root of repository
+        // overrides default working directory which is set by some workflows using this function
+        workingDirectory: "./",
       },
       WorkflowSteps.uploadArtifact({
         if: MUTATIONS_FOUND,
         name: "Upload patch",
-        with: { name: GIT_PATCH_FILE, path: GIT_PATCH_FILE },
+        with: {
+          name: GIT_PATCH_FILE,
+          path: GIT_PATCH_FILE,
+          includeHiddenFiles: isHiddenPath(GIT_PATCH_FILE) ? true : undefined,
+        },
       }),
     ];
 

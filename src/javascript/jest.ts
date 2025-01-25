@@ -1,5 +1,4 @@
 import * as path from "path";
-import * as semver from "semver";
 import { Component } from "../component";
 import { NodeProject } from "../javascript";
 import { JsonFile } from "../json";
@@ -68,8 +67,8 @@ export interface JestConfigOptions {
 
   /**
    * Indicates which provider should be used to instrument code for coverage.
-   * Allowed values are babel (default) or v8
-   * @default - "babel"
+   * Allowed values are v8 (default) or babel
+   * @default - "v8"
    */
   readonly coverageProvider?: "babel" | "v8";
 
@@ -366,7 +365,7 @@ export interface JestConfigOptions {
    * The glob patterns Jest uses to detect test files. By default it looks for .js, .jsx, .ts and .tsx
    * files inside of __tests__ folders, as well as any files with a suffix of .test or .spec
    * (e.g. Component.test.js or Component.spec.js). It will also find files called test.js or spec.js.
-   * @default ['**\/__tests__/**\/*.[jt]s?(x)', '**\/?(*.)+(spec|test).[tj]s?(x)']
+   * @default ['**\/__tests__/**\/*.[jt]s?(x)', '**\/*(*.)@(spec|test).[tj]s?(x)']
    */
   readonly testMatch?: string[];
 
@@ -489,6 +488,14 @@ export interface JestConfigOptions {
   readonly [name: string]: any;
 }
 
+/**
+ * Options for discoverTestMatchPatternsForDirs.
+ */
+export interface JestDiscoverTestMatchPatternsForDirsOptions {
+  /** The file extension pattern to use. Defaults to "[jt]s?(x)". */
+  readonly fileExtensionPattern?: string;
+}
+
 export class Transform {
   public constructor(
     private readonly name: string,
@@ -599,6 +606,12 @@ export interface JestOptions {
    * @default - no extra options
    */
   readonly extraCliOptions?: string[];
+
+  /**
+   * Pass with no tests
+   * @default - true
+   */
+  readonly passWithNoTests?: boolean;
 }
 
 export interface CoverageThreshold {
@@ -662,7 +675,6 @@ export class Jest extends Component {
     const isJest = (c: Component): c is Jest => c instanceof Jest;
     return project.components.find(isJest);
   }
-
   /**
    * Escape hatch.
    */
@@ -678,7 +690,7 @@ export class Jest extends Component {
    */
   readonly file?: JsonFile;
 
-  private readonly testMatch: string[];
+  private readonly testMatch = new Array<string>();
   private readonly ignorePatterns: string[];
   private readonly watchIgnorePatterns: string[];
   private readonly coverageReporters: string[];
@@ -688,6 +700,7 @@ export class Jest extends Component {
     [key: string]: unknown;
   };
   private readonly extraCliOptions: string[];
+  private readonly passWithNoTests: boolean;
   private _snapshotResolver: string | undefined;
 
   constructor(project: NodeProject, options: JestOptions = {}) {
@@ -705,12 +718,18 @@ export class Jest extends Component {
     this.jestVersion = options.jestVersion ? `@${options.jestVersion}` : "";
     project.addDevDeps(`jest${this.jestVersion}`);
 
+    // use native v8 coverage collection as default
+    // https://jestjs.io/docs/en/cli#--coverageproviderprovider
+    const coverageProvider = this.jestConfig?.coverageProvider ?? "v8";
+
     this.jestConfig = {
+      coverageProvider,
       ...options.jestConfig,
       additionalOptions: undefined,
       ...options.jestConfig?.additionalOptions,
     };
     this.extraCliOptions = options.extraCliOptions ?? [];
+    this.passWithNoTests = options.passWithNoTests ?? true;
 
     this.ignorePatterns = this.jestConfig?.testPathIgnorePatterns ??
       options.ignorePatterns ?? ["/node_modules/"];
@@ -723,10 +742,12 @@ export class Jest extends Component {
       "clover",
       "cobertura",
     ];
-    this.testMatch = this.jestConfig?.testMatch ?? [
-      "**/__tests__/**/*.[jt]s?(x)",
-      "**/?(*.)+(spec|test).[tj]s?(x)",
-    ];
+
+    if (this.jestConfig?.testMatch && this.jestConfig.testMatch.length > 0) {
+      this.jestConfig.testMatch.forEach((pattern) =>
+        this.addTestMatch(pattern)
+      );
+    }
 
     const coverageDirectory = this.jestConfig?.coverageDirectory ?? "coverage";
 
@@ -747,7 +768,11 @@ export class Jest extends Component {
         this.jestConfig?.coveragePathIgnorePatterns ?? this.ignorePatterns,
       testPathIgnorePatterns: this.ignorePatterns,
       watchPathIgnorePatterns: this.watchIgnorePatterns,
-      testMatch: this.testMatch,
+      // @ts-expect-error - lazily loading the testMatch in order to only apply defaults if none are ever added
+      testMatch: () =>
+        this.testMatch.length > 0
+          ? this.testMatch
+          : [`**/__tests__/**/*.[jt]s?(x)`, `**/*(*.)@(spec|test).[jt]s?(x)`], // Jest defaults
       reporters: this.reporters,
       snapshotResolver: (() => this._snapshotResolver) as any,
     } satisfies JestConfigOptions;
@@ -759,7 +784,7 @@ export class Jest extends Component {
         new JestReporter("jest-junit", { outputDirectory: reportsDir })
       );
 
-      project.addDevDeps("jest-junit@^15");
+      project.addDevDeps("jest-junit@^16");
 
       project.gitignore.exclude(
         "# jest-junit artifacts",
@@ -811,6 +836,41 @@ export class Jest extends Component {
    */
   public addTestMatch(pattern: string) {
     this.testMatch.push(pattern);
+  }
+
+  /**
+   * Build standard test match patterns for a directory.
+   * @param dirs The directories to add test matches for. Matches any folder if not specified or an empty array.
+   * @param options Options for building test match patterns.
+   */
+  public discoverTestMatchPatternsForDirs(
+    dirs: string[],
+    options?: JestDiscoverTestMatchPatternsForDirsOptions
+  ): void {
+    const testPatterns = this.buildTestMatchPatternsForDirs(dirs, options);
+
+    testPatterns.forEach((pattern) => this.addTestMatch(pattern));
+  }
+
+  /**
+   * Build standard test match patterns for a directory.
+   * @param dirs The directories to add test matches for. Matches any folder if not specified.
+   * @param fileExtensionPattern The file extension pattern to use. Defaults to "[jt]s?(x)".
+   * @returns The test match patterns.
+   */
+  private buildTestMatchPatternsForDirs(
+    dirs: string[],
+    options?: JestDiscoverTestMatchPatternsForDirsOptions
+  ): string[] {
+    const fileExtensionPattern = options?.fileExtensionPattern ?? "[jt]s?(x)";
+    return [
+      `<rootDir>/@(${dirs.join(
+        "|"
+      )})/**/*(*.)@(spec|test).${fileExtensionPattern}`,
+      `<rootDir>/@(${dirs.join(
+        "|"
+      )})/**/__tests__/**/*.${fileExtensionPattern}`,
+    ];
   }
 
   /**
@@ -896,22 +956,15 @@ export class Jest extends Component {
   }
 
   private configureTestCommand(updateSnapshot: UpdateSnapshot) {
-    const jestOpts = ["--passWithNoTests", ...this.extraCliOptions];
+    const jestOpts = this.extraCliOptions;
     const jestConfigOpts =
       this.file && this.file.path != "jest.config.json"
         ? ` -c ${this.file.path}`
         : "";
 
-    // as recommended in the jest docs, node > 14 may use native v8 coverage collection
-    // https://jestjs.io/docs/en/cli#--coverageproviderprovider
-    if (
-      this.project instanceof NodeProject &&
-      this.project.package.minNodeVersion &&
-      semver.gte(this.project.package.minNodeVersion, "14.0.0")
-    ) {
-      jestOpts.push("--coverageProvider=v8");
+    if (this.passWithNoTests) {
+      jestOpts.push("--passWithNoTests");
     }
-
     if (updateSnapshot === UpdateSnapshot.ALWAYS) {
       jestOpts.push("--updateSnapshot");
     } else {

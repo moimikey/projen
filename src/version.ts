@@ -1,7 +1,29 @@
 import { posix } from "path";
+import { IConstruct } from "constructs";
 import { Component } from "./component";
-import { Project } from "./project";
+import { Dependencies, DependencyType } from "./dependencies";
+import { NodePackage } from "./javascript/node-package";
 import { Task } from "./task";
+
+/**
+ * This command determines if there were any changes since the last release in a cross-platform compatible way.
+ * It is used as a condition for both the `bump` and the `release` tasks.
+ *
+ * Explanation:
+ *  - log commits                                               | git log
+ *  - limit log output to a single line per commit              | --oneline
+ *  - looks only at the most recent commit                      | -1
+ *  - silent grep output                                        | grep -q
+ *  - exits with code 0 if a match is found                     | grep -q "chore(release):"
+ *  - exits with code 1 if a match is found (reverse-match)     | grep -qv "chore(release):"
+ */
+export const CHANGES_SINCE_LAST_RELEASE =
+  'git log --oneline -1 | grep -qv "chore(release):"';
+
+/**
+ * The default package to be used for commit-and-tag-version
+ */
+const COMMIT_AND_TAG_VERSION_DEFAULT = "commit-and-tag-version@^12";
 
 /**
  * Options for `Version`.
@@ -37,10 +59,44 @@ export interface VersionOptions {
    * @default ReleasableCommits.everyCommit()
    */
   readonly releasableCommits?: ReleasableCommits;
+
+  /**
+   * The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string.
+   *
+   * This can be any compatible package version, including the deprecated `standard-version@9`.
+   *
+   * @default "commit-and-tag-version@12"
+   */
+  readonly bumpPackage?: string;
+
+  /**
+   * A shell command to control the next version to release.
+   *
+   * If present, this shell command will be run before the bump is executed, and
+   * it determines what version to release. It will be executed in the following
+   * environment:
+   *
+   * - Working directory: the project directory.
+   * - `$VERSION`: the current version. Looks like `1.2.3`.
+   * - `$LATEST_TAG`: the most recent tag. Looks like `prefix-v1.2.3`, or may be unset.
+   *
+   * The command should print one of the following to `stdout`:
+   *
+   * - Nothing: the next version number will be determined based on commit history.
+   * - `x.y.z`: the next version number will be `x.y.z`.
+   * - `major|minor|patch`: the next version number will be the current version number
+   *   with the indicated component bumped.
+   *
+   * @default - The next version will be determined based on the commit history and project settings.
+   */
+  readonly nextVersionCommand?: string;
 }
 
 export class Version extends Component {
-  public static readonly STANDARD_VERSION = "standard-version@^9";
+  /**
+   * @deprecated use `version.bumpPackage` on the component instance instead
+   */
+  public static readonly STANDARD_VERSION = COMMIT_AND_TAG_VERSION_DEFAULT;
 
   public readonly bumpTask: Task;
   public readonly unbumpTask: Task;
@@ -60,20 +116,41 @@ export class Version extends Component {
    */
   public readonly releaseTagFileName: string;
 
-  constructor(project: Project, options: VersionOptions) {
-    super(project);
+  /**
+   * The package used to bump package versions, as a dependency string.
+   * This is a `commit-and-tag-version` compatible package.
+   */
+  public readonly bumpPackage: string;
+
+  private readonly nextVersionCommand?: string;
+
+  constructor(scope: IConstruct, options: VersionOptions) {
+    super(scope);
 
     this.changelogFileName = "changelog.md";
     this.versionFileName = "version.txt";
     this.releaseTagFileName = "releasetag.txt";
+    this.bumpPackage = options.bumpPackage ?? COMMIT_AND_TAG_VERSION_DEFAULT;
+    this.nextVersionCommand = options.nextVersionCommand;
+
+    // This component is language independent.
+    // However, when in the Node.js ecosystem, we can improve the experience by adding a dev dependency on the bump package.
+    const node = NodePackage.of(this.project);
+    if (node) {
+      const { name: bumpName, version: bumpVersion } =
+        Dependencies.parseDependency(this.bumpPackage);
+      if (
+        !node.project.deps.isDependencySatisfied(
+          bumpName,
+          DependencyType.BUILD,
+          bumpVersion ?? "*"
+        )
+      ) {
+        node.project.deps.addDependency(this.bumpPackage, DependencyType.BUILD);
+      }
+    }
 
     const versionInputFile = options.versionInputFile;
-
-    // this command determines if there were any changes since the last release
-    // (the top-most commit is not a bump). it is used as a condition for both
-    // the `bump` and the `release` tasks.
-    const changesSinceLastRelease =
-      '! git log --oneline -1 | grep -q "chore(release):"';
 
     const changelogFile = posix.join(
       options.artifactsDirectory,
@@ -88,7 +165,7 @@ export class Version extends Component {
       this.releaseTagFileName
     );
 
-    const env: Record<string, string> = {
+    const commonEnv: Record<string, string> = {
       OUTFILE: versionInputFile,
       CHANGELOG: changelogFile,
       BUMPFILE: bumpFile,
@@ -96,33 +173,121 @@ export class Version extends Component {
       RELEASE_TAG_PREFIX: options.tagPrefix ?? "",
       // doesn't work if custom configuration is long
       VERSIONRCOPTIONS: JSON.stringify(options.versionrcOptions),
+      BUMP_PACKAGE: this.bumpPackage,
     };
-
+    if (options.nextVersionCommand) {
+      commonEnv.NEXT_VERSION_COMMAND = options.nextVersionCommand;
+    }
     if (options.releasableCommits) {
-      env.RELEASABLE_COMMITS = options.releasableCommits.cmd;
+      commonEnv.RELEASABLE_COMMITS = options.releasableCommits.cmd;
     }
 
-    this.bumpTask = project.addTask("bump", {
+    this.bumpTask = this.project.addTask("bump", {
       description:
         "Bumps version based on latest git tag and generates a changelog entry",
-      condition: changesSinceLastRelease,
-      env: env,
+      condition: CHANGES_SINCE_LAST_RELEASE,
+      env: { ...commonEnv },
     });
 
     this.bumpTask.builtin("release/bump-version");
 
-    this.unbumpTask = project.addTask("unbump", {
+    this.unbumpTask = this.project.addTask("unbump", {
       description: "Restores version to 0.0.0",
-      env: env,
+      env: { ...commonEnv },
     });
 
     this.unbumpTask.builtin("release/reset-version");
 
-    project.addGitIgnore(`/${changelogFile}`);
-    project.addGitIgnore(`/${bumpFile}`);
-    project.addPackageIgnore(`/${changelogFile}`);
-    project.addPackageIgnore(`/${bumpFile}`);
+    this.project.addGitIgnore(`/${changelogFile}`);
+    this.project.addGitIgnore(`/${bumpFile}`);
+    this.project.addPackageIgnore(`/${changelogFile}`);
+    this.project.addPackageIgnore(`/${bumpFile}`);
   }
+
+  /**
+   * Return the environment variables to modify the bump command for release branches.
+   *
+   * These options are used to modify the behavior of the version bumping script
+   * for additional branches, by setting environment variables.
+   *
+   * No settings are inherited from the base `Version` object (but any parameters that
+   * control versions do conflict with the use of a `nextVersionCommand`).
+   */
+  public envForBranch(
+    branchOptions: VersionBranchOptions
+  ): Record<string, string> {
+    if (this.nextVersionCommand && branchOptions.minMajorVersion) {
+      throw new Error(
+        "minMajorVersion and nextVersionCommand cannot be used together."
+      );
+    }
+
+    const env: Record<string, string> = {};
+    if (branchOptions.majorVersion !== undefined) {
+      env.MAJOR = branchOptions.majorVersion.toString();
+    }
+
+    if (branchOptions.minMajorVersion !== undefined) {
+      if (branchOptions.majorVersion !== undefined) {
+        throw new Error(
+          `minMajorVersion and majorVersion cannot be used together.`
+        );
+      }
+
+      env.MIN_MAJOR = branchOptions.minMajorVersion.toString();
+    }
+
+    if (branchOptions.prerelease) {
+      env.PRERELEASE = branchOptions.prerelease;
+    }
+
+    if (branchOptions.tagPrefix) {
+      env.RELEASE_TAG_PREFIX = branchOptions.tagPrefix;
+    }
+
+    return env;
+  }
+}
+
+/**
+ * Options to pass to `modifyBranchEnvironment`
+ */
+export interface VersionBranchOptions {
+  /**
+   * The major versions released from this branch.
+   */
+  readonly majorVersion?: number;
+
+  /**
+   * The minimum major version to release.
+   */
+  readonly minMajorVersion?: number;
+
+  /**
+   * The minor versions released from this branch.
+   */
+  readonly minorVersion?: number;
+
+  /**
+   * Bump the version as a pre-release tag.
+   *
+   * @default - normal releases
+   */
+  readonly prerelease?: string;
+
+  /**
+   * Automatically add the given prefix to release tags.
+   * Useful if you are releasing on multiple branches with overlapping
+   * version numbers.
+   *
+   * Note: this prefix is used to detect the latest tagged version
+   * when bumping, so if you change this on a project with an existing version
+   * history, you may need to manually tag your latest release
+   * with the new prefix.
+   *
+   * @default - no prefix
+   */
+  readonly tagPrefix?: string;
 }
 
 /**
@@ -158,7 +323,7 @@ export class ReleasableCommits {
     // @see: https://github.com/conventional-commits/parser/blob/eeefb961ebf5b9dfea0fea8b06f8ad34a1e439b9/lib/parser.js
     // -E requires this to be POSIX Extended Regular Expression, which comes with certain limitations
     // see https://en.wikibooks.org/wiki/Regular_Expressions/POSIX-Extended_Regular_Expressions for details
-    const cmd = `git log --no-merges --oneline $LATEST_TAG..HEAD -E --grep '^(${allowedTypes}){1}(\\([^()[:space:]]+\\))?(!)?:[[:blank:]]+.+'`;
+    const cmd = `git log --no-merges --oneline $LATEST_TAG..HEAD -E --grep "^(${allowedTypes}){1}(\\([^()[:space:]]+\\))?(!)?:[[:blank:]]+.+"`;
 
     return new ReleasableCommits(withPath(cmd, path));
   }
