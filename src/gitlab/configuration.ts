@@ -4,6 +4,7 @@ import {
   Artifacts,
   Cache,
   Default,
+  IDToken,
   Image,
   Include,
   Job,
@@ -47,6 +48,10 @@ export interface CiConfigurationOptions {
    * An initial set of jobs to add to the configuration.
    */
   readonly jobs?: Record<string, Job>;
+  /**
+   * The path of the file to generate.
+   */
+  readonly path?: string;
 }
 
 /**
@@ -112,6 +117,10 @@ export class CiConfiguration extends Component {
    */
   readonly defaultTimeout?: string;
   /**
+   * Default ID tokens (JSON Web Tokens) that are used for CI/CD authentication to use globally for all jobs.
+   */
+  readonly defaultIdTokens?: Record<string, IDToken>;
+  /**
    * Can be `Include` or `Include[]`. Each `Include` will be a string, or an
    * object with properties for the method if including external YAML file. The external
    * content will be fetched, included and evaluated along the `.gitlab-ci.yml`.
@@ -149,10 +158,11 @@ export class CiConfiguration extends Component {
   ) {
     super(project);
     this.name = path.parse(name).name;
-    this.path =
+    const derivedPath =
       this.name === "gitlab-ci"
         ? ".gitlab-ci.yml"
         : `.gitlab/ci-templates/${name.toLocaleLowerCase()}.yml`;
+    this.path = options?.path ?? derivedPath;
     this.file = new YamlFile(this.project, this.path, {
       obj: () => this.renderCI(),
       // GitLab needs to read the file from the repository in order to work.
@@ -165,6 +175,7 @@ export class CiConfiguration extends Component {
       defaults.beforeScript &&
         this.defaultBeforeScript.push(...defaults.beforeScript);
       defaults.cache && this.addDefaultCaches(defaults.cache);
+      this.defaultIdTokens = defaults.idTokens;
       this.defaultImage = defaults.image;
       this.defaultInterruptible = defaults.interruptible;
       this.defaultRetry = defaults.retry;
@@ -373,6 +384,7 @@ export class CiConfiguration extends Component {
           ? this.defaultBeforeScript
           : undefined,
       cache: this.defaultCache,
+      idTokens: this.defaultIdTokens,
       image: this.defaultImage,
       interruptible: this.defaultInterruptible,
       retry: this.defaultRetry,

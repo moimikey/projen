@@ -1,6 +1,7 @@
-import { Prettier } from "./prettier";
 import { Project, TaskStepOptions } from "..";
+import { Prettier } from "./prettier";
 import { DEFAULT_PROJEN_RC_JS_FILENAME } from "../common";
+import { ICompareString } from "../compare";
 import { Component } from "../component";
 import { NodeProject } from "../javascript";
 import { JsonFile } from "../json";
@@ -26,12 +27,16 @@ export interface EslintOptions {
    * @default []
    */
   readonly devdirs?: string[];
-
   /**
    * File types that should be linted (e.g. [ ".js", ".ts" ])
    * @default [".ts"]
    */
   readonly fileExtensions?: string[];
+
+  /**
+   * Options for eslint command executed by eslint task
+   */
+  readonly commandOptions?: EslintCommandOptions;
 
   /**
    * List of file patterns that should not be linted, using the same syntax
@@ -63,6 +68,14 @@ export interface EslintOptions {
   readonly prettier?: boolean;
 
   /**
+   * The extends array in eslint is order dependent.
+   * This option allows to sort the extends array in any way seen fit.
+   *
+   * @default - Use known ESLint best practices to place "prettier" plugins at the end of the array
+   */
+  readonly sortExtends?: ICompareString;
+
+  /**
    * Enable import alias for module paths
    * @default undefined
    */
@@ -88,6 +101,19 @@ export interface EslintOptions {
   readonly yaml?: boolean;
 }
 
+export interface EslintCommandOptions {
+  /**
+   * Whether to fix eslint issues when running the eslint task
+   * @default true
+   */
+  readonly fix?: boolean;
+
+  /**
+   * Extra flag arguments to pass to eslint command
+   */
+  readonly extraArgs?: string[];
+}
+
 /**
  * eslint rules override
  */
@@ -104,7 +130,7 @@ export interface EslintOverride {
   readonly excludedFiles?: string[];
 
   /**
-   * The overriden rules
+   * The overridden rules
    */
   readonly rules?: { [rule: string]: any };
 
@@ -129,7 +155,7 @@ export interface EslintOverride {
  */
 export class Eslint extends Component {
   /**
-   * Returns the singletone Eslint component of a project or undefined if there is none.
+   * Returns the singleton Eslint component of a project or undefined if there is none.
    */
   public static of(project: Project): Eslint | undefined {
     const isEslint = (c: Component): c is Eslint => c instanceof Eslint;
@@ -166,8 +192,10 @@ export class Eslint extends Component {
   private readonly _plugins = new Set<string>();
   private readonly _extends = new Set<string>();
   private readonly _fileExtensions: Set<string>;
+  private readonly _flagArgs: Set<string>;
   private readonly _lintPatterns: Set<string>;
   private readonly nodeProject: NodeProject;
+  private readonly sortExtends: ICompareString;
 
   constructor(project: NodeProject, options: EslintOptions) {
     super(project);
@@ -175,9 +203,9 @@ export class Eslint extends Component {
     this.nodeProject = project;
 
     project.addDevDeps(
-      "eslint@^8",
-      "@typescript-eslint/eslint-plugin@^6",
-      "@typescript-eslint/parser@^6",
+      "eslint@^9",
+      "@typescript-eslint/eslint-plugin@^8",
+      "@typescript-eslint/parser@^8",
       "eslint-import-resolver-typescript",
       "eslint-plugin-import"
     );
@@ -201,8 +229,21 @@ export class Eslint extends Component {
 
     this._allowDevDeps = new Set((devdirs ?? []).map((dir) => `**/${dir}/**`));
 
+    const commandOptions = options.commandOptions ?? {};
+    const { fix = true, extraArgs: extraFlagArgs = [] } = commandOptions;
+    this._flagArgs = new Set(extraFlagArgs);
+    if (fix) {
+      this._flagArgs.add("--fix");
+    }
+    this._flagArgs.add("--no-error-on-unmatched-pattern");
+
+    this.sortExtends = options.sortExtends ?? new ExtendsDefaultOrder();
+
     this.eslintTask = project.addTask("eslint", {
       description: "Runs eslint against the codebase",
+      env: {
+        ESLINT_USE_FLAT_CONFIG: "false",
+      },
     });
     this.updateTask();
 
@@ -212,9 +253,9 @@ export class Eslint extends Component {
     project.npmignore?.exclude("/.eslintrc.json");
 
     this._formattingRules = {
-      // see https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/indent.md
+      // @see https://github.com/typescript-eslint/typescript-eslint/issues/8072
       indent: ["off"],
-      "@typescript-eslint/indent": ["error", 2],
+      "@stylistic/indent": ["error", 2],
 
       // Style
       quotes: ["error", "single", { avoidEscape: true }],
@@ -233,7 +274,8 @@ export class Eslint extends Component {
       "brace-style": ["error", "1tbs", { allowSingleLine: true }], // enforce one true brace style
       "space-before-blocks": ["error"], // require space before blocks
       curly: ["error", "multi-line", "consistent"], // require curly braces for multiline control statements
-      "@typescript-eslint/member-delimiter-style": ["error"],
+      // @see https://github.com/typescript-eslint/typescript-eslint/issues/8072
+      "@stylistic/member-delimiter-style": ["error"],
 
       // Require semicolons
       semi: ["error", "always"],
@@ -283,7 +325,7 @@ export class Eslint extends Component {
       ],
 
       // Cannot import from the same module twice
-      "no-duplicate-imports": ["error"],
+      "import/no-duplicates": ["error"],
 
       // Cannot shadow names
       "no-shadow": ["off"],
@@ -381,7 +423,10 @@ export class Eslint extends Component {
         sourceType: "module",
         project: tsconfig,
       },
-      extends: this._extends,
+      extends: () =>
+        Array.from(this._extends).sort((a, b) =>
+          this.sortExtends.compare(a, b)
+        ),
       settings: {
         "import/parsers": {
           "@typescript-eslint/parser": [".ts", ".tsx"],
@@ -423,6 +468,9 @@ export class Eslint extends Component {
     // `Prettier` component, we shall tweak our configuration accordingly.
     if (options.prettier || Prettier.of(project)) {
       this.enablePrettier();
+    } else {
+      this.nodeProject.addDevDeps("@stylistic/eslint-plugin@^2");
+      this.addPlugins("@stylistic");
     }
   }
 
@@ -524,8 +572,7 @@ export class Eslint extends Component {
     if (this._fileExtensions.size > 0) {
       argsSet.add(`--ext ${[...this._fileExtensions].join(",")}`);
     }
-    argsSet.add("--fix");
-    argsSet.add("--no-error-on-unmatched-pattern");
+    argsSet.add(`${[...this._flagArgs].join(" ")}`);
     argsSet.add("$@"); // External args go here
 
     for (const pattern of this._lintPatterns) {
@@ -566,5 +613,22 @@ export class Eslint extends Component {
     return {
       receiveArgs: true,
     };
+  }
+}
+
+/**
+ * A compare protocol tp sort the extends array in eslint config using known ESLint best practices.
+ *
+ * Places "prettier" plugins at the end of the array
+ */
+class ExtendsDefaultOrder implements ICompareString {
+  // This is the order that ESLint best practices suggest
+  private static ORDER = ["plugin:prettier/recommended", "prettier"];
+
+  public compare(a: string, b: string): number {
+    return (
+      ExtendsDefaultOrder.ORDER.indexOf(a) -
+      ExtendsDefaultOrder.ORDER.indexOf(b)
+    );
   }
 }

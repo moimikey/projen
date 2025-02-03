@@ -1,11 +1,19 @@
+import * as path from "path";
 import { Task } from "..";
 import { Component } from "../component";
-import { GitHub, GithubWorkflow, GitIdentity, WorkflowSteps } from "../github";
+import {
+  GitHub,
+  GithubWorkflow,
+  GitIdentity,
+  workflows,
+  WorkflowSteps,
+} from "../github";
 import {
   BUILD_ARTIFACT_NAME,
   DEFAULT_GITHUB_ACTIONS_USER,
   PERMISSION_BACKUP_FILE,
 } from "../github/constants";
+import { ensureNotHiddenPath } from "../github/private/util";
 import { WorkflowActions } from "../github/workflow-actions";
 import {
   Job,
@@ -18,19 +26,48 @@ import {
 import { NodeProject } from "../javascript";
 import { Project } from "../project";
 import { GroupRunnerOptions, filteredRunsOnOptions } from "../runner-options";
+import {
+  BUILD_JOBID,
+  DEFAULT_ARTIFACTS_DIRECTORY,
+  NOT_FORK,
+  PULL_REQUEST_REF,
+  PULL_REQUEST_REPOSITORY,
+  SELF_MUTATION_CONDITION,
+  SELF_MUTATION_HAPPENED_OUTPUT,
+  SELF_MUTATION_STEP,
+} from "./private/consts";
+import { workflowNameForProject } from "../util/name";
+import { ensureRelativePathStartsWithDot } from "../util/path";
 
-const PULL_REQUEST_REF = "${{ github.event.pull_request.head.ref }}";
-const PULL_REQUEST_REPOSITORY =
-  "${{ github.event.pull_request.head.repo.full_name }}";
-const BUILD_JOBID = "build";
-const SELF_MUTATION_STEP = "self_mutation";
-const SELF_MUTATION_HAPPENED_OUTPUT = "self_mutation_happened";
-const IS_FORK =
-  "github.event.pull_request.head.repo.full_name != github.repository";
-const NOT_FORK = `!(${IS_FORK})`;
-const SELF_MUTATION_CONDITION = `needs.${BUILD_JOBID}.outputs.${SELF_MUTATION_HAPPENED_OUTPUT}`;
+export interface BuildWorkflowCommonOptions {
+  /**
+   * Name of the buildfile (e.g. "build" becomes "build.yml").
+   *
+   * @default "build"
+   */
+  readonly name?: string;
 
-export interface BuildWorkflowOptions {
+  /**
+   * Steps to execute before the build.
+   * @default []
+   */
+  readonly preBuildSteps?: JobStep[];
+
+  /**
+   * Build workflow triggers
+   * @default "{ pullRequest: {}, workflowDispatch: {} }"
+   */
+  readonly workflowTriggers?: Triggers;
+
+  /**
+   * Permissions granted to the build job
+   * To limit job permissions for `contents`, the desired permissions have to be explicitly set, e.g.: `{ contents: JobPermission.NONE }`
+   * @default `{ contents: JobPermission.WRITE }`
+   */
+  readonly permissions?: JobPermissions;
+}
+
+export interface BuildWorkflowOptions extends BuildWorkflowCommonOptions {
   /**
    * The task to execute in order to build the project.
    */
@@ -38,15 +75,9 @@ export interface BuildWorkflowOptions {
 
   /**
    * A name of a directory that includes build artifacts.
+   * @default "dist"
    */
-  readonly artifactsDirectory: string;
-
-  /**
-   * Name of the buildfile (e.g. "build" becomes "build.yml").
-   *
-   * @default "build"
-   */
-  readonly name?: string;
+  readonly artifactsDirectory?: string;
 
   /**
    * The container image to use for builds.
@@ -68,12 +99,6 @@ export interface BuildWorkflowOptions {
    * @default true
    */
   readonly mutableBuild?: boolean;
-
-  /**
-   * Steps to execute before the build.
-   * @default []
-   */
-  readonly preBuildSteps?: JobStep[];
 
   /**
    * Steps to execute after build.
@@ -107,22 +132,14 @@ export interface BuildWorkflowOptions {
    * @throws {Error} if both `runsOn` and `runsOnGroup` are specified
    */
   readonly runsOnGroup?: GroupRunnerOptions;
-
-  /**
-   * Build workflow triggers
-   * @default "{ pullRequest: {}, workflowDispatch: {} }"
-   */
-  readonly workflowTriggers?: Triggers;
-
-  /**
-   * Permissions granted to the build job
-   * To limit job permissions for `contents`, the desired permissions have to be explicitly set, e.g.: `{ contents: JobPermission.NONE }`
-   * @default `{ contents: JobPermission.WRITE }`
-   */
-  readonly permissions?: JobPermissions;
 }
 
 export class BuildWorkflow extends Component {
+  /**
+   * Name of generated github workflow
+   */
+  public readonly name: string;
+
   private readonly postBuildSteps: JobStep[];
   private readonly preBuildSteps: JobStep[];
   private readonly gitIdentity: GitIdentity;
@@ -130,14 +147,13 @@ export class BuildWorkflow extends Component {
   private readonly github: GitHub;
   private readonly workflow: GithubWorkflow;
   private readonly artifactsDirectory: string;
-  private readonly name: string;
 
   private readonly _postBuildJobs: string[] = [];
 
   constructor(project: Project, options: BuildWorkflowOptions) {
     super(project);
 
-    const github = GitHub.of(project);
+    const github = GitHub.of(this.project.root);
     if (!github) {
       throw new Error(
         "BuildWorkflow is currently only supported for GitHub projects"
@@ -149,8 +165,10 @@ export class BuildWorkflow extends Component {
     this.postBuildSteps = options.postBuildSteps ?? [];
     this.gitIdentity = options.gitIdentity ?? DEFAULT_GITHUB_ACTIONS_USER;
     this.buildTask = options.buildTask;
-    this.artifactsDirectory = options.artifactsDirectory;
-    this.name = options.name ?? "build";
+    this.artifactsDirectory =
+      options.artifactsDirectory ?? DEFAULT_ARTIFACTS_DIRECTORY;
+    ensureNotHiddenPath(this.artifactsDirectory, "artifactsDirectory");
+    this.name = options.name ?? workflowNameForProject("build", this.project);
     const mutableBuilds = options.mutableBuild ?? true;
 
     this.workflow = new GithubWorkflow(github, this.name);
@@ -173,7 +191,11 @@ export class BuildWorkflow extends Component {
   }
 
   private addBuildJob(options: BuildWorkflowOptions) {
-    const jobConfig = {
+    const projectPathRelativeToRoot = path.relative(
+      this.project.root.outdir,
+      this.project.outdir
+    );
+    const jobConfig: workflows.Job = {
       ...filteredRunsOnOptions(options.runsOn, options.runsOnGroup),
       container: options.containerImage
         ? { image: options.containerImage }
@@ -186,7 +208,16 @@ export class BuildWorkflow extends Component {
         contents: JobPermission.WRITE,
         ...options.permissions,
       },
-      steps: (() => this.renderBuildSteps()) as any,
+      defaults: this.project.parent // is subproject,
+        ? {
+            run: {
+              workingDirectory: ensureRelativePathStartsWithDot(
+                projectPathRelativeToRoot
+              ),
+            },
+          }
+        : undefined,
+      steps: (() => this.renderBuildSteps(projectPathRelativeToRoot)) as any,
       outputs: {
         [SELF_MUTATION_HAPPENED_OUTPUT]: {
           stepId: SELF_MUTATION_STEP,
@@ -227,32 +258,30 @@ export class BuildWorkflow extends Component {
   public addPostBuildJob(id: string, job: Job) {
     const steps = [];
 
-    if (this.artifactsDirectory) {
-      steps.push(
-        {
-          name: "Download build artifacts",
-          uses: "actions/download-artifact@v4",
-          with: {
-            name: BUILD_ARTIFACT_NAME,
-            path: this.artifactsDirectory,
-          },
+    steps.push(
+      {
+        name: "Download build artifacts",
+        uses: "actions/download-artifact@v4",
+        with: {
+          name: BUILD_ARTIFACT_NAME,
+          path: this.artifactsDirectory,
         },
-        {
-          name: "Restore build artifact permissions",
-          continueOnError: true,
-          run: [
-            `cd ${this.artifactsDirectory} && setfacl --restore=${PERMISSION_BACKUP_FILE}`,
-          ].join("\n"),
-        }
-      );
-    }
+      },
+      {
+        name: "Restore build artifact permissions",
+        continueOnError: true,
+        run: [
+          `cd ${this.artifactsDirectory} && setfacl --restore=${PERMISSION_BACKUP_FILE}`,
+        ].join("\n"),
+      }
+    );
 
     steps.push(...(job.steps ?? []));
 
     this.workflow.addJob(id, {
       needs: [BUILD_JOBID],
       // only run if build did not self-mutate
-      if: `! ${SELF_MUTATION_CONDITION}`,
+      if: `\${{ !${SELF_MUTATION_CONDITION} }}`,
       ...job,
       steps: steps,
     });
@@ -378,7 +407,7 @@ export class BuildWorkflow extends Component {
   /**
    * Called (lazily) during synth to render the build job steps.
    */
-  private renderBuildSteps(): JobStep[] {
+  private renderBuildSteps(projectPathRelativeToRoot: string): JobStep[] {
     return [
       WorkflowSteps.checkout({
         with: {
@@ -417,7 +446,9 @@ export class BuildWorkflow extends Component {
             WorkflowSteps.uploadArtifact({
               with: {
                 name: BUILD_ARTIFACT_NAME,
-                path: this.artifactsDirectory,
+                path: this.project.parent
+                  ? `${projectPathRelativeToRoot}/${this.artifactsDirectory}`
+                  : this.artifactsDirectory,
               },
             }),
           ]),

@@ -44,7 +44,9 @@ Add the token as a secret to your repo under the name `PROJEN_GITHUB_TOKEN`.
 
 Follow the [GitHub docs instructions](https://docs.github.com/en/developers/apps/building-github-apps/creating-a-github-app) for creating a GitHub App. Enable read & write permission for "Contents" and "Pull Request" scopes.
 
-Add the App ID as a secret to your repo under the name `PROJEN_APP_ID` and the private key you generate as a secret to your repo under the name `PROJEN_APP_PRIVATE_KEY`.
+Add the App ID as a secret to your repo under the name `PROJEN_APP_ID` and generate a private key for the app to store as a secret to your repo under the name `PROJEN_APP_PRIVATE_KEY`.
+
+[Install the application](https://docs.github.com/en/apps/using-github-apps/installing-your-own-github-app) ensuring that the repo(s) that you wish to grant access to are selected.
 
 Then, configure your projenrc file to use the GitHub app for API access:
 
@@ -80,8 +82,7 @@ const project = new javascript.NodeProject({
 
 ## Workflows
 
-See the `GitHub`, `GithubWorkflow`, and `Job` types in the [API
-reference](./api/API.md) for currently available APIs.
+See the `GitHub`, `GithubWorkflow`, and `Job` types in the [GitHub](./../../api/github.md) and [GitHub Workflow](./../../api/github.workflows.md) API references for currently available APIs.
 
 Example code of creating a GitHub workflow:
 <https://github.com/projen/projen/blob/65b4194c163f47ba4842981b0c92dbe516be787b/src/github/auto-approve.ts#L67-L105>
@@ -110,7 +111,7 @@ This can be useful when a specific version of an action must be used due to inco
 Specific overrides take precedence over overrides without a version.
 
 ```ts
-project.github.actions.set("actions/checkout@v3", "actions/checkout@ac59398");
+project.github.actions.set("actions/checkout@v4", "actions/checkout@ac59398");
 project.github.actions.set("actions/checkout", "actions/checkout@main");
 ```
 
@@ -118,7 +119,7 @@ Different versions of `actions/checkout` are resolved to different overrides:
 
 ```yaml
 steps:
-  # Was: actions/checkout@v3
+  # Was: actions/checkout@v4
   - uses: actions/checkout@ac59398
 
   # Was: actions/checkout@v2

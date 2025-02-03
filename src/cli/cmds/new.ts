@@ -1,3 +1,4 @@
+import type { SpawnSyncReturns } from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 import * as semver from "semver";
@@ -12,18 +13,29 @@ import {
   execOrUndefined,
   getGitVersion,
   isTruthy,
+  normalizePersistedPath,
 } from "../../util";
 import { tryProcessMacro } from "../macros";
-import { CliError, installPackage, renderInstallCommand } from "../util";
+import {
+  CliError,
+  findJsiiFilePath,
+  installPackage,
+  renderInstallCommand,
+} from "../util";
 
 class Command implements yargs.CommandModule {
   public readonly command = "new [PROJECT-TYPE-NAME] [OPTIONS]";
-  public readonly describe = "Creates a new projen project";
+  public readonly describe = [
+    "Creates a new projen project",
+    "",
+    "For a complete list of the available options for a specific project type, run:",
+    "projen new [PROJECT-TYPE-NAME] --help",
+  ].join("\n");
 
   public builder(args: yargs.Argv) {
     args.positional("PROJECT-TYPE-NAME", {
       describe:
-        "optional only when --from is used and there is a single project type in the external module",
+        "only optional with --from and the external module has only a single project type",
       type: "string",
     });
     args.option("synth", {
@@ -53,6 +65,10 @@ class Command implements yargs.CommandModule {
     args.example(
       "projen new --from projen-vue@^2",
       'Creates a new project from an external module "projen-vue" with the specified version'
+    );
+    args.example(
+      "projen new python --help",
+      'Shows all options available for the built-in project type "python"'
     );
 
     for (const type of inventory.discover()) {
@@ -111,6 +127,8 @@ async function handler(args: any) {
     // handle --from which means we want to first install a jsii module and then
     // create a project defined within this module.
     if (args.from) {
+      args.from = normalizePersistedPath(args.from);
+
       return await initProjectFromModule(process.cwd(), args.from, args);
     }
 
@@ -292,15 +310,36 @@ async function initProjectFromModule(baseDir: string, spec: string, args: any) {
     );
   }
 
-  const moduleName = installPackage(baseDir, spec);
+  const installPackageWithCliError = (b: string, s: string): string => {
+    try {
+      return installPackage(b, s);
+    } catch (error: unknown) {
+      const stderr =
+        (error as SpawnSyncReturns<Buffer>)?.stderr?.toString() ?? "";
+      const isLocal = stderr.includes("code ENOENT");
+      const isRegistry = stderr.includes("code E404");
+      if (isLocal || isRegistry) {
+        const moduleSource = isLocal ? "path" : "registry";
+        throw new CliError(
+          `Could not find '${s}' in this ${moduleSource}. Please ensure that the package exists, you have access it and try again.`
+        );
+      }
+
+      throw error;
+    }
+  };
+
+  const moduleName = installPackageWithCliError(baseDir, spec);
   logging.empty();
 
   // Find the just installed package and discover the rest recursively from this package folder
-  const moduleDir = path.dirname(
-    require.resolve(`${moduleName}/.jsii`, {
-      paths: [baseDir],
-    })
-  );
+  const moduleDir = findJsiiFilePath(baseDir, moduleName);
+
+  if (!moduleDir) {
+    throw new CliError(
+      `Module '${moduleName}' does not look like it is compatible with projen. Reason: Cannot find '${moduleName}/.jsii'. All projen modules must be jsii modules!`
+    );
+  }
 
   // Only leave projects from the main (requested) package
   const projects = inventory

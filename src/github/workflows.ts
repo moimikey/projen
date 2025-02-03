@@ -1,3 +1,4 @@
+import { extname } from "node:path";
 import { snake } from "case";
 import { GitHubActionsProvider } from "./actions-provider";
 import { GitHub } from "./github";
@@ -5,8 +6,32 @@ import { GithubCredentials } from "./github-credentials";
 import * as workflows from "./workflows-model";
 import { resolve } from "../_resolve";
 import { Component } from "../component";
-import { kebabCaseKeys } from "../util";
+import { deepMerge, kebabCaseKeys } from "../util";
 import { YamlFile } from "../yaml";
+
+/**
+ * Options for `concurrency`.
+ */
+export interface ConcurrencyOptions {
+  /**
+   * Concurrency group controls which workflow runs will share the same concurrency limit.
+   * For example, if you specify `${{ github.workflow }}-${{ github.ref }}`, workflow runs triggered
+   * on the same branch cannot run concurrenty, but workflows runs triggered on different branches can.
+   *
+   * @default - ${{ github.workflow }}
+   *
+   * @see https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/using-concurrency#example-concurrency-groups
+   */
+  readonly group?: string;
+
+  /**
+   * When a workflow is triggered while another one (in the same group) is running, should GitHub cancel
+   * the running workflow?
+   *
+   * @default false
+   */
+  readonly cancelInProgress?: boolean;
+}
 
 /**
  * Options for `GithubWorkflow`.
@@ -18,13 +43,34 @@ export interface GithubWorkflowOptions {
    * @default false
    */
   readonly force?: boolean;
+
+  /**
+   * Enable concurrency limitations. Use `concurrencyOptions` to configure specific non default values.
+   *
+   * @default false
+   */
+  readonly limitConcurrency?: boolean;
+
   /**
    * Concurrency ensures that only a single job or workflow using the same concurrency group will run at a time. Currently in beta.
    *
-   * @default - disabled
+   * @default - { group: ${{ github.workflow }}, cancelInProgress: false }
+   *
    * @see https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#concurrency
    */
-  readonly concurrency?: string;
+  readonly concurrencyOptions?: ConcurrencyOptions;
+
+  /**
+   * Set a custom file name for the workflow definition file. Must include either a .yml or .yaml file extension.
+   *
+   * Use this option to set a file name for the workflow file, that is different than the display name.
+   *
+   * @example "build-new.yml"
+   * @example "my-workflow.yaml"
+   *
+   * @default - a path-safe version of the workflow name plus the .yml file ending, e.g. build.yml
+   */
+  readonly fileName?: string;
 }
 
 /**
@@ -36,17 +82,16 @@ export interface GithubWorkflowOptions {
  */
 export class GithubWorkflow extends Component {
   /**
-   * The name of the workflow.
+   * The name of the workflow. GitHub displays the names of your workflows under your repository's
+   * "Actions" tab.
+   * @see https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#name
    */
   public readonly name: string;
 
   /**
-   * Concurrency ensures that only a single job or workflow using the same concurrency group will run at a time.
-   *
-   * @default disabled
-   * @experimental
+   * The concurrency configuration of the workflow. undefined means no concurrency limitations.
    */
-  public readonly concurrency?: string;
+  public readonly concurrency?: ConcurrencyOptions;
 
   /**
    * The workflow YAML file. May not exist if `workflowsEnabled` is false on `GitHub`.
@@ -78,6 +123,11 @@ export class GithubWorkflow extends Component {
     workflows.Job | workflows.JobCallingReusableWorkflow
   > = {};
 
+  /**
+   * @param github The GitHub component of the project this workflow belongs to.
+   * @param name The name of the workflow, displayed under the repository's "Actions" tab.
+   * @param options Additional options to configure the workflow.
+   */
   constructor(
     github: GitHub,
     name: string,
@@ -85,23 +135,38 @@ export class GithubWorkflow extends Component {
   ) {
     super(github.project, `${new.target.name}#${name}`);
 
+    const defaultConcurrency: ConcurrencyOptions = {
+      cancelInProgress: false,
+      group: "${{ github.workflow }}",
+    };
+
     this.name = name;
-    this.concurrency = options.concurrency;
+    this.concurrency = options.limitConcurrency
+      ? (deepMerge([
+          defaultConcurrency,
+          options.concurrencyOptions,
+        ]) as ConcurrencyOptions)
+      : undefined;
     this.projenCredentials = github.projenCredentials;
     this.actions = github.actions;
 
     const workflowsEnabled = github.workflowsEnabled || options.force;
 
     if (workflowsEnabled) {
-      this.file = new YamlFile(
-        this.project,
-        `.github/workflows/${name.toLocaleLowerCase()}.yml`,
-        {
-          obj: () => this.renderWorkflow(),
-          // GitHub needs to read the file from the repository in order to work.
-          committed: true,
-        }
-      );
+      const fileName = options.fileName ?? `${name.toLocaleLowerCase()}.yml`;
+      const extension = extname(fileName).toLowerCase();
+
+      if (![".yml", ".yaml"].includes(extension)) {
+        throw new Error(
+          `GitHub Workflow files must have either a .yml or .yaml file extension, got: ${fileName}`
+        );
+      }
+
+      this.file = new YamlFile(this.project, `.github/workflows/${fileName}`, {
+        obj: () => this.renderWorkflow(),
+        // GitHub needs to read the file from the repository in order to work.
+        committed: true,
+      });
     }
   }
 
@@ -207,7 +272,12 @@ export class GithubWorkflow extends Component {
       name: this.name,
       "run-name": this.runName,
       on: snakeCaseKeys(this.events),
-      concurrency: this.concurrency,
+      concurrency: this.concurrency
+        ? {
+            group: this.concurrency?.group,
+            "cancel-in-progress": this.concurrency.cancelInProgress,
+          }
+        : undefined,
       jobs: renderJobs(this.jobs, this.actions),
     };
   }
@@ -366,8 +436,8 @@ function setupTools(tools: workflows.Tools) {
 
   if (tools.java) {
     steps.push({
-      uses: "actions/setup-java@v3",
-      with: { distribution: "temurin", "java-version": tools.java.version },
+      uses: "actions/setup-java@v4",
+      with: { distribution: "corretto", "java-version": tools.java.version },
     });
   }
 
@@ -387,14 +457,14 @@ function setupTools(tools: workflows.Tools) {
 
   if (tools.go) {
     steps.push({
-      uses: "actions/setup-go@v3",
+      uses: "actions/setup-go@v5",
       with: { "go-version": tools.go.version },
     });
   }
 
   if (tools.dotnet) {
     steps.push({
-      uses: "actions/setup-dotnet@v3",
+      uses: "actions/setup-dotnet@v4",
       with: { "dotnet-version": tools.dotnet.version },
     });
   }

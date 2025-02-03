@@ -75,6 +75,7 @@ export class Projenrc extends ProjenrcFile {
     super.preSynthesize();
 
     this._tsProject.addPackageIgnore(`/${this.filePath}`);
+    this._tsProject.addPackageIgnore(`/${this._projenCodeDir}`);
 
     this._tsProject.tsconfigDev.addInclude(this.filePath);
     this._tsProject.tsconfigDev.addInclude(`${this._projenCodeDir}/**/*.ts`);
@@ -93,6 +94,15 @@ export class Projenrc extends ProjenrcFile {
         "import/no-extraneous-dependencies": "off",
       },
     });
+
+    this._tsProject.jest?.discoverTestMatchPatternsForDirs(
+      [this._projenCodeDir],
+      {
+        fileExtensionPattern: this._tsProject.tsconfig?.compilerOptions?.allowJs
+          ? undefined
+          : "ts?(x)",
+      }
+    );
   }
 
   private generateProjenrc() {

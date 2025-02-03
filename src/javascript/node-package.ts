@@ -216,25 +216,51 @@ export interface NodePackageOptions {
   readonly stability?: string;
 
   /**
-   * Minimum Node.js version to require via package.json `engines` (inclusive).
+   * The minimum node version required by this package to function.
+   * Most projects should not use this option.
    *
-   * @default - no "engines" specified
+   * The value indicates that the package is incompatible with any older versions of node.
+   * This requirement is enforced via the engines field.
+   *
+   * You will normally not need to set this option, even if your package is incompatible with EOL versions of node.
+   * Consider this option only if your package depends on a specific feature, that is not available in other LTS versions.
+   * Setting this option has very high impact on the consumers of your package,
+   * as package managers will actively prevent usage with node versions you have marked as incompatible.
+   *
+   * To change the node version of your CI/CD workflows, use `workflowNodeVersion`.
+   *
+   * @default - no minimum version is enforced
+
    */
   readonly minNodeVersion?: string;
 
   /**
-   * Minimum node.js version to require via `engines` (inclusive).
+   * The maximum node version supported by this package.
+   * Most projects should not use this option.
    *
-   * @default - no max
+   * The value indicates that the package is incompatible with any newer versions of node.
+   * This requirement is enforced via the engines field.
+   *
+   * You will normally not need to set this option.
+   * Consider this option only if your package is known to not function with newer versions of node.
+   *
+   * @default - no maximum version is enforced
    */
   readonly maxNodeVersion?: string;
 
   /**
    * The version of PNPM to use if using PNPM as a package manager.
    *
-   * @default "7"
+   * @default "9"
    */
   readonly pnpmVersion?: string;
+
+  /**
+   * The version of Bun to use if using Bun as a package manager.
+   *
+   * @default "latest"
+   */
+  readonly bunVersion?: string;
 
   /**
    * License's SPDX identifier.
@@ -450,23 +476,28 @@ export class NodePackage extends Component {
   public readonly manifest: any;
 
   /**
-   * Minimum node.js version required by this package.
-   * @default - no minimum
+   * The minimum node version required by this package to function.
+   *
+   * This value indicates the package is incompatible with older versions.
    */
   public readonly minNodeVersion?: string;
 
   /**
-   * Maximum node version required by this package.
-   * @default - no maximum.
+   * Maximum node version supported by this package.
+   *
+   * The value indicates the package is incompatible with newer versions.
    */
   public readonly maxNodeVersion?: string;
 
   /**
    * The version of PNPM to use if using PNPM as a package manager.
-   *
-   * @default "7"
    */
   public readonly pnpmVersion?: string;
+
+  /**
+   * The version of Bun to use if using Bun as a package manager.
+   */
+  public readonly bunVersion?: string;
 
   /**
    * The SPDX license of this module. `undefined` if this package is not licensed.
@@ -650,7 +681,8 @@ export class NodePackage extends Component {
     // node version
     this.minNodeVersion = options.minNodeVersion;
     this.maxNodeVersion = options.maxNodeVersion;
-    this.pnpmVersion = options.pnpmVersion ?? "7";
+    this.pnpmVersion = options.pnpmVersion ?? "9";
+    this.bunVersion = options.bunVersion ?? "latest";
     this.addNodeEngine();
 
     this.addCodeArtifactLoginScript();
@@ -1177,9 +1209,14 @@ export class NodePackage extends Component {
       )) {
         let req = dep.name;
 
-        // skip if we already have a runtime dependency on this peer
+        // Skip if we already have a runtime dependency on this peer and no build dependency yet.
+        // If there is a build dep already, we need to override its version.
         if (
-          this.project.deps.tryGetDependency(dep.name, DependencyType.RUNTIME)
+          this.project.deps.tryGetDependency(
+            dep.name,
+            DependencyType.RUNTIME
+          ) &&
+          !this.project.deps.tryGetDependency(dep.name, DependencyType.BUILD)
         ) {
           continue;
         }
@@ -1219,13 +1256,19 @@ export class NodePackage extends Component {
         case DependencyType.BUNDLED:
           bundledDependencies.push(name);
 
-          if (
-            this.project.deps.all.find(
-              (d) => d.name === name && d.type === DependencyType.PEER
-            )
-          ) {
+          const depDecls = this.project.deps.all.filter((d) => d.name === name);
+          if (depDecls.some((d) => d.type === DependencyType.PEER)) {
             throw new Error(
-              `unable to bundle "${name}". it cannot appear as a peer dependency`
+              `unable to bundle "${name}": it cannot appear as a peer dependency (bundled would always take precedence over peer)`
+            );
+          }
+
+          // I've observed that at least npm 10.8.2 will silently fail to bundle
+          // a dependency if it is [also] part of `devDependencies`. It must exist in
+          // `dependencies` and `dependencies` only.
+          if (depDecls.some((d) => d.type === DependencyType.BUILD)) {
+            throw new Error(
+              `unable to bundle "${name}": it cannot appear as a devDependency (only prod dependencies are bundled, and any dependency appearing as a devDependency is considered to be not a prod dependency)`
             );
           }
 
@@ -1432,6 +1475,12 @@ export class NodePackage extends Component {
   }
 
   private renderPublishConfig() {
+    // When npm provenance is enabled, we need to always render the public access
+    // But when npmAccess is the set to the default, we prefer to omit it
+    const shouldOmitAccess =
+      !this.npmProvenance &&
+      this.npmAccess === defaultNpmAccess(this.packageName);
+
     // omit values if they are the same as the npm defaults
     return resolveJson(
       {
@@ -1439,10 +1488,7 @@ export class NodePackage extends Component {
           this.npmRegistryUrl !== DEFAULT_NPM_REGISTRY_URL
             ? this.npmRegistryUrl
             : undefined,
-        access:
-          this.npmAccess !== defaultNpmAccess(this.packageName)
-            ? this.npmAccess
-            : undefined,
+        access: shouldOmitAccess ? undefined : this.npmAccess,
       },
       { omitEmpty: true }
     );

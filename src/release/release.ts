@@ -2,6 +2,7 @@ import * as path from "path";
 import { IConstruct } from "constructs";
 import { Publisher } from "./publisher";
 import { ReleaseTrigger } from "./release-trigger";
+import { DEFAULT_ARTIFACTS_DIRECTORY } from "../build/private/consts";
 import { Component } from "../component";
 import {
   GitHub,
@@ -13,6 +14,7 @@ import {
   BUILD_ARTIFACT_NAME,
   PERMISSION_BACKUP_FILE,
 } from "../github/constants";
+import { ensureNotHiddenPath } from "../github/private/util";
 import {
   Job,
   JobPermission,
@@ -26,6 +28,8 @@ import {
   filteredWorkflowRunsOnOptions,
 } from "../runner-options";
 import { Task } from "../task";
+import { normalizePersistedPath } from "../util";
+import { workflowNameForProject } from "../util/name";
 import { ensureRelativePathStartsWithDot } from "../util/path";
 import { ReleasableCommits, Version } from "../version";
 
@@ -188,7 +192,7 @@ export interface ReleaseProjectOptions {
   readonly releaseTagPrefix?: string;
 
   /**
-   * Custom configuration used when creating changelog with standard-version package.
+   * Custom configuration used when creating changelog with commit-and-tag-version package.
    * Given values either append to default configuration or overwrite values in it.
    *
    * @default - standard configuration applicable for GitHub repositories
@@ -234,6 +238,40 @@ export interface ReleaseProjectOptions {
    * @default ReleasableCommits.everyCommit()
    */
   readonly releasableCommits?: ReleasableCommits;
+
+  /**
+   * The `commit-and-tag-version` compatible package used to bump the package version, as a dependency string.
+   *
+   * This can be any compatible package version, including the deprecated `standard-version@9`.
+   *
+   * @default - A recent version of "commit-and-tag-version"
+   */
+  readonly bumpPackage?: string;
+
+  /**
+   * A shell command to control the next version to release.
+   *
+   * If present, this shell command will be run before the bump is executed, and
+   * it determines what version to release. It will be executed in the following
+   * environment:
+   *
+   * - Working directory: the project directory.
+   * - `$VERSION`: the current version. Looks like `1.2.3`.
+   * - `$LATEST_TAG`: the most recent tag. Looks like `prefix-v1.2.3`, or may be unset.
+   *
+   * The command should print one of the following to `stdout`:
+   *
+   * - Nothing: the next version number will be determined based on commit history.
+   * - `x.y.z`: the next version number will be `x.y.z`.
+   * - `major|minor|patch`: the next version number will be the current version number
+   *   with the indicated component bumped.
+   *
+   * This setting cannot be specified together with `minMajorVersion`; the invoked
+   * script can be used to achieve the effects of `minMajorVersion`.
+   *
+   * @default - The next version will be determined based on the commit history and project settings.
+   */
+  readonly nextVersionCommand?: string;
 }
 
 /**
@@ -283,7 +321,7 @@ export interface ReleaseOptions extends ReleaseProjectOptions {
    * are needed. For example `publib`, the CLI projen uses to publish releases,
    * is an npm library.
    *
-   * @default 18.x
+   * @default "lts/*""
    */
   readonly workflowNodeVersion?: string;
 
@@ -356,7 +394,9 @@ export class Release extends Component {
     this.buildTask = options.task;
     this.preBuildSteps = options.releaseWorkflowSetupSteps ?? [];
     this.postBuildSteps = options.postBuildSteps ?? [];
-    this.artifactsDirectory = options.artifactsDirectory ?? "dist";
+    this.artifactsDirectory =
+      options.artifactsDirectory ?? DEFAULT_ARTIFACTS_DIRECTORY;
+    ensureNotHiddenPath(this.artifactsDirectory, "artifactsDirectory");
     this.versionFile = options.versionFile;
     this.releaseTrigger = options.releaseTrigger ?? ReleaseTrigger.continuous();
     this.containerImage = options.workflowContainerImage;
@@ -396,16 +436,12 @@ export class Release extends Component {
       versionrcOptions: options.versionrcOptions,
       tagPrefix: options.releaseTagPrefix,
       releasableCommits: options.releasableCommits,
+      bumpPackage: options.bumpPackage,
+      nextVersionCommand: options.nextVersionCommand,
     });
 
     this.releaseTagFilePath = path.posix.normalize(
-      path.posix.join(
-        // temporary hack to allow JsiiProject setting a different path to the release tag file
-        // see JsiiProject.releaseTagFilePath for more details
-        //@ts-ignore
-        this.project.releaseTagFilePath ?? this.artifactsDirectory,
-        this.version.releaseTagFileName
-      )
+      path.posix.join(this.artifactsDirectory, this.version.releaseTagFileName)
     );
 
     this.publisher = new Publisher(this.project, {
@@ -583,29 +619,14 @@ export class Release extends Component {
 
     const env: Record<string, string> = {
       RELEASE: "true",
+      ...this.version.envForBranch({
+        majorVersion: branch.majorVersion,
+        minorVersion: branch.minorVersion,
+        minMajorVersion: branch.minMajorVersion,
+        prerelease: branch.prerelease,
+        tagPrefix: branch.tagPrefix,
+      }),
     };
-
-    if (branch.majorVersion !== undefined) {
-      env.MAJOR = branch.majorVersion.toString();
-    }
-
-    if (branch.minMajorVersion !== undefined) {
-      if (branch.majorVersion !== undefined) {
-        throw new Error(
-          `minMajorVersion and majorVersion cannot be used together.`
-        );
-      }
-
-      env.MIN_MAJOR = branch.minMajorVersion.toString();
-    }
-
-    if (branch.prerelease) {
-      env.PRERELEASE = branch.prerelease;
-    }
-
-    if (branch.tagPrefix) {
-      env.RELEASE_TAG_PREFIX = branch.tagPrefix;
-    }
 
     // the "release" task prepares a release but does not publish anything. the
     // output of the release task is: `dist`, `.version.txt`, and
@@ -679,6 +700,10 @@ export class Release extends Component {
       this.project.root.outdir,
       this.project.outdir
     );
+    const normalizedProjectPathRelativeToRoot = normalizePersistedPath(
+      projectPathRelativeToRoot
+    );
+
     postBuildSteps.push(
       {
         name: "Backup artifact permissions",
@@ -691,8 +716,8 @@ export class Release extends Component {
         with: {
           name: BUILD_ARTIFACT_NAME,
           path:
-            projectPathRelativeToRoot.length > 0
-              ? `${projectPathRelativeToRoot}/${this.artifactsDirectory}`
+            normalizedProjectPathRelativeToRoot.length > 0
+              ? `${normalizedProjectPathRelativeToRoot}/${this.artifactsDirectory}`
               : this.artifactsDirectory,
         },
       })
@@ -700,13 +725,16 @@ export class Release extends Component {
 
     if (this.github && !this.releaseTrigger.isManual) {
       // Use target (possible parent) GitHub to create the workflow
-      const workflow = new GithubWorkflow(this.github, workflowName);
+      const workflow = new GithubWorkflow(this.github, workflowName, {
+        // see https://github.com/projen/projen/issues/3761
+        limitConcurrency: true,
+      });
       workflow.on({
         schedule: this.releaseTrigger.schedule
           ? [{ cron: this.releaseTrigger.schedule }]
           : undefined,
         push: this.releaseTrigger.isContinuous
-          ? { branches: [branchName] }
+          ? { branches: [branchName], paths: this.releaseTrigger.paths }
           : undefined,
         workflowDispatch: {}, // allow manual triggering
       });
@@ -739,11 +767,11 @@ export class Release extends Component {
         preBuildSteps,
         postBuildSteps,
         jobDefaults:
-          projectPathRelativeToRoot.length > 0 // is subproject
+          normalizedProjectPathRelativeToRoot.length > 0 // is subproject
             ? {
                 run: {
                   workingDirectory: ensureRelativePathStartsWithDot(
-                    projectPathRelativeToRoot
+                    normalizedProjectPathRelativeToRoot
                   ),
                 },
               }
@@ -758,20 +786,6 @@ export class Release extends Component {
       return undefined;
     }
   }
-}
-
-function workflowNameForProject(base: string, project: Project): string {
-  // Subprojects
-  if (project.parent) {
-    return `${base}_${fileSafeName(project.name)}`;
-  }
-
-  // root project doesn't get a suffix
-  return base;
-}
-
-function fileSafeName(name: string): string {
-  return name.replace("@", "").replace(/\//g, "-");
 }
 
 /**
